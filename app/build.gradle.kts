@@ -4,6 +4,9 @@ plugins {
 }
 
 android {
+
+    buildFeatures { viewBinding = true }
+
     namespace = "ru.funny_phat_guy.recipesapp"
     compileSdk = 35
 
