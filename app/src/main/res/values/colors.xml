@@ -3,7 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="main_screen">#F4FAFF</color>
-    <color name="nav_bt_text">#FFFFFF</color>
     <color name="nav_bt_category">#525DC0</color>
     <color name="nav_bt_favourites">#E13E3E</color>
 </resources>

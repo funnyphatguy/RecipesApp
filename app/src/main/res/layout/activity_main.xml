@@ -23,7 +23,7 @@
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="@dimen/buttons_space"
             android:layout_weight="1"
             android:text="@string/category"
             android:backgroundTint="@color/nav_bt_category"/>
