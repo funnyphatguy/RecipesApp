@@ -5,10 +5,21 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/main_screen"
+    android:background="@color/main_screen"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_container_height"
+        android:layout_marginBottom="@dimen/main_container_bottom_space"
+        app:layout_constraintBottom_toTopOf="@+id/categoriesLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/categoriesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
@@ -25,19 +36,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/buttons_space"
             android:layout_weight="1"
-            android:text="@string/category"
-            android:backgroundTint="@color/nav_bt_category"/>
+            android:backgroundTint="@color/nav_bt_category"
+            android:text="@string/category" />
 
         <Button
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/nav_bt_favourites"
             android:text="@string/favourites"
             app:icon="@drawable/ic_heart_empty"
-            android:backgroundTint="@color/nav_bt_favourites"
             app:iconGravity="end" />
-
 
     </LinearLayout>
 
