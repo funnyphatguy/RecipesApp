@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding
-        get() = _binding ?: throw IllegalStateException("Binding for ActivityMainBinding")
+        get() = _binding ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +29,38 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        with(binding) {
+            btFavourites.setOnClickListener {
+                setFavourites()
+            }
+
+            btCategory.setOnClickListener {
+                setCategories()
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
     }
+
+    private fun setFavourites() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<FavoritesFragment>(R.id.mainContainer)
+            addToBackStack(null)
+        }
+    }
+
+    private fun setCategories() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<CategoriesListFragment>(R.id.mainContainer)
+            addToBackStack(null)
+        }
+    }
+
 }
+

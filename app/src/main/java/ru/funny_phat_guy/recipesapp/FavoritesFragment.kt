@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
+import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 
-class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
+class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
-    private var _binding: FragmentListCategoriesBinding? = null
+    private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
     override fun onCreateView(
@@ -17,8 +17,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentListCategoriesBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 }
