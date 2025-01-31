@@ -10,7 +10,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
