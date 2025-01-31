@@ -29,6 +29,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.btFavourites.setOnClickListener {
+            if (savedInstanceState == null) {
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace<FavoritesFragment>(R.id.mainContainer)
+                }
+            }
+        }
+
+        binding.btCategory.setOnClickListener {
+            if (savedInstanceState == null) {
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace<CategoriesListFragment>(R.id.mainContainer)
+                }
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
