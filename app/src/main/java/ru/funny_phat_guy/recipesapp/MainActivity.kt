@@ -29,21 +29,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btFavourites.setOnClickListener {
-            if (savedInstanceState == null) {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<FavoritesFragment>(R.id.mainContainer)
-                }
+        with(binding) {
+            btFavourites.setOnClickListener {
+                setFavourites()
             }
-        }
 
-        binding.btCategory.setOnClickListener {
-            if (savedInstanceState == null) {
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<CategoriesListFragment>(R.id.mainContainer)
-                }
+            btCategory.setOnClickListener {
+                setCategories()
             }
         }
 
@@ -53,4 +45,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
+
+    private fun setFavourites() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<FavoritesFragment>(R.id.mainContainer)
+        }
+    }
+
+    private fun setCategories() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<CategoriesListFragment>(R.id.mainContainer)
+        }
+    }
+
 }
+
