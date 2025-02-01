@@ -5,7 +5,7 @@ import java.net.URL
 data class Recipe(
     val id:Int,
     val title:String,
-    val ingredients:Ingredient,
-    val method:String,
-    val imageURL: URL,
+    val ingredients:List<Ingredient>,
+    val method:List<String>,
+    val imageURL: String,
 )
