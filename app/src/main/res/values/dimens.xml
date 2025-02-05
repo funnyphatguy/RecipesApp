@@ -8,4 +8,11 @@
     <dimen name="nav_bt_radius">8dp</dimen>
     <dimen name="main_container_bottom_space">8dp</dimen>
     <dimen name="main_container_height">0dp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+    <dimen name="header_text_height">24sp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="header_corner_radius">8dp</dimen>
+    <dimen name="shape_rounded_header_padding">10dp</dimen>
+    <dimen name="card_description_text_size">12sp</dimen>
+    <dimen name="card_description_text_height">16sp</dimen>
 </resources>

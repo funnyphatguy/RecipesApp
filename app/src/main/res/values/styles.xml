@@ -17,4 +17,23 @@
 
     </style>
 
+    <style name="StyleTitle20" parent="TextAppearance.AppCompat">
+
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:lineHeight">@dimen/header_text_height</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/txt_header</item>
+    </style>
+
+    <style name="StyleTitle12" parent="TextAppearance.AppCompat">
+
+        <item name="android:textSize">@dimen/card_description_text_size</item>
+        <item name="android:lineHeight">@dimen/card_description_text_height</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/txt_description</item>
+    </style>
+
+
 </resources>
