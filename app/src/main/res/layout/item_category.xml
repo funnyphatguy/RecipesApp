@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/card_image"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/card_image_pic_height"
             android:background="@color/black"
             android:scaleType="centerCrop"
             tools:src="@drawable/bcg_categories_test" />
@@ -29,8 +29,11 @@
             style="@style/StyleTitle14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_half"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:layout_marginBottom="@dimen/margin_quarter"
             android:maxLines="1"
-            android:padding="8dp"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="#5F3678"
             tools:text="текст для проверки" />
@@ -40,9 +43,11 @@
             style="@style/StyleTitle12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/margin_half"
+            android:layout_marginTop="@dimen/margin_quarter"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:layout_marginBottom="@dimen/margin_half"
             android:maxLines="3"
-            android:padding="8dp"
             android:textAppearance="?attr/textAppearanceBody2"
             tools:text="Рецепты всех популярных видов бургеров" />
 
