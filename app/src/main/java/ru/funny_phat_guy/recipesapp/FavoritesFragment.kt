@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
+import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
@@ -19,5 +20,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     ): View? {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 }

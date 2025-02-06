@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/main_screen"
     android:orientation="vertical">
-    x
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,14 +14,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="224dp"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/main_pic_height"
+            android:contentDescription="@string/categories_image_description"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toTopOf="parent"
-            tools:background="@color/black"
-            tools:src="@drawable/bcg_categories_test" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -38,7 +36,7 @@
             android:singleLine="false"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Категории" />
+            tools:text="Бургер с грибами и сыром" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCategories"
@@ -52,7 +50,6 @@
             app:spanCount="2"
             tools:itemCount="6"
             tools:listitem="@layout/item_category" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

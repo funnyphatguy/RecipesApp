@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid android:color="@color/main_screen"></solid>
-    <corners android:radius="@dimen/header_corner_radius"></corners>
+    <corners android:radius="@dimen/margin_half"></corners>
     <padding
         android:bottom="@dimen/shape_rounded_header_padding"
         android:left="@dimen/shape_rounded_header_padding"

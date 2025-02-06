@@ -7,7 +7,7 @@
     android:layout_marginBottom="@dimen/margin_normal"
     android:background="?attr/selectableItemBackground"
     android:backgroundTint="@color/white"
-    app:cardCornerRadius="@dimen/header_corner_radius"
+    app:cardCornerRadius="@dimen/margin_half"
 
     >
 
