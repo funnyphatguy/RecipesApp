@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.IOException
 
-class AssetsImageLoader(private val context: Context) {
-    fun loadImage(imageName: String): Bitmap? {
+object AssetsImageLoader {
+    fun loadImage(context: Context, imageName: String): Bitmap? {
         return try {
             val inputStream = context.assets.open(imageName)
             BitmapFactory.decodeStream(inputStream)

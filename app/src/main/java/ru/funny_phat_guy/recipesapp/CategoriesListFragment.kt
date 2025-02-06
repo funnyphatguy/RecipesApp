@@ -30,8 +30,8 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
         val imageName = "bcg_categories.png"
 
-        val imageLoader = AssetsImageLoader(requireContext())
-        val bitmap = imageLoader.loadImage(imageName)
+        (requireContext())
+        val bitmap = AssetsImageLoader.loadImage(requireContext(), imageName)
 
         if (bitmap != null) {
             binding.imageView.setImageBitmap(bitmap)
