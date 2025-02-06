@@ -1,0 +1,56 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_half"
+    android:layout_marginBottom="@dimen/margin_normal"
+    android:background="?attr/selectableItemBackground"
+    android:backgroundTint="@color/white"
+    app:cardCornerRadius="@dimen/margin_half"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/card_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_image_pic_height"
+            android:background="@color/black"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/bcg_categories_test" />
+
+        <TextView
+            android:id="@+id/card_title"
+            style="@style/StyleTitle14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_half"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:layout_marginBottom="@dimen/margin_quarter"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="#5F3678"
+            tools:text="текст для проверки" />
+
+        <TextView
+            android:id="@+id/card_description"
+            style="@style/StyleTitle12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_half"
+            android:layout_marginTop="@dimen/margin_quarter"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:layout_marginBottom="@dimen/margin_half"
+            android:maxLines="3"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Рецепты всех популярных видов бургеров" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

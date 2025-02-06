@@ -11,8 +11,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_container_height"
-        android:layout_marginBottom="@dimen/main_container_bottom_space"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginBottom="@dimen/margin_half"
         app:layout_constraintBottom_toTopOf="@+id/categoriesLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/buttons_space"
+            android:layout_marginEnd="@dimen/margin_quarter"
             android:layout_weight="1"
             android:backgroundTint="@color/nav_bt_category"
             android:text="@string/category" />
