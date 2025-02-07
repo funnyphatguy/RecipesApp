@@ -29,7 +29,6 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onViewCreated(view, savedInstanceState)
 
         val imageName = "bcg_categories.png"
-
         (requireContext())
         val bitmap = AssetsImageLoader.loadImage(requireContext(), imageName)
 
