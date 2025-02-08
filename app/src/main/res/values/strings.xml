@@ -3,4 +3,5 @@
     <string name="category">категории</string>
     <string name="favourites">избранное</string>
     <string name="categories_image_description">изображение стола с фаст-фудом и напитками</string>
+    <string name="Category">Категории</string>
 </resources>
