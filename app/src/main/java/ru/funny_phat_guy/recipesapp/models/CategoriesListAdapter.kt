@@ -1,11 +1,12 @@
 package ru.funny_phat_guy.recipesapp.models
 
-import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemCategoryBinding
+import java.io.IOException
 import java.io.InputStream
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
@@ -15,9 +16,15 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Category) {
-            val inputStream: InputStream? = binding.root.context.assets?.open(data.imageUrl)
-            val drawable = Drawable.createFromStream(inputStream, null)
-            binding.cardImage.setImageDrawable(drawable)
+            try {
+                val inputStream: InputStream? = binding.root.context.assets?.open(data.imageUrl)
+                if (inputStream != null) {
+                    val drawable = Drawable.createFromStream(inputStream, null)
+                    binding.cardImage.setImageDrawable(drawable)
+                }
+            } catch (e: IOException) {
+                Log.e("Assets", "Ошибка загрузки изображения", e)
+            }
             binding.cardTitle.text = data.title
             binding.cardDescription.text = data.description
         }
@@ -34,6 +41,7 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         viewHolder.bind(data)
 
     }
+
     override fun getItemCount() = dataSet.size
 
 }
