@@ -1,16 +1,17 @@
 package ru.funny_phat_guy.recipesapp.models
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.util.Log
 import java.io.IOException
 
 object AssetsImageLoader {
-    fun loadImage(context: Context, imageName: String): Bitmap? {
+    fun loadImage(imageName: String, context: Context?): Drawable? {
         return try {
-            val inputStream = context.assets.open(imageName)
-            BitmapFactory.decodeStream(inputStream)
+            val inputStream = context?.assets?.open(imageName)
+            Drawable.createFromStream(inputStream, null)
         } catch (e: IOException) {
+            Log.e("Assets", "Ошибка загрузки изображения", e)
             null
         }
     }
