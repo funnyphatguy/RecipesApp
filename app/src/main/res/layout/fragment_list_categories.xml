@@ -34,9 +34,9 @@
             android:gravity="bottom|start"
             android:maxLines="2"
             android:singleLine="false"
+            android:text="@string/category"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Бургер с грибами и сыром" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCategories"

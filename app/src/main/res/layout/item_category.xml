@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_half"
     android:layout_marginBottom="@dimen/margin_normal"
-    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:backgroundTint="@color/white"
     app:cardCornerRadius="@dimen/margin_half"
 
@@ -21,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_image_pic_height"
             android:background="@color/black"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/bcg_categories_test" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/card_title"
