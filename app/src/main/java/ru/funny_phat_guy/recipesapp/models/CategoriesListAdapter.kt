@@ -8,6 +8,18 @@ import ru.funny_phat_guy.recipesapp.databinding.ItemCategoryBinding
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+
+        itemClickListener = listener
+
+    }
+
     class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -28,6 +40,12 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val data: Category = dataSet[position]
         viewHolder.bind(data)
+
+        viewHolder.itemView.setOnClickListener {
+
+            itemClickListener?.onItemClick()
+
+        }
 
     }
 
