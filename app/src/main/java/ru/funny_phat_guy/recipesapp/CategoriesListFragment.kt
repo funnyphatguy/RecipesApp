@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.CategoriesListAdapter
@@ -14,7 +15,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
-        get() = requireNotNull(_binding) { "Binding for FragmentFavoritesBinding must not be null" }
+        get() = requireNotNull(_binding) { "Binding for FragmentCategoriesBinding must not be null" }
 
 
     override fun onCreateView(
@@ -35,10 +36,26 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
     }
 
-    fun initRecycler() {
+    private fun openRecipesByCategoryId(){
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipesListFragment>(R.id.mainContainer)
+            addToBackStack(null)
+        }
+    }
+
+    private fun initRecycler() {
         val categories = STUB.getCategories()
         val categoriesAdapter = CategoriesListAdapter(categories)
         binding.rvCategories.adapter = categoriesAdapter
+
+        categoriesAdapter.setOnItemClickListener(object :
+            CategoriesListAdapter.OnItemClickListener {
+            override fun onItemClick() {
+                openRecipesByCategoryId()
+            }
+        })
+
     }
 }
 

@@ -7,4 +7,5 @@
     <color name="nav_bt_favourites">#E13E3E</color>
     <color name="txt_header">#5F3678</color>
     <color name="txt_description">#666666</color>
+    <color name="card_title">#5F3678</color>
 </resources>
