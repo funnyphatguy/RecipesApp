@@ -36,7 +36,7 @@
             android:layout_marginBottom="@dimen/margin_quarter"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textColor="#5F3678"
+            android:textColor="@color/card_title"
             tools:text="текст для проверки" />
 
         <TextView
