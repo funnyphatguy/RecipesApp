@@ -36,7 +36,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
 
     }
 
-    fun openRecipesByCategoryId(){
+    private fun openRecipesByCategoryId(){
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipesListFragment>(R.id.mainContainer)
@@ -44,7 +44,7 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         }
     }
 
-    fun initRecycler() {
+    private fun initRecycler() {
         val categories = STUB.getCategories()
         val categoriesAdapter = CategoriesListAdapter(categories)
         binding.rvCategories.adapter = categoriesAdapter
