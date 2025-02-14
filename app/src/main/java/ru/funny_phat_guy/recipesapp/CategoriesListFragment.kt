@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_ID
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_IMAGE_URL
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_NAME
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.CategoriesListAdapter
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 
 
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {

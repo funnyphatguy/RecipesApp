@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_ID
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_IMAGE_URL
-import ru.funny_phat_guy.recipesapp.models.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 
 
 class RecipesListFragment : Fragment(R.layout.fragments_list_recipes) {
