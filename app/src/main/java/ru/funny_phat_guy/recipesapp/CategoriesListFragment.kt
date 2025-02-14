@@ -16,7 +16,6 @@ import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 
-
 class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding

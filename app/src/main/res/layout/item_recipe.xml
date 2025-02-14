@@ -21,7 +21,8 @@
             android:id="@+id/card_image_burgers"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            tools:background="@color/black" />
+            tools:background="@color/black"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/card_title"

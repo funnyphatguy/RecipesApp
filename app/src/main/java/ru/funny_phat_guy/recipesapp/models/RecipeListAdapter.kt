@@ -6,13 +6,26 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
 
 
-class RecipeListAdapter(private val dataSet: List<Recipe>):
+class RecipeListAdapter(private val dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
-    class ViewHolder(private val binding: ItemRecipeBinding):
-    RecyclerView.ViewHolder(binding.root){
 
-        fun bind(data:Recipe){
-            val drawable = AssetsImageLoader.loadImage(data.imageUrl,binding.cardImageBurgers.context)
+    interface OnItemClickListener {
+        fun onItemClick(recipeId: Int)
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener){
+        itemClickListener = listener
+    }
+
+
+    class ViewHolder(private val binding: ItemRecipeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(data: Recipe) {
+            val drawable =
+                AssetsImageLoader.loadImage(data.imageUrl, binding.cardImageBurgers.context)
             binding.cardImageBurgers.setImageDrawable(drawable)
             binding.cardTitle.text = data.title
         }
@@ -20,7 +33,7 @@ class RecipeListAdapter(private val dataSet: List<Recipe>):
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-       val binding = ItemRecipeBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = ItemRecipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -29,7 +42,13 @@ class RecipeListAdapter(private val dataSet: List<Recipe>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data:Recipe = dataSet[position]
+        val data: Recipe = dataSet[position]
         holder.bind(data)
+
+        holder.itemView.setOnClickListener{
+
+            itemClickListener?.onItemClick(data.id)
+
+        }
     }
 }
