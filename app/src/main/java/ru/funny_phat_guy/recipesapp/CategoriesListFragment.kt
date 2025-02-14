@@ -35,13 +35,13 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
 
-        val drawable = AssetsImageLoader.loadImage("bcg_categories.png", context)
-        binding.imageView.setImageDrawable(drawable)
+        val drawableCategories = AssetsImageLoader.loadImage("bcg_categories.png", context)
+        binding.imageView.setImageDrawable(drawableCategories)
 
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val categories = STUB.getCategories().find { it.id == categoryId } ?: kotlin.run {
+        val categories = STUB.getCategories().find { it.id == categoryId } ?: run {
             Toast.makeText(context, "Category not found", Toast.LENGTH_SHORT).show()
             return
         }
