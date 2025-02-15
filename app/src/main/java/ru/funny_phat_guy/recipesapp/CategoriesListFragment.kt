@@ -16,7 +16,7 @@ import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 
-class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
+class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = requireNotNull(_binding) { "Binding for FragmentCategoriesBinding must not be null" }
@@ -37,6 +37,11 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         val drawableCategories = AssetsImageLoader.loadImage("bcg_categories.png", context)
         binding.imageView.setImageDrawable(drawableCategories)
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {

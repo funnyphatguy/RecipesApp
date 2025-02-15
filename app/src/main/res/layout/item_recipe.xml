@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="8dp"
     android:layout_marginBottom="16dp"
     android:backgroundTint="@color/white"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="@dimen/margin_half"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/card_image_burgers"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/hundred_dp"
             tools:background="@color/black"
             android:scaleType="centerCrop"/>
 

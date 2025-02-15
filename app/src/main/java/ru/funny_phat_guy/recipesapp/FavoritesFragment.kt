@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 
-class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
+class FavoritesFragment : Fragment() {
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
@@ -20,5 +20,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

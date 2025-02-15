@@ -14,7 +14,7 @@ import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
 
-class RecipesListFragment : Fragment(R.layout.fragments_list_recipes) {
+class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipesBinding must not be null" }
 
@@ -48,7 +48,13 @@ class RecipesListFragment : Fragment(R.layout.fragments_list_recipes) {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe =
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer)
