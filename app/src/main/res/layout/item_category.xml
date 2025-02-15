@@ -22,7 +22,7 @@
             android:id="@+id/card_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_image_pic_height"
-            android:background="@color/black"
+            tools:background="@color/black"
             android:scaleType="centerCrop" />
 
         <TextView

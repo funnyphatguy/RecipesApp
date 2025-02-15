@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
+import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
 
-
-class RecipesListFragment : Fragment(R.layout.fragments_list_recipes) {
+class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipesBinding must not be null" }
 
@@ -34,6 +37,44 @@ class RecipesListFragment : Fragment(R.layout.fragments_list_recipes) {
 
         return binding.root
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycler()
+
+        val drawableBurgers = AssetsImageLoader.loadImage("burger.png", context)
+        binding.recipeImageView.setImageDrawable(drawableBurgers)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe =
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer)
+            addToBackStack(null)
+
+        }
+
+    }
+
+    private fun initRecycler() {
+        val recipes = STUB.getRecipesByCategoryId(0)
+        val recipesAdapter = RecipeListAdapter(recipes)
+        binding.rvRecipes.adapter = recipesAdapter
+
+        recipesAdapter.setOnItemClickListener(object :
+            RecipeListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
     }
 
 }

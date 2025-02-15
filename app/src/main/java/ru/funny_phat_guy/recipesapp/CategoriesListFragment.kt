@@ -16,8 +16,7 @@ import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
 
-
-class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
+class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = requireNotNull(_binding) { "Binding for FragmentCategoriesBinding must not be null" }
@@ -35,13 +34,18 @@ class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
 
-        val drawable = AssetsImageLoader.loadImage("bcg_categories.png", context)
-        binding.imageView.setImageDrawable(drawable)
+        val drawableCategories = AssetsImageLoader.loadImage("bcg_categories.png", context)
+        binding.imageView.setImageDrawable(drawableCategories)
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val categories = STUB.getCategories().find { it.id == categoryId } ?: kotlin.run {
+        val categories = STUB.getCategories().find { it.id == categoryId } ?: run {
             Toast.makeText(context, "Category not found", Toast.LENGTH_SHORT).show()
             return
         }
