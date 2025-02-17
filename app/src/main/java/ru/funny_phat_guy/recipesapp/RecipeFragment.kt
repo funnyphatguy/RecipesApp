@@ -32,7 +32,7 @@ class RecipeFragment : Fragment() {
             @Suppress("DEPRECATION")
             arguments?.getParcelable(ARG_RECIPE)
         }
-        binding.recipeTxt.text = recipe?.title
+        binding.recipeTextView.text = recipe?.title
     }
 
     override fun onDestroyView() {
