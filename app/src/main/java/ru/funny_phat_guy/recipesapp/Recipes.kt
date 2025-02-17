@@ -267,11 +267,16 @@ object STUB {
         )
     )
 
-    public fun getCategories(): List<Category> {
+    fun getCategories(): List<Category> {
         return categories
     }
 
-    public fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
+    fun getRecipeById(burgerRecipeId: Int): Recipe? {
+
+        return burgerRecipes.firstOrNull { it.id == burgerRecipeId }
+    }
+
+    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
         return if (categoryId == 0) {
             burgerRecipes
         } else {

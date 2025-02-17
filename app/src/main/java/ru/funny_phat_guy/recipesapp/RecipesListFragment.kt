@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -12,6 +13,7 @@ import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
 import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
 
 class RecipesListFragment : Fragment() {
@@ -54,10 +56,13 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe =
+        val recipe = STUB.getRecipeById(recipeId)
+
+        val bundle = bundleOf(ARG_RECIPE to recipe)
+
         parentFragmentManager.commit {
             setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer)
+            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
             addToBackStack(null)
 
         }
