@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
+import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
 
 class RecipeFragment : Fragment() {
@@ -33,11 +36,24 @@ class RecipeFragment : Fragment() {
             arguments?.getParcelable(ARG_RECIPE)
         }
         binding.recipeTextView.text = recipe?.title
+        val ingredients = recipe?.ingredients ?: run {
+            Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val ingredientsAdapter = IngredientsAdapter(ingredients)
+        binding.rvIngredients.adapter = ingredientsAdapter
+
+        val drawable = AssetsImageLoader.loadImage(recipe.imageUrl, context)
+        binding.recipeImageView.setImageDrawable(drawable)
+
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

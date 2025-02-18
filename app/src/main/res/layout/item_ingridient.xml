@@ -2,33 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="recipe_ingridients"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="16dp">
 
     <TextView
+        android:id="@+id/tv_description"
         style="@style/StyleTitleGrey14"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="12dp"
         android:layout_weight="1"
         tools:text=" масло" />
 
     <TextView
+        android:id="@+id/tv_quantity"
         style="@style/StyleTitleGrey14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/margin_half"
         tools:text="Теассссссссссссст" />
 
     <TextView
+        android:id="@+id/tv_measure"
         style="@style/StyleTitleGrey14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="@dimen/padding_rv"
         tools:text="Тааиаиест" />
 
 
