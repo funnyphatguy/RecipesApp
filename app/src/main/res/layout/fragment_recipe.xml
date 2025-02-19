@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/recipeTextView"
             style="@style/StyleTitle20"
-            android:layout_width="240dp"
+            android:layout_width="@dimen/header_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
@@ -38,7 +38,7 @@
             android:id="@+id/textView2"
             style="@style/StyleTitle20"
             android:layout_width="match_parent"
-            android:layout_height="82dp"
+            android:layout_height="@dimen/ingredients_width"
             android:layout_margin="@dimen/margin_normal"
             android:gravity="start|top"
             android:text="@string/ingredients"

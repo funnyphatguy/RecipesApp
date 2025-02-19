@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/margin_half"
             android:layout_marginEnd="@dimen/margin_half"
             android:layout_marginBottom="@dimen/margin_quarter"
-            android:maxLines="1"
+            android:maxLines="@dimen/one"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="@color/card_title"
             tools:text="текст для проверки" />
@@ -48,7 +48,7 @@
             android:layout_marginTop="@dimen/margin_quarter"
             android:layout_marginEnd="@dimen/margin_half"
             android:layout_marginBottom="@dimen/margin_half"
-            android:maxLines="3"
+            android:maxLines="@dimen/three"
             android:textAppearance="?attr/textAppearanceBody2"
             tools:text="Рецепты всех популярных видов бургеров" />
 

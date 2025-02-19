@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_quarter"
-            android:layout_weight="1"
+            android:layout_weight="@dimen/one"
             android:backgroundTint="@color/nav_bt_category"
             android:text="@string/category" />
 
@@ -45,7 +45,7 @@
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="@dimen/one"
             android:backgroundTint="@color/nav_bt_favourites"
             android:text="@string/favourites"
             app:icon="@drawable/ic_heart_empty"
