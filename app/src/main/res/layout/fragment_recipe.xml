@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,9 +15,9 @@
             android:id="@+id/recipeImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_pic_height"
-            android:scaleType="centerCrop"
             android:background="@color/black"
             android:contentDescription="@string/burger_pic_description"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -25,15 +25,15 @@
         <TextView
             android:id="@+id/recipeTextView"
             style="@style/StyleTitle20"
-            android:layout_width="242dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@drawable/shape_rounded_header"
             android:gravity="start"
-            android:text="FRAGMENT_RECIPE"
             app:layout_constraintBottom_toBottomOf="@+id/recipeImageView"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Бургер с грибами \nи сыром" />
+            tools:text="Бургер с грибами и сыром" />
 
         <TextView
             android:id="@+id/textView2"
@@ -42,24 +42,26 @@
             android:layout_height="82dp"
             android:layout_margin="@dimen/margin_normal"
             android:gravity="start|top"
+            android:text="@string/ingredients"
             android:textColor="@color/recipe_ingridients"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
-            tools:text="Ингридиенты" />
+            app:layout_constraintTop_toBottomOf="@+id/recipeImageView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/shape_rounded_corners"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:itemCount="3"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            tools:listitem="@layout/item_ingridient"
-            android:background="@drawable/shape_rounded_corners"/>
+            tools:itemCount="3"
+            tools:listitem="@layout/item_ingredient" />
 
         <TextView
             android:id="@+id/textView3"
@@ -67,26 +69,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
+            android:text="@string/method"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvIngredients"
-            tools:text="Способ приготовления" />
+            app:layout_constraintTop_toBottomOf="@+id/rvIngredients" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
-
+            android:background="@drawable/shape_rounded_corners"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:listitem="@layout/item_method"
-            android:background="@drawable/shape_rounded_corners"/>
+            tools:listitem="@layout/item_method" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

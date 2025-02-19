@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    runtimeOnly(libs.material.v170)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
