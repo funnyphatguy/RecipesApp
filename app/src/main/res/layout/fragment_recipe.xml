@@ -6,46 +6,46 @@
     android:layout_height="match_parent"
     android:background="@color/main_screen">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/recipeImageView"
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/main_pic_height"
-            android:background="@color/black"
-            android:contentDescription="@string/burger_pic_description"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/recipeTextView"
-            style="@style/StyleTitle20"
-            android:layout_width="@dimen/header_width"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:background="@drawable/shape_rounded_header"
-            android:gravity="start"
-            app:layout_constraintBottom_toBottomOf="@+id/recipeImageView"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Бургер с грибами и сыром" />
+            <ImageView
+                android:id="@+id/recipeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_pic_height"
+                android:background="@color/black"
+                android:contentDescription="@string/burger_pic_description"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/recipeTextView"
+                style="@style/StyleTitle20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:background="@drawable/shape_rounded_header"
+                android:gravity="start"
+                android:layout_gravity="bottom|start"
+                tools:text="Бургер с грибами и сыром"/>
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textView2"
             style="@style/StyleTitle20"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ingredients_width"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
-            android:gravity="start|top"
             android:text="@string/ingredients"
-            android:textColor="@color/recipe_ingridients"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipeImageView" />
+            android:textColor="@color/recipe_ingridients"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
@@ -56,22 +56,17 @@
             android:paddingStart="@dimen/margin_normal"
             android:paddingEnd="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
             tools:itemCount="3"
-            tools:listitem="@layout/item_ingredient" />
+            tools:listitem="@layout/item_ingredient"/>
 
         <TextView
             android:id="@+id/textView3"
             style="@style/StyleTitle20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_normal"
-            android:text="@string/method"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvIngredients" />
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@string/method"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMethod"
@@ -82,11 +77,8 @@
             android:paddingStart="@dimen/margin_normal"
             android:paddingEnd="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:listitem="@layout/item_method" />
+            tools:listitem="@layout/item_method"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
