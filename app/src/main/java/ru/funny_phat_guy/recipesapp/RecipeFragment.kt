@@ -52,13 +52,13 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-    private fun initUI(recipe:Recipe?){
+    private fun initUI(recipe: Recipe?) {
         binding.recipeTextView.text = recipe?.title
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.recipeImageView.setImageDrawable(drawableTitle)
     }
 
-    private fun initRecycler(recipe:Recipe?){
+    private fun initRecycler(recipe: Recipe?) {
         val ingredients = recipe?.ingredients ?: run {
             Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
             return
@@ -74,7 +74,7 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun initDivider(){
+    private fun initDivider() {
         val ingredientsRecyclerView = binding.rvIngredients
         val methodRecyclerView = binding.rvMethod
 
@@ -88,8 +88,5 @@ class RecipeFragment : Fragment() {
             ingredientsRecyclerView.addItemDecoration(dividerItemDecoration)
             methodRecyclerView.addItemDecoration(dividerItemDecoration)
         }
-
     }
-
-
 }

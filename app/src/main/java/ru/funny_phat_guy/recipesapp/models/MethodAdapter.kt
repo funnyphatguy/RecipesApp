@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemMethodBinding
 
-
 class MethodAdapter(private val dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
