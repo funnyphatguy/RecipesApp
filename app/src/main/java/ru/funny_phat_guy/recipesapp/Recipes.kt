@@ -276,7 +276,7 @@ object STUB {
         return burgerRecipes.firstOrNull { it.id == burgerRecipeId }
     }
 
-    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
+    fun getRecipesByCategoryId(categoryId: Int?): List<Recipe> {
         return if (categoryId == 0) {
             burgerRecipes
         } else {

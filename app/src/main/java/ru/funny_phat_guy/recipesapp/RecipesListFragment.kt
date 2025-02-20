@@ -45,8 +45,9 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
 
-        val drawableBurgers = AssetsImageLoader.loadImage("burger.png", context)
+        val drawableBurgers = AssetsImageLoader.loadImage(categoryImageUrl.toString(), context)
         binding.recipeImageView.setImageDrawable(drawableBurgers)
+        binding.recipeTextView.text = categoryName
 
     }
 
@@ -70,7 +71,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        val recipes = STUB.getRecipesByCategoryId(0)
+        val recipes = STUB.getRecipesByCategoryId(categoryId)
         val recipesAdapter = RecipeListAdapter(recipes)
         binding.rvRecipes.adapter = recipesAdapter
 
