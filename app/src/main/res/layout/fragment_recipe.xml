@@ -24,17 +24,24 @@
                 android:contentDescription="@string/burger_pic_description"
                 android:scaleType="centerCrop"/>
 
-            <TextView
-                android:id="@+id/recipeTextView"
-                style="@style/StyleTitle20"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:background="@drawable/shape_rounded_header"
-                android:gravity="start"
                 android:layout_gravity="bottom|start"
-                tools:text="Бургер с грибами и сыром"/>
+                android:orientation="vertical"
+                android:paddingStart="@dimen/margin_normal"
+                android:paddingBottom="@dimen/margin_normal">
+
+                <TextView
+                    android:id="@+id/recipeTextView"
+                    style="@style/StyleTitle20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_rounded_header"
+
+                    tools:text="Бургер с грибами и сыром" />
+
+            </LinearLayout>
 
         </FrameLayout>
 
