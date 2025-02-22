@@ -58,6 +58,7 @@ class RecipeFragment : Fragment() {
         binding.tvRecipe.text = recipe?.title
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
+        binding.tvPortion.text = "Порции: 1"
     }
 
     private fun initRecycler(recipe: Recipe?) {
@@ -77,7 +78,8 @@ class RecipeFragment : Fragment() {
         binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.tvNumberOfPortion.text = progress.toString()
+                val portionsText = getString(R.string.portion_template, progress)
+                binding.tvPortion.text = portionsText
                 ingredientsAdapter.updateIngredients(progress)
             }
 
@@ -89,8 +91,6 @@ class RecipeFragment : Fragment() {
 
             }
         })
-
-
 
     }
 

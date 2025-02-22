@@ -24,7 +24,7 @@
                 android:scaleType="centerCrop" />
 
             <LinearLayout
-                android:layout_width="280dp"
+                android:layout_width="@dimen/recipe_header"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:orientation="vertical"
@@ -65,25 +65,13 @@
         style="@style/StyleTitleGrey16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/six_dp"
+        android:layout_marginEnd="@dimen/zero_dp"
+        android:layout_marginBottom="@dimen/six_dp"
         android:gravity="start|center"
         android:textStyle="bold"
-        android:text="Порции: "/>
-
-    <TextView
-        android:id="@+id/tv_numberOfPortion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/StyleTitleGrey16"
-        android:text = "1"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="6dp"
-        android:textStyle="bold"/>
+        android:text="@string/portion_template"/>
 
 </LinearLayout>
 
@@ -93,10 +81,10 @@
             android:id="@+id/seekbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/six_dp"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/six_dp"
             android:min="1"
             android:max="5"
             android:progress="1"/>
