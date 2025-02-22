@@ -5,9 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
+import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
+import ru.funny_phat_guy.recipesapp.models.MethodAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
 
 class RecipeFragment : Fragment() {
@@ -32,7 +38,13 @@ class RecipeFragment : Fragment() {
             @Suppress("DEPRECATION")
             arguments?.getParcelable(ARG_RECIPE)
         }
-        binding.recipeTxt.text = recipe?.title
+
+        initUI(recipe)
+
+        initRecycler(recipe)
+
+        initDivider()
+
     }
 
     override fun onDestroyView() {
@@ -40,4 +52,41 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
+    private fun initUI(recipe: Recipe?) {
+        binding.recipeTextView.text = recipe?.title
+        val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
+        binding.recipeImageView.setImageDrawable(drawableTitle)
+    }
+
+    private fun initRecycler(recipe: Recipe?) {
+        val ingredients = recipe?.ingredients ?: run {
+            Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val method = recipe.method
+
+        val ingredientsAdapter = IngredientsAdapter(ingredients)
+        binding.rvIngredients.adapter = ingredientsAdapter
+
+        val methodAdapter = MethodAdapter(method)
+        binding.rvMethod.adapter = methodAdapter
+
+    }
+
+    private fun initDivider() {
+        val ingredientsRecyclerView = binding.rvIngredients
+        val methodRecyclerView = binding.rvMethod
+
+        val dividerItemDecoration = context?.let {
+            MaterialDividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
+                isLastItemDecorated = false
+            }
+        }
+
+        if (dividerItemDecoration != null) {
+            ingredientsRecyclerView.addItemDecoration(dividerItemDecoration)
+            methodRecyclerView.addItemDecoration(dividerItemDecoration)
+        }
+    }
 }

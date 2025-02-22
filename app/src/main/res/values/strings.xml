@@ -5,4 +5,6 @@
     <string name="categories_image_description">изображение стола с фаст-фудом и напитками</string>
     <string name="burger_pic_description">изображение бургера</string>
     <string name="recipe_burgers_category">бургеры</string>
+    <string name="ingredients">Ингридиенты</string>
+    <string name="method">Способ приготовления</string>
 </resources>
