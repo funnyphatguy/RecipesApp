@@ -1,21 +1,35 @@
 package ru.funny_phat_guy.recipesapp.models
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemIngredientBinding
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
+    private var quantity: Int = 1
+
+
     class ViewHolder(private val binding: ItemIngredientBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: Ingredient) {
+        fun bind(data: Ingredient, quantity: Int) {
             with(binding) {
                 tvMeasure.text = data.unitOfMeasure
                 tvQuantity.text = data.quantity
                 tvDescription.text = data.description
+
+                val newQuantity = (BigDecimal(data.quantity) * BigDecimal(quantity))
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .stripTrailingZeros()
+
+                tvQuantity.text =
+                    newQuantity.toInt().takeIf { newQuantity.scale() <= 0 }?.toString()
+                        ?: newQuantity.toPlainString()
             }
         }
 
@@ -31,6 +45,14 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data: Ingredient = dataSet[position]
-        holder.bind(data)
+        holder.bind(data, quantity)
+
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateIngredients(progress: Int) {
+        quantity = progress
+        notifyDataSetChanged()
     }
 }

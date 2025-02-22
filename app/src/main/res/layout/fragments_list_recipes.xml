@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/recipeImageView"
+            android:id="@+id/iv_recipe"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/main_pic_height"
             android:scaleType="centerCrop"
@@ -25,7 +25,7 @@
             />
 
         <TextView
-            android:id="@+id/recipeTextView"
+            android:id="@+id/tv_recipe"
             style="@style/StyleTitle20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:background="@drawable/shape_rounded_header"
             android:gravity="bottom|start"
             tools:text="@string/recipe_burgers_category"
-            app:layout_constraintBottom_toBottomOf="@+id/recipeImageView"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_recipe"
             app:layout_constraintStart_toStartOf="parent"
        />
 
@@ -48,7 +48,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
+            app:layout_constraintTop_toBottomOf="@+id/iv_recipe"
             tools:listitem="@layout/item_recipe"/>
 
 
