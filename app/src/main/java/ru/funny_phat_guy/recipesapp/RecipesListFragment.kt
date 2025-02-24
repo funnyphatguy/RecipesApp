@@ -46,8 +46,8 @@ class RecipesListFragment : Fragment() {
         initRecycler()
 
         val drawableBurgers = AssetsImageLoader.loadImage(categoryImageUrl.toString(), context)
-        binding.recipeImageView.setImageDrawable(drawableBurgers)
-        binding.recipeTextView.text = categoryName
+        binding.ivRecipe.setImageDrawable(drawableBurgers)
+        binding.tvRecipe.text = categoryName
 
     }
 

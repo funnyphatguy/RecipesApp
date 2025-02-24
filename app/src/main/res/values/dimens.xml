@@ -2,6 +2,7 @@
 <resources>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="margin_quarter">4dp</dimen>
+    <dimen name="six_dp">6dp</dimen>
     <dimen name="margin_half">8dp</dimen>
     <dimen name="shape_rounded_header_padding">10dp</dimen>
     <dimen name="padding_rv">12dp</dimen>
@@ -12,6 +13,7 @@
     <dimen name="card_image_pic_height">130dp</dimen>
     <dimen name="main_pic_height">224dp</dimen>
     <dimen name="header_width">240dp</dimen>
+    <dimen name="recipe_header">280dp</dimen>
 
     <dimen name="card_description_text_size">12sp</dimen>
     <dimen name="common_fourteen_text_height">14sp</dimen>
@@ -22,8 +24,6 @@
     <dimen name="one">1</dimen>
     <dimen name="two">2</dimen>
     <dimen name="three">3</dimen>
-
-
 
 
 </resources>

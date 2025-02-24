@@ -7,4 +7,6 @@
     <string name="recipe_burgers_category">бургеры</string>
     <string name="ingredients">Ингридиенты</string>
     <string name="method">Способ приготовления</string>
+    <string name="_1">1</string>
+    <string name="portion_template">Порции: %d</string>
 </resources>
