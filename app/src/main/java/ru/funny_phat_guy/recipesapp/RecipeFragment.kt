@@ -58,7 +58,7 @@ class RecipeFragment : Fragment() {
         binding.tvRecipe.text = recipe?.title
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
-        binding.tvPortion.text = "Порции: 1"
+        binding.tvPortion.text = getString(R.string.portion_start)
     }
 
     private fun initRecycler(recipe: Recipe?) {

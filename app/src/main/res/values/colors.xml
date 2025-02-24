@@ -9,5 +9,8 @@
     <color name="txt_header">#5F3678</color>
     <color name="recipe_ingredients">#422952</color>
     <color name="portion_color">#626466</color>
+    <color name="seekbar_progress">#A1A9F9</color>
+    <color name="seekbar_thumb">#525DC0</color>
+
 
 </resources>
