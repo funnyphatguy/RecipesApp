@@ -55,25 +55,25 @@
             android:text="@string/ingredients"
             android:textColor="@color/recipe_ingredients" />
 
-    <TextView
-        android:id="@+id/tv_portion"
-        style="@style/StyleTitleGrey16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/six_dp"
-        android:layout_marginEnd="@dimen/zero_dp"
-        android:layout_marginBottom="@dimen/six_dp"
-        android:gravity="start|center"
-        android:textStyle="bold"
-        android:text="@string/portion_template"/>
+        <TextView
+            android:id="@+id/tv_portion"
+            style="@style/StyleTitleGrey16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/six_dp"
+            android:layout_marginEnd="@dimen/zero_dp"
+            android:layout_marginBottom="@dimen/six_dp"
+            android:gravity="start|center"
+            android:text="@string/portion_template"
+            android:textStyle="bold" />
 
         <SeekBar
             android:id="@+id/seekbar"
             style="@style/styleSeekBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/six_dp"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/six_dp"
