@@ -47,6 +47,8 @@ class RecipeFragment : Fragment() {
 
         initDivider()
 
+        binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
+
     }
 
     override fun onDestroyView() {
@@ -59,6 +61,8 @@ class RecipeFragment : Fragment() {
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
         binding.tvPortion.text = getString(R.string.portion_start)
+        binding.ivFavourites.setOnClickListener { binding.ivFavourites.setImageResource(R.drawable.ic_heart) }
+
     }
 
     private fun initRecycler(recipe: Recipe?) {
@@ -75,7 +79,7 @@ class RecipeFragment : Fragment() {
         val methodAdapter = MethodAdapter(method)
         binding.rvMethod.adapter = methodAdapter
 
-        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val portionsText = getString(R.string.portion_template, progress)
