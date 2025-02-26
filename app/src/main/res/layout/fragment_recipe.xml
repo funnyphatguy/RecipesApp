@@ -23,6 +23,22 @@
                 android:contentDescription="@string/burger_pic_description"
                 android:scaleType="centerCrop" />
 
+            <ImageButton
+                android:id="@+id/iv_favourites"
+                android:layout_width="@dimen/normal_field"
+                android:layout_height="@dimen/normal_field"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:scaleType="centerCrop"
+                android:padding="@dimen/margin_quarter"
+                tools:src="@drawable/ic_heart"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:contentDescription="@string/favourites_description"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
             <LinearLayout
                 android:layout_width="@dimen/recipe_header"
                 android:layout_height="wrap_content"
