@@ -77,10 +77,14 @@ class RecipeFragment : Fragment() {
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
         binding.tvPortion.text = getString(R.string.portion_start)
-        binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
         val currentRecipeId = recipe?.id?.toString() ?: return
 
         val ides = getFavourites()
+
+        binding.ivFavourites.setImageResource(
+            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
+            else R.drawable.ic_heart_empty
+        )
 
         binding.ivFavourites.setOnClickListener {
             if (ides.contains(currentRecipeId)) {
