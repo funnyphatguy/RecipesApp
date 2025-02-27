@@ -1,6 +1,8 @@
 package ru.funny_phat_guy.recipesapp
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +15,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
 import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
 import ru.funny_phat_guy.recipesapp.models.MethodAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
@@ -21,6 +25,7 @@ import ru.funny_phat_guy.recipesapp.models.Recipe
 class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipeBinding must not be null" }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +52,6 @@ class RecipeFragment : Fragment() {
 
         initDivider()
 
-        binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
-
     }
 
     override fun onDestroyView() {
@@ -56,13 +59,43 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
+    private val sharedPref by lazy {
+        requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    private fun saveFavorites(ides: Set<String>) {
+        sharedPref.edit().putStringSet(FAVOURITES, ides).apply()
+    }
+
+    private fun getFavourites(): HashSet<String> {
+        val favoriteSet = sharedPref.getStringSet(FAVOURITES, emptySet()).orEmpty()
+        return HashSet(favoriteSet)
+    }
+
     private fun initUI(recipe: Recipe?) {
         binding.tvRecipe.text = recipe?.title
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
         binding.tvPortion.text = getString(R.string.portion_start)
-        binding.ivFavourites.setOnClickListener { binding.ivFavourites.setImageResource(R.drawable.ic_heart) }
+        val currentRecipeId = recipe?.id?.toString() ?: return
 
+        val ides = getFavourites()
+
+        binding.ivFavourites.setImageResource(
+            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
+            else R.drawable.ic_heart_empty
+        )
+
+        binding.ivFavourites.setOnClickListener {
+            if (ides.contains(currentRecipeId)) {
+                ides.remove(currentRecipeId)
+                binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
+            } else {
+                ides.add(currentRecipeId)
+                binding.ivFavourites.setImageResource(R.drawable.ic_heart)
+            }
+            saveFavorites(ides)
+        }
     }
 
     private fun initRecycler(recipe: Recipe?) {
