@@ -1,6 +1,8 @@
 package ru.funny_phat_guy.recipesapp
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +15,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
 import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
 import ru.funny_phat_guy.recipesapp.models.MethodAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
@@ -47,8 +51,6 @@ class RecipeFragment : Fragment() {
 
         initDivider()
 
-        binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
-
     }
 
     override fun onDestroyView() {
@@ -56,13 +58,29 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
+
+
+    private fun saveFavorites(ides: Set<String>) {
+        val sharedPref: SharedPreferences =
+            requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putStringSet(FAVOURITES, ides).apply()
+
+    }
+
+    private fun getFavourites(): HashSet<String> {
+        val sharedPref = requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
+        val favoriteSet = sharedPref.getStringSet(FAVOURITES, emptySet()).orEmpty()
+        return HashSet(favoriteSet)
+    }
+
     private fun initUI(recipe: Recipe?) {
         binding.tvRecipe.text = recipe?.title
         val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
         binding.ivRecipe.setImageDrawable(drawableTitle)
         binding.tvPortion.text = getString(R.string.portion_start)
+        binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
         binding.ivFavourites.setOnClickListener { binding.ivFavourites.setImageResource(R.drawable.ic_heart) }
-
     }
 
     private fun initRecycler(recipe: Recipe?) {
