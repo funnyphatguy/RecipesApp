@@ -82,11 +82,6 @@ class RecipeFragment : Fragment() {
 
         val ides = getFavourites()
 
-        binding.ivFavourites.setImageResource(
-            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
-            else R.drawable.ic_heart_empty
-        )
-
         binding.ivFavourites.setOnClickListener {
             if (ides.contains(currentRecipeId)) {
                 ides.remove(currentRecipeId)
