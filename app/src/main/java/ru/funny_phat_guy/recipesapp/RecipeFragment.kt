@@ -26,6 +26,7 @@ class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipeBinding must not be null" }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,18 +59,15 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-
+    private val sharedPref by lazy {
+        requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
+    }
 
     private fun saveFavorites(ides: Set<String>) {
-        val sharedPref: SharedPreferences =
-            requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putStringSet(FAVOURITES, ides).apply()
-
+        sharedPref.edit().putStringSet(FAVOURITES, ides).apply()
     }
 
     private fun getFavourites(): HashSet<String> {
-        val sharedPref = requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
         val favoriteSet = sharedPref.getStringSet(FAVOURITES, emptySet()).orEmpty()
         return HashSet(favoriteSet)
     }
@@ -80,7 +78,25 @@ class RecipeFragment : Fragment() {
         binding.ivRecipe.setImageDrawable(drawableTitle)
         binding.tvPortion.text = getString(R.string.portion_start)
         binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
-        binding.ivFavourites.setOnClickListener { binding.ivFavourites.setImageResource(R.drawable.ic_heart) }
+        val currentRecipeId = recipe?.id?.toString() ?: return
+
+        val ides = getFavourites()
+
+        binding.ivFavourites.setImageResource(
+            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
+            else R.drawable.ic_heart_empty
+        )
+
+        binding.ivFavourites.setOnClickListener {
+            if (ides.contains(currentRecipeId)) {
+                ides.remove(currentRecipeId)
+                binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
+            } else {
+                ides.add(currentRecipeId)
+                binding.ivFavourites.setImageResource(R.drawable.ic_heart)
+            }
+            saveFavorites(ides)
+        }
     }
 
     private fun initRecycler(recipe: Recipe?) {
