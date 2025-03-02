@@ -56,7 +56,7 @@ class RecipesListFragment : Fragment() {
         _binding = null
     }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
+     fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
 
         val bundle = bundleOf(ARG_RECIPE to recipe)
@@ -65,9 +65,7 @@ class RecipesListFragment : Fragment() {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
             addToBackStack(null)
-
         }
-
     }
 
     private fun initRecycler() {
