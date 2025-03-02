@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            btFavourites.setOnClickListener {
+            btScreenFavourites.setOnClickListener {
                 setFavourites()
             }
 

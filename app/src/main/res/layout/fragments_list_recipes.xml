@@ -8,7 +8,6 @@
     android:id="@+id/fragment_recipe_view"
     android:orientation="vertical">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,8 +20,7 @@
             android:contentDescription="@string/burger_pic_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tv_recipe"
@@ -35,8 +33,7 @@
             android:gravity="bottom|start"
             tools:text="@string/recipe_burgers_category"
             app:layout_constraintBottom_toBottomOf="@+id/iv_recipe"
-            app:layout_constraintStart_toStartOf="parent"
-       />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRecipes"
@@ -53,8 +50,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </LinearLayout>
