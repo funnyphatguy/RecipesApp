@@ -24,7 +24,7 @@
                 android:scaleType="centerCrop" />
 
             <ImageButton
-                android:id="@+id/iv_favourites"
+                android:id="@+id/iv_preferences"
                 android:layout_width="@dimen/normal_field"
                 android:layout_height="@dimen/normal_field"
                 android:layout_gravity="end"

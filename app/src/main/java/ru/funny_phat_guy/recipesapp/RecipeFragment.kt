@@ -81,18 +81,18 @@ class RecipeFragment : Fragment() {
 
         val ides = getFavourites()
 
-        binding.ivFavourites.setImageResource(
+        binding.ivPreferences.setImageResource(
             if (ides.contains(currentRecipeId)) R.drawable.ic_heart
             else R.drawable.ic_heart_empty
         )
 
-        binding.ivFavourites.setOnClickListener {
+        binding.ivPreferences.setOnClickListener {
             if (ides.contains(currentRecipeId)) {
                 ides.remove(currentRecipeId)
-                binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
             } else {
                 ides.add(currentRecipeId)
-                binding.ivFavourites.setImageResource(R.drawable.ic_heart)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart)
             }
             saveFavorites(ides)
         }

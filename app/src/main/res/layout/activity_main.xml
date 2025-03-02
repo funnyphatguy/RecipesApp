@@ -41,7 +41,7 @@
             android:text="@string/category" />
 
         <Button
-            android:id="@+id/bt_favourites"
+            android:id="@+id/bt_screen_favourites"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
