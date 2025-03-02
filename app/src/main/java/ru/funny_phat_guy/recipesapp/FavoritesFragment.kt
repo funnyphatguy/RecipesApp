@@ -39,8 +39,10 @@ class FavoritesFragment : Fragment() {
         val favouritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
         binding.ivFavourites.setImageDrawable(favouritesPicture)
         binding.tvFavourites.text = getString(R.string.recipe_favourites_category)
-        getFavourites()
-        initRecycler()
+        if (getFavourites().isEmpty())
+            binding.tvNothing.text = getString(R.string.empty_favourites)
+        else
+            initRecycler()
     }
 
     override fun onDestroyView() {

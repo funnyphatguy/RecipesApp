@@ -12,5 +12,6 @@
     <string name="_1">1</string>
     <string name="portion_template">Порции: %d</string>
     <string name="portion_start">Порции: 1</string>
+    <string name="empty_favourites">Вы еще не добавили ни одного рецепта в избранное</string>
     <string name="favourites_description"> изображение сердца(избранное)</string>
 </resources>

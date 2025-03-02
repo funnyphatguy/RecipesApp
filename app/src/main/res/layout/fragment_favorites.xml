@@ -12,15 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/tvNothing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/StyleTitleGrey16"
+            tools:text="Вы еще не добавили ни одного рецепта в избранное"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_favourites" />
+
         <ImageView
             android:id="@+id/iv_favourites"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/main_pic_height"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/favourites_pic_description"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_favourites"
@@ -31,9 +45,9 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:background="@drawable/shape_rounded_header"
             android:gravity="bottom|start"
-            tools:text="@string/recipe_favourites_category"
             app:layout_constraintBottom_toBottomOf="@+id/iv_favourites"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/recipe_favourites_category" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_favourites"
@@ -46,7 +60,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_favourites"
-            tools:listitem="@layout/item_recipe"/>
+            tools:listitem="@layout/item_recipe"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
