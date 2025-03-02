@@ -1,17 +1,27 @@
 package ru.funny_phat_guy.recipesapp
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
+import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
+import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
 
 class FavoritesFragment : Fragment() {
 
     private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
+    private val binding
+        get() = _binding
+            ?: throw IllegalStateException("Binding for FragmentFavoritesBinding must not be null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,13 +36,51 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val favouritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png",context)
+        val favouritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
         binding.ivFavourites.setImageDrawable(favouritesPicture)
         binding.tvFavourites.text = getString(R.string.recipe_favourites_category)
+        getFavourites()
+        initRecycler()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe = STUB.getRecipeById(recipeId)
+
+        val bundle = bundleOf(ARG_RECIPE to recipe)
+
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
+            addToBackStack(null)
+        }
+    }
+
+    private fun getFavourites(): Set<Int> {
+        val sharedPreferences by lazy {
+            requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
+        }
+        val favoriteSet = sharedPreferences.getStringSet(FAVOURITES, emptySet()).orEmpty()
+
+        val favoriteSetInt = favoriteSet.mapNotNull { it.toIntOrNull() }.toSet()
+        return favoriteSetInt
+    }
+
+    private fun initRecycler() {
+        val recipes = STUB.getRecipesByIds(getFavourites())
+        val recipesAdapter = RecipeListAdapter(recipes)
+        binding.rvFavourites.adapter = recipesAdapter
+
+        recipesAdapter.setOnItemClickListener(object :
+            RecipeListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
+    }
+
 }

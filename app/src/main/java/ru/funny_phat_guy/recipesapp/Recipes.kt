@@ -267,6 +267,11 @@ object STUB {
         )
     )
 
+    fun getRecipesByIds(set: Set<Int>): List<Recipe> {
+
+        return burgerRecipes.filter { it.id in set }
+    }
+
     fun getCategories(): List<Category> {
         return categories
     }
