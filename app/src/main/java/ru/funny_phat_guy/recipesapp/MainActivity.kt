@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            btFavourites.setOnClickListener {
-                setFavourites()
+            btScreenFavorites.setOnClickListener {
+                setFavorites()
             }
 
             btCategory.setOnClickListener {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFavourites() {
+    private fun setFavorites() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace<FavoritesFragment>(R.id.mainContainer)

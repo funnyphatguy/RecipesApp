@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">RecipesApp</string>
     <string name="category">категории</string>
-    <string name="favourites">избранное</string>
+    <string name="favorites">избранное</string>
     <string name="categories_image_description">изображение стола с фаст-фудом и напитками</string>
     <string name="burger_pic_description">изображение бургера</string>
+    <string name="favorites_pic_description">изображение фруктов</string>
     <string name="recipe_burgers_category">бургеры</string>
+    <string name="recipe_favorites_category">избранное</string>
     <string name="ingredients">Ингридиенты</string>
     <string name="method">Способ приготовления</string>
+    <string name="item_category_description">карточка с изображением категории</string>
+    <string name="item_recipe_description">карточка с изображением бургера</string>
     <string name="_1">1</string>
     <string name="portion_template">Порции: %d</string>
     <string name="portion_start">Порции: 1</string>
-    <string name="favourites_description"> изображение сердца(избранное)</string>
+    <string name="empty_favorites">Вы еще не добавили ни одного рецепта в избранное</string>
+    <string name="favorites_description"> изображение сердца(избранное)</string>
 </resources>

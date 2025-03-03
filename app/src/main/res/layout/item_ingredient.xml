@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/tv_description"
         style="@style/StyleTitleGrey14ALLCAPS"
-        android:layout_width="@dimen/zero_dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="@dimen/one"

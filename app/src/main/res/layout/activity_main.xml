@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
         android:layout_marginBottom="@dimen/margin_half"
-        app:layout_constraintBottom_toTopOf="@+id/categoriesLayout"
+        app:layout_constraintBottom_toTopOf="@+id/categories_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/categoriesLayout"
+        android:id="@+id/categories_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
@@ -41,13 +41,13 @@
             android:text="@string/category" />
 
         <Button
-            android:id="@+id/bt_favourites"
+            android:id="@+id/bt_screen_favorites"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="@dimen/one"
-            android:backgroundTint="@color/nav_bt_favourites"
-            android:text="@string/favourites"
+            android:backgroundTint="@color/nav_bt_favorites"
+            android:text="@string/favorites"
             app:icon="@drawable/ic_heart_empty"
             app:iconGravity="end" />
 

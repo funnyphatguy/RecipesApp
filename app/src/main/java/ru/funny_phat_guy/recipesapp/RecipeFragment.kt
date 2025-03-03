@@ -2,7 +2,6 @@ package ru.funny_phat_guy.recipesapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +16,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
-import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
 import ru.funny_phat_guy.recipesapp.models.MethodAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
@@ -31,7 +30,7 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,11 +63,11 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavorites(ides: Set<String>) {
-        sharedPref.edit().putStringSet(FAVOURITES, ides).apply()
+        sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
 
-    private fun getFavourites(): HashSet<String> {
-        val favoriteSet = sharedPref.getStringSet(FAVOURITES, emptySet()).orEmpty()
+    private fun getFavorites(): HashSet<String> {
+        val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
         return HashSet(favoriteSet)
     }
 
@@ -79,20 +78,20 @@ class RecipeFragment : Fragment() {
         binding.tvPortion.text = getString(R.string.portion_start)
         val currentRecipeId = recipe?.id?.toString() ?: return
 
-        val ides = getFavourites()
+        val ides = getFavorites()
 
-        binding.ivFavourites.setImageResource(
+        binding.ivPreferences.setImageResource(
             if (ides.contains(currentRecipeId)) R.drawable.ic_heart
             else R.drawable.ic_heart_empty
         )
 
-        binding.ivFavourites.setOnClickListener {
+        binding.ivPreferences.setOnClickListener {
             if (ides.contains(currentRecipeId)) {
                 ides.remove(currentRecipeId)
-                binding.ivFavourites.setImageResource(R.drawable.ic_heart_empty)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
             } else {
                 ides.add(currentRecipeId)
-                binding.ivFavourites.setImageResource(R.drawable.ic_heart)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart)
             }
             saveFavorites(ides)
         }
