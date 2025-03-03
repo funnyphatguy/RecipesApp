@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/txtMethod"
+        android:id="@+id/txt_method"
         style="@style/StyleTitleGrey14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
