@@ -36,7 +36,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:contentDescription="@string/favourites_description"
+                android:contentDescription="@string/favorites_description"
                 android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <LinearLayout

@@ -8,5 +8,5 @@ object Constants {
     const val ARG_RECIPE = "recipe"
 
     const val ARG_PREFERENCES = "Preferences"
-    const val FAVOURITES = "Favourites"
+    const val FAVORITES = "Favorites"
 }

@@ -13,7 +13,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
-import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
 
 class FavoritesFragment : Fragment() {
@@ -36,12 +36,12 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val favouritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
-        binding.ivFavourites.setImageDrawable(favouritesPicture)
-        binding.tvFavourites.text = getString(R.string.recipe_favourites_category)
-        if (getFavourites().isEmpty()) {
-            binding.tvNothing.text = getString(R.string.empty_favourites)
-            binding.rvFavourites.visibility = View.GONE
+        val favoritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
+        binding.ivFavorites.setImageDrawable(favoritesPicture)
+        binding.tvFavorites.text = getString(R.string.recipe_favorites_category)
+        if (getFavorites().isEmpty()) {
+            binding.tvNothing.text = getString(R.string.empty_favorites)
+            binding.rvFavorites.visibility = View.GONE
         }
         else
             initRecycler()
@@ -64,20 +64,20 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun getFavourites(): Set<Int> {
+    private fun getFavorites(): Set<Int> {
         val sharedPreferences by lazy {
             requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
         }
-        val favoriteSet = sharedPreferences.getStringSet(FAVOURITES, emptySet()).orEmpty()
+        val favoriteSet = sharedPreferences.getStringSet(FAVORITES, emptySet()).orEmpty()
 
         val favoriteSetInt = favoriteSet.mapNotNull { it.toIntOrNull() }.toSet()
         return favoriteSetInt
     }
 
     private fun initRecycler() {
-        val recipes = STUB.getRecipesByIds(getFavourites())
+        val recipes = STUB.getRecipesByIds(getFavorites())
         val recipesAdapter = RecipeListAdapter(recipes)
-        binding.rvFavourites.adapter = recipesAdapter
+        binding.rvFavorites.adapter = recipesAdapter
 
         recipesAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {

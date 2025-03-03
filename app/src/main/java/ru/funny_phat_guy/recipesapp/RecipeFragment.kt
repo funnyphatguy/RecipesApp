@@ -17,7 +17,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
-import ru.funny_phat_guy.recipesapp.models.Constants.FAVOURITES
+import ru.funny_phat_guy.recipesapp.models.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
 import ru.funny_phat_guy.recipesapp.models.MethodAdapter
 import ru.funny_phat_guy.recipesapp.models.Recipe
@@ -64,11 +64,11 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavorites(ides: Set<String>) {
-        sharedPref.edit().putStringSet(FAVOURITES, ides).apply()
+        sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
 
-    private fun getFavourites(): HashSet<String> {
-        val favoriteSet = sharedPref.getStringSet(FAVOURITES, emptySet()).orEmpty()
+    private fun getFavorites(): HashSet<String> {
+        val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
         return HashSet(favoriteSet)
     }
 
@@ -79,7 +79,7 @@ class RecipeFragment : Fragment() {
         binding.tvPortion.text = getString(R.string.portion_start)
         val currentRecipeId = recipe?.id?.toString() ?: return
 
-        val ides = getFavourites()
+        val ides = getFavorites()
 
         binding.ivPreferences.setImageResource(
             if (ides.contains(currentRecipeId)) R.drawable.ic_heart

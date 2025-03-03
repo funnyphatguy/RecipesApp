@@ -41,13 +41,13 @@
             android:text="@string/category" />
 
         <Button
-            android:id="@+id/bt_screen_favourites"
+            android:id="@+id/bt_screen_favorites"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="@dimen/one"
-            android:backgroundTint="@color/nav_bt_favourites"
-            android:text="@string/favourites"
+            android:backgroundTint="@color/nav_bt_favorites"
+            android:text="@string/favorites"
             app:icon="@drawable/ic_heart_empty"
             app:iconGravity="end" />
 
