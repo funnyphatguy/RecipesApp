@@ -39,8 +39,10 @@ class FavoritesFragment : Fragment() {
         val favouritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
         binding.ivFavourites.setImageDrawable(favouritesPicture)
         binding.tvFavourites.text = getString(R.string.recipe_favourites_category)
-        if (getFavourites().isEmpty())
+        if (getFavourites().isEmpty()) {
             binding.tvNothing.text = getString(R.string.empty_favourites)
+            binding.rvFavourites.visibility = View.GONE
+        }
         else
             initRecycler()
     }
@@ -50,7 +52,7 @@ class FavoritesFragment : Fragment() {
         _binding = null
     }
 
-    fun openRecipeByRecipeId(recipeId: Int) {
+    private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
 
         val bundle = bundleOf(ARG_RECIPE to recipe)
