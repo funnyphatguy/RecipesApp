@@ -2,7 +2,6 @@ package ru.funny_phat_guy.recipesapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +30,7 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         return binding.root
     }
