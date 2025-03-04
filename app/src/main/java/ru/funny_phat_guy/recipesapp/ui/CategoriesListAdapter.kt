@@ -1,9 +1,11 @@
-package ru.funny_phat_guy.recipesapp.models
+package ru.funny_phat_guy.recipesapp.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemCategoryBinding
+import ru.funny_phat_guy.recipesapp.model.Category
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {

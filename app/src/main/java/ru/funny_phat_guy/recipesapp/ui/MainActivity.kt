@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp
+package ru.funny_phat_guy.recipesapp.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

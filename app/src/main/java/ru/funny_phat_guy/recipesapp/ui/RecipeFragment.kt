@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp
+package ru.funny_phat_guy.recipesapp.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,14 +12,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
-import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
-import ru.funny_phat_guy.recipesapp.models.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.models.IngredientsAdapter
-import ru.funny_phat_guy.recipesapp.models.MethodAdapter
-import ru.funny_phat_guy.recipesapp.models.Recipe
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
+import ru.funny_phat_guy.recipesapp.model.Recipe
 
 class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null

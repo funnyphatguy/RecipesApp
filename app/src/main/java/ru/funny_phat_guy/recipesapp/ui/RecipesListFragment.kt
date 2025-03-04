@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp
+package ru.funny_phat_guy.recipesapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
-import ru.funny_phat_guy.recipesapp.models.AssetsImageLoader
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_ID
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_IMAGE_URL
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_CATEGORY_NAME
-import ru.funny_phat_guy.recipesapp.models.Constants.ARG_RECIPE
-import ru.funny_phat_guy.recipesapp.models.RecipeListAdapter
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.data.STUB
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
