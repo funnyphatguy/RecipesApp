@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.ui
+package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

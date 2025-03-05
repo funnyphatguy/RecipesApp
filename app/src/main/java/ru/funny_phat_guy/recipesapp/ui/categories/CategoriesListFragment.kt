@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.ui
+package ru.funny_phat_guy.recipesapp.ui.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +16,7 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null

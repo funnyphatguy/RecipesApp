@@ -10,6 +10,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
+import ru.funny_phat_guy.recipesapp.ui.categories.CategoriesListFragment
+import ru.funny_phat_guy.recipesapp.ui.recipes.favourites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
 

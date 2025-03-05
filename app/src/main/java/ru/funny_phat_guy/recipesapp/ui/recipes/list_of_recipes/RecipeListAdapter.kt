@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.ui
+package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.ui
+package ru.funny_phat_guy.recipesapp.ui.recipes.favourites
 
 import android.content.Context
 import android.os.Bundle
@@ -16,6 +16,8 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
+import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
+import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
 
 class FavoritesFragment : Fragment() {
 
