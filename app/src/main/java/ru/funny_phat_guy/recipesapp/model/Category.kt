@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.models
+package ru.funny_phat_guy.recipesapp.model
 
 data class Category(
     val id: Int,

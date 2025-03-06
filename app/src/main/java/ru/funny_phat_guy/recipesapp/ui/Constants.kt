@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.models
+package ru.funny_phat_guy.recipesapp.ui
 
 object Constants {
     const val ARG_CATEGORY_ID = "category_id"

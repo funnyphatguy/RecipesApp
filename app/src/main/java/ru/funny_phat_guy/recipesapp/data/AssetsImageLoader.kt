@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.models
+package ru.funny_phat_guy.recipesapp.data
 
 import android.content.Context
 import android.graphics.drawable.Drawable

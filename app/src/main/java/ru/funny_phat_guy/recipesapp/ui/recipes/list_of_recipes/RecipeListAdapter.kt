@@ -1,9 +1,11 @@
-package ru.funny_phat_guy.recipesapp.models
+package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
+import ru.funny_phat_guy.recipesapp.model.Recipe
 
 
 class RecipeListAdapter(private val dataSet: List<Recipe>) :

@@ -1,8 +1,8 @@
-package ru.funny_phat_guy.recipesapp
+package ru.funny_phat_guy.recipesapp.data
 
-import ru.funny_phat_guy.recipesapp.models.Category
-import ru.funny_phat_guy.recipesapp.models.Ingredient
-import ru.funny_phat_guy.recipesapp.models.Recipe
+import ru.funny_phat_guy.recipesapp.model.Category
+import ru.funny_phat_guy.recipesapp.model.Ingredient
+import ru.funny_phat_guy.recipesapp.model.Recipe
 
 object STUB {
 
