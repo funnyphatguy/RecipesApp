@@ -19,7 +19,6 @@ class RecipeViewModel : ViewModel() {
 
     val recipeLiveData: LiveData<recipeState> get() = _recipeLiveData
 
-
     init {
         Log.i(Constants.LOG_INFO_TAG, "Info from VM")
 

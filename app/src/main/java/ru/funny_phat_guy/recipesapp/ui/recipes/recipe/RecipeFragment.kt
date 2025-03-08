@@ -20,7 +20,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 
 class RecipeFragment : Fragment() {
@@ -51,16 +51,12 @@ class RecipeFragment : Fragment() {
             }
         }
 
-        val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(ARG_RECIPE, Recipe::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelable(ARG_RECIPE)
-        }
+        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
 
-        initUI(recipe)
 
-        initRecycler(recipe)
+//        initUI(recipeId)
+//
+//        initRecycler(recipeId)
 
         initDivider()
 
