@@ -5,25 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.funny_phat_guy.recipesapp.model.Recipe
+import ru.funny_phat_guy.recipesapp.ui.Constants
 
 class RecipeViewModel : ViewModel() {
 
-    data class RecipeState(
+    data class recipeState(
         val recipe: Recipe? = null,
-        val favourites: Boolean = false,
-        val portionsCount: Int? = 1,
-    ) {
-    }
+        val isFavourites: Boolean = false,
+        val portionsCount: Int = 1,
+    )
 
-    private val _recipeLiveData = MutableLiveData<RecipeState>(RecipeState())
+    private val _recipeLiveData = MutableLiveData(recipeState())
 
-    val recipeLiveData: LiveData<RecipeState> get() = _recipeLiveData
+    val recipeLiveData: LiveData<recipeState> get() = _recipeLiveData
 
 
     init {
-        Log.i("!!!", "Info from VM")
+        Log.i(Constants.LOG_INFO_TAG, "Info from VM")
 
-        _recipeLiveData.value = RecipeState(favourites = true)
+        _recipeLiveData.value = recipeState(isFavourites = true)
 
     }
 }
