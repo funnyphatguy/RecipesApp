@@ -9,4 +9,6 @@ object Constants {
 
     const val ARG_PREFERENCES = "Preferences"
     const val FAVORITES = "Favorites"
+
+    const val LOG_INFO_TAG = "!!!"
 }
