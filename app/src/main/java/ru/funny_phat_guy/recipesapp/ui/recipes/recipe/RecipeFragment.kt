@@ -43,7 +43,7 @@ class RecipeFragment : Fragment() {
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
 
-        recipeId?.let { recipeViewModel.loadRecipe(it) }
+      val recipe = recipeId?.let { recipeViewModel.loadRecipe(it) }
 
         recipeViewModel.recipeLiveData.observe(viewLifecycleOwner) { state ->
             state.let {
@@ -51,7 +51,6 @@ class RecipeFragment : Fragment() {
                     Constants.LOG_INFO_TAG,
                     "isFavorite: ${it.isFavourites}"
                 )
-                Log.i("SALAM", "NewRecipe ${it.recipe}")
             }
         }
 
@@ -79,30 +78,45 @@ class RecipeFragment : Fragment() {
 
 
 
-    private fun initUI(recipe: Recipe?) {
-        binding.tvRecipe.text = recipe?.title
-        val drawableTitle = recipe?.imageUrl?.let { AssetsImageLoader.loadImage(it, context) }
-        binding.ivRecipe.setImageDrawable(drawableTitle)
+    private fun initUI(recipeID: Int?) {
+
         binding.tvPortion.text = getString(R.string.portion_start)
-        val currentRecipeId = recipe?.id?.toString() ?: return
 
-        val ides = getFavorites()
+        recipeViewModel.recipeLiveData.observe(viewLifecycleOwner) { state ->
+            state.let {
+                binding.tvRecipe.text = state.recipe?.title
+                val drawableTitle = state.recipe?.imageUrl.let { AssetsImageLoader.loadImage(it.toString(), context) }
+                binding.ivRecipe.setImageDrawable(drawableTitle)
 
-        binding.ivPreferences.setImageResource(
-            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
-            else R.drawable.ic_heart_empty
-        )
+                val currentRecipeId = state.recipe?.id.toString()
 
-        binding.ivPreferences.setOnClickListener {
-            if (ides.contains(currentRecipeId)) {
-                ides.remove(currentRecipeId)
-                binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
-            } else {
-                ides.add(currentRecipeId)
-                binding.ivPreferences.setImageResource(R.drawable.ic_heart)
+                val ides = recipeID?.let { recipeViewModel.loadRecipe(it) }
+
+                binding.ivPreferences.setImageResource(
+                    if (ides.contains(currentRecipeId)) R.drawable.ic_heart
+                    else R.drawable.ic_heart_empty
+                )
+
+                binding.ivPreferences.setOnClickListener {
+                    if (ides.contains(currentRecipeId)) {
+                        ides.remove(currentRecipeId)
+                        binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
+                    } else {
+                        ides.add(currentRecipeId)
+                        binding.ivPreferences.setImageResource(R.drawable.ic_heart)
+                    }
+                    saveFavorites(ides)
+                }
             }
-            saveFavorites(ides)
         }
+
+
+
+
+
+
+
+
     }
 
     private fun initRecycler(recipe: Recipe?) {

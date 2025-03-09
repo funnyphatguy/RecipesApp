@@ -32,11 +32,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     val recipeLiveData: LiveData<recipeState> get() = _recipeLiveData
 
-    init {
-        Log.i(Constants.LOG_INFO_TAG, "Info from VM")
-
-    }
-
     private fun getFavorites(): HashSet<String> {
         val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
         return HashSet(favoriteSet)
@@ -53,6 +48,5 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             isFavourites = isFavorite,
             portionsCount = currentState.portionsCount
         )
-
     }
 }
