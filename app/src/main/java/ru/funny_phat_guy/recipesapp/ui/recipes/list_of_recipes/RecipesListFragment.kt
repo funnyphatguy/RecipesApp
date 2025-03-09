@@ -16,6 +16,7 @@ import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
@@ -61,7 +62,7 @@ class RecipesListFragment : Fragment() {
      fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
 
-        val bundle = bundleOf(ARG_RECIPE to recipe)
+        val bundle = bundleOf(ARG_RECIPE_ID to recipe?.id)
 
         parentFragmentManager.commit {
             setReorderingAllowed(true)
