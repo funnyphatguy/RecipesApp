@@ -76,8 +76,6 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
 
-
-
     private fun initUI(recipeID: Int?) {
 
         binding.tvPortion.text = getString(R.string.portion_start)
@@ -87,36 +85,8 @@ class RecipeFragment : Fragment() {
                 binding.tvRecipe.text = state.recipe?.title
                 val drawableTitle = state.recipe?.imageUrl.let { AssetsImageLoader.loadImage(it.toString(), context) }
                 binding.ivRecipe.setImageDrawable(drawableTitle)
-
-                val currentRecipeId = state.recipe?.id.toString()
-
-                val ides = recipeID?.let { recipeViewModel.loadRecipe(it) }
-
-                binding.ivPreferences.setImageResource(
-                    if (ides.contains(currentRecipeId)) R.drawable.ic_heart
-                    else R.drawable.ic_heart_empty
-                )
-
-                binding.ivPreferences.setOnClickListener {
-                    if (ides.contains(currentRecipeId)) {
-                        ides.remove(currentRecipeId)
-                        binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
-                    } else {
-                        ides.add(currentRecipeId)
-                        binding.ivPreferences.setImageResource(R.drawable.ic_heart)
-                    }
-                    saveFavorites(ides)
-                }
             }
         }
-
-
-
-
-
-
-
-
     }
 
     private fun initRecycler(recipe: Recipe?) {

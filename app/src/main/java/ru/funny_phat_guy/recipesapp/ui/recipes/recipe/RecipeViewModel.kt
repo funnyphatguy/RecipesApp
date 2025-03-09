@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants
@@ -32,9 +33,31 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     val recipeLiveData: LiveData<recipeState> get() = _recipeLiveData
 
-    private fun getFavorites(): HashSet<String> {
+     private fun getFavorites(): HashSet<String> {
         val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
         return HashSet(favoriteSet)
+    }
+
+    fun onFavoritesClicked(){
+        val currentRecipeId = loadRecipe()
+
+        val ides = getFavorites()
+
+        binding.ivPreferences.setImageResource(
+            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
+            else R.drawable.ic_heart_empty
+        )
+
+        binding.ivPreferences.setOnClickListener {
+            if (ides.contains(currentRecipeId)) {
+                ides.remove(currentRecipeId)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
+            } else {
+                ides.add(currentRecipeId)
+                binding.ivPreferences.setImageResource(R.drawable.ic_heart)
+            }
+            saveFavorites(ides)
+        }
     }
 
     fun loadRecipe(recipeId: Int) {
