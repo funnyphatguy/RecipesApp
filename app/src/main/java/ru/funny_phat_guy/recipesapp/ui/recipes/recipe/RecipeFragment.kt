@@ -95,14 +95,6 @@ class RecipeFragment : Fragment() {
                 )
 
                 binding.ivPreferences.setOnClickListener {
-//                    if (ides.contains(currentRecipeId)) {
-//                        ides.remove(currentRecipeId)
-//                        binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
-//                    } else {
-//                        ides.add(currentRecipeId)
-//                        binding.ivPreferences.setImageResource(R.drawable.ic_heart)
-//                    }
-//                    saveFavorites(ides)
                     recipeViewModel.onFavoritesClicked()
                 }
             }
