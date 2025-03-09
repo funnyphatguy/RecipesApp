@@ -42,7 +42,7 @@ class FavoritesFragment : Fragment() {
         val favoritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
         binding.ivFavorites.setImageDrawable(favoritesPicture)
         binding.tvFavorites.text = getString(R.string.recipe_favorites_category)
-        if (getFavorites().isEmpty()) {
+        if (getFavoritesFragment().isEmpty()) {
             binding.tvNothing.text = getString(R.string.empty_favorites)
             binding.rvFavorites.visibility = View.GONE
         }
@@ -67,7 +67,7 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun getFavorites(): Set<Int> {
+    private fun getFavoritesFragment(): Set<Int> {
         val sharedPreferences by lazy {
             requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
         }
@@ -78,7 +78,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        val recipes = STUB.getRecipesByIds(getFavorites())
+        val recipes = STUB.getRecipesByIds(getFavoritesFragment())
         val recipesAdapter = RecipeListAdapter(recipes)
         binding.rvFavorites.adapter = recipesAdapter
 

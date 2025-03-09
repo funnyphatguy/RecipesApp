@@ -2,7 +2,6 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,7 +28,6 @@ class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,16 +40,19 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
+
+        recipeId?.let { recipeViewModel.loadRecipe(it) }
+
         recipeViewModel.recipeLiveData.observe(viewLifecycleOwner) { state ->
             state.let {
                 Log.i(
                     Constants.LOG_INFO_TAG,
                     "isFavorite: ${it.isFavourites}"
                 )
+                Log.i("SALAM", "NewRecipe ${it.recipe}")
             }
         }
-
-        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
 
 
 //        initUI(recipeId)

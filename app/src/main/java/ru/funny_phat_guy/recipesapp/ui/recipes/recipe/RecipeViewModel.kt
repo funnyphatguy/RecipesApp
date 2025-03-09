@@ -1,9 +1,11 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants
 
@@ -23,6 +25,11 @@ class RecipeViewModel : ViewModel() {
         Log.i(Constants.LOG_INFO_TAG, "Info from VM")
 
         _recipeLiveData.value = recipeState(isFavourites = true)
+    }
 
+    fun loadRecipe(recipeId: Int){
+      //  TODO: Load from network
+       val recipe =  STUB.getRecipeById(recipeId)
+        _recipeLiveData.value = recipeState(recipe=recipe)
     }
 }
