@@ -2,6 +2,7 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -68,7 +69,7 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-    private val sharedPref by lazy {
+     val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
     }
 
@@ -76,10 +77,7 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
 
-    private fun getFavorites(): HashSet<String> {
-        val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
-        return HashSet(favoriteSet)
-    }
+
 
     private fun initUI(recipe: Recipe?) {
         binding.tvRecipe.text = recipe?.title
