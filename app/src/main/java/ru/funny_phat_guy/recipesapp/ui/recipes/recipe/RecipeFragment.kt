@@ -41,9 +41,7 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-
-      val recipe = recipeId?.let { recipeViewModel.loadRecipe(it) }
+        arguments?.getInt(ARG_RECIPE_ID)?.let { recipeViewModel.loadRecipe(it) }
 
         recipeViewModel.recipeLiveData.observe(viewLifecycleOwner) { state ->
             state.let {
@@ -55,8 +53,8 @@ class RecipeFragment : Fragment() {
         }
 
 
-//        initUI(recipeId)
-//
+        initUI()
+
 //        initRecycler(recipeId)
 
         initDivider()
@@ -68,7 +66,7 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-     val sharedPref: SharedPreferences by lazy {
+    val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
     }
 
@@ -76,15 +74,37 @@ class RecipeFragment : Fragment() {
         sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
 
-    private fun initUI(recipeID: Int?) {
+    private fun initUI() {
 
         binding.tvPortion.text = getString(R.string.portion_start)
 
         recipeViewModel.recipeLiveData.observe(viewLifecycleOwner) { state ->
             state.let {
                 binding.tvRecipe.text = state.recipe?.title
-                val drawableTitle = state.recipe?.imageUrl.let { AssetsImageLoader.loadImage(it.toString(), context) }
+                val drawableTitle = state.recipe?.imageUrl.let {
+                    AssetsImageLoader.loadImage(
+                        it.toString(),
+                        context
+                    )
+                }
                 binding.ivRecipe.setImageDrawable(drawableTitle)
+
+                binding.ivPreferences.setImageResource(
+                    if (state.isFavourites) R.drawable.ic_heart
+                    else R.drawable.ic_heart_empty
+                )
+
+                binding.ivPreferences.setOnClickListener {
+//                    if (ides.contains(currentRecipeId)) {
+//                        ides.remove(currentRecipeId)
+//                        binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
+//                    } else {
+//                        ides.add(currentRecipeId)
+//                        binding.ivPreferences.setImageResource(R.drawable.ic_heart)
+//                    }
+//                    saveFavorites(ides)
+                    recipeViewModel.onFavoritesClicked()
+                }
             }
         }
     }
@@ -119,7 +139,6 @@ class RecipeFragment : Fragment() {
 
             }
         })
-
     }
 
     private fun initDivider() {

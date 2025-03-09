@@ -38,27 +38,21 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         return HashSet(favoriteSet)
     }
 
-    fun onFavoritesClicked(){
-        val currentRecipeId = loadRecipe()
-
-        val ides = getFavorites()
-
-        binding.ivPreferences.setImageResource(
-            if (ides.contains(currentRecipeId)) R.drawable.ic_heart
-            else R.drawable.ic_heart_empty
-        )
-
-        binding.ivPreferences.setOnClickListener {
-            if (ides.contains(currentRecipeId)) {
-                ides.remove(currentRecipeId)
-                binding.ivPreferences.setImageResource(R.drawable.ic_heart_empty)
-            } else {
-                ides.add(currentRecipeId)
-                binding.ivPreferences.setImageResource(R.drawable.ic_heart)
-            }
-            saveFavorites(ides)
-        }
+    private fun saveFavorites(ides: Set<String>) {
+        sharedPref.edit().putStringSet(FAVORITES, ides).apply()
     }
+
+    fun onFavoritesClicked(){
+        val currentState = _recipeLiveData.value ?: return
+        val recipeId = currentState.recipe?.id?.toString() ?: return
+
+        val newFavorites = getFavorites().toMutableSet().apply {
+            if (currentState.isFavourites) remove(recipeId) else add(recipeId)
+        }
+
+        saveFavorites(newFavorites)
+        _recipeLiveData.value = currentState.copy(isFavourites = !currentState.isFavourites)
+        }
 
     fun loadRecipe(recipeId: Int) {
         //  TODO: Load from network
