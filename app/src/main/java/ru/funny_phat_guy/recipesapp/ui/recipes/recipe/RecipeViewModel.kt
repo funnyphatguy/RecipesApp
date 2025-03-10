@@ -4,13 +4,17 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
+import ru.funny_phat_guy.recipesapp.ui.Constants.LOAD_IMAGE_ERROR_LOG
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -25,6 +29,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipe: Recipe? = null,
         val isFavourites: Boolean = false,
         val portionsCount: Int = 1,
+        val recipeImage: Drawable? = null,
     )
 
     private val _recipeState = MutableLiveData(RecipeState())
@@ -57,11 +62,24 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val currentState = _recipeState.value
         val recipe = STUB.getRecipeById(recipeId)
         val isFavorite = recipe?.id.toString() in getFavorites()
+        val recipeImage = recipe?.imageUrl?.let {
+            try {
+                AssetsImageLoader.loadImage(it, context)
+            } catch (e: Exception) {
+                Log.e(LOAD_IMAGE_ERROR_LOG, "Error in load image ${e.message}", e)
+                null
+            }
+        }
+
+        if (recipeImage == null) {
+            Log.e(LOAD_IMAGE_ERROR_LOG, "LoadImage is null for ${recipe?.id}")
+        }
 
         _recipeState.value = currentState?.copy(
             recipe = recipe,
             isFavourites = isFavorite,
-            portionsCount = currentState.portionsCount
+            portionsCount = currentState.portionsCount,
+            recipeImage = recipeImage,
         )
     }
 }
