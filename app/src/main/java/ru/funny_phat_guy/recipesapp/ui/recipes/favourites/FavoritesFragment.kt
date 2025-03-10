@@ -15,6 +15,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
@@ -58,7 +59,7 @@ class FavoritesFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
 
-        val bundle = bundleOf(ARG_RECIPE to recipe)
+        val bundle = bundleOf(ARG_RECIPE_ID to recipeId)
 
         parentFragmentManager.commit {
             setReorderingAllowed(true)
