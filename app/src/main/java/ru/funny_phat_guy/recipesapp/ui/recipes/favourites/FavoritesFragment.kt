@@ -10,15 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.R
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
+import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
 
@@ -57,7 +56,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
 
         val bundle = bundleOf(ARG_RECIPE_ID to recipeId)
 
