@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.funny_phat_guy.recipesapp.R
+import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
+import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
+import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
 
@@ -42,7 +42,7 @@ class FavoritesFragment : Fragment() {
         val favoritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
         binding.ivFavorites.setImageDrawable(favoritesPicture)
         binding.tvFavorites.text = getString(R.string.recipe_favorites_category)
-        if (getFavorites().isEmpty()) {
+        if (getFavoritesFragment().isEmpty()) {
             binding.tvNothing.text = getString(R.string.empty_favorites)
             binding.rvFavorites.visibility = View.GONE
         }
@@ -56,9 +56,8 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
 
-        val bundle = bundleOf(ARG_RECIPE to recipe)
+        val bundle = bundleOf(ARG_RECIPE_ID to recipeId)
 
         parentFragmentManager.commit {
             setReorderingAllowed(true)
@@ -67,7 +66,7 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun getFavorites(): Set<Int> {
+    private fun getFavoritesFragment(): Set<Int> {
         val sharedPreferences by lazy {
             requireContext().getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
         }
@@ -78,7 +77,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        val recipes = STUB.getRecipesByIds(getFavorites())
+        val recipes = STUB.getRecipesByIds(getFavoritesFragment())
         val recipesAdapter = RecipeListAdapter(recipes)
         binding.rvFavorites.adapter = recipesAdapter
 
@@ -89,5 +88,4 @@ class FavoritesFragment : Fragment() {
             }
         })
     }
-
 }
