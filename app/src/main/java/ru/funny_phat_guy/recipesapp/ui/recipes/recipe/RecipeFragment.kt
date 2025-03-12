@@ -48,15 +48,15 @@ class RecipeFragment : Fragment() {
     private lateinit var methodAdapter: MethodAdapter // инициализируем тут, чтобы не инициализировать в observer
 
     private fun initUI() {
+
+        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
+        recipeId?.also { recipeViewModel.loadRecipe(it) } // загружаем рецепт из стейта VM
+
         ingredientsAdapter = IngredientsAdapter(emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
 
         methodAdapter = MethodAdapter(emptyList())
         binding.rvMethod.adapter = methodAdapter
-
-        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-        recipeId?.also { recipeViewModel.loadRecipe(it) } // загружаем рецепт из стейта VM
-
 
         with(binding) {
             ivPreferences.setOnClickListener {
@@ -78,8 +78,6 @@ class RecipeFragment : Fragment() {
             }
         })
 
-
-
         recipeViewModel.recipeState.observe(viewLifecycleOwner) { state ->
             with(binding) {
 
@@ -92,7 +90,7 @@ class RecipeFragment : Fragment() {
 
                 ingredientsAdapter.updateIngredients(progressFromState) // получаем данные seekbar из стейта VM
 
-                ingredientsAdapter.getIngridientsFromState(ingredients) // получаем список ингридиентов из стейта VM
+                ingredientsAdapter.getIngredientsFromState(ingredients) // получаем список ингридиентов из стейта VM
 
                 methodAdapter.getMethodFormState(method) // получаем рецеп-метод приготовления из стейта VM
 

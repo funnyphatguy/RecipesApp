@@ -56,7 +56,7 @@ class IngredientsAdapter(private var dataSet: List<Ingredient>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun getIngridientsFromState(newDataSet: List<Ingredient>) {
+    fun getIngredientsFromState(newDataSet: List<Ingredient>) {
         dataSet = newDataSet
         notifyDataSetChanged()
     }
