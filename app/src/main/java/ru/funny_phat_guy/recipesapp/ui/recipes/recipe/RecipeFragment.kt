@@ -54,7 +54,7 @@ class RecipeFragment : Fragment() {
         binding.rvIngredients.adapter = ingredientsAdapter
 
         methodAdapter = MethodAdapter(emptyList())
-        binding.rvMethod.adapter = MethodAdapter(emptyList())
+        binding.rvMethod.adapter = methodAdapter
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
         recipeId?.also { recipeViewModel.loadRecipe(it) }
@@ -97,11 +97,10 @@ class RecipeFragment : Fragment() {
 
                 val ingredientsAdapter = IngredientsAdapter(ingredients)
                 binding.rvIngredients.adapter = ingredientsAdapter
+                ingredientsAdapter.updateIngredientsData(ingredients)
 
                 val methodAdapter = MethodAdapter(method)
                 binding.rvMethod.adapter = methodAdapter
-
-
 
                 tvRecipe.text = state.recipe.title
 
