@@ -47,8 +47,6 @@ class RecipeFragment : Fragment() {
     lateinit var ingredientsAdapter: IngredientsAdapter
     lateinit var methodAdapter: MethodAdapter
 
-
-
     private fun initUI() {
         ingredientsAdapter = IngredientsAdapter(emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
@@ -73,7 +71,7 @@ class RecipeFragment : Fragment() {
                 val portionsText = getString(R.string.portion_template, progress)
                 binding.tvPortion.text = portionsText
                 ingredientsAdapter.updateIngredients(progress)
-//                recipeViewModel.portionCounter(progress)
+                recipeViewModel.portionCounter(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -95,10 +93,9 @@ class RecipeFragment : Fragment() {
 
                 val method = state.recipe.method
 
-                ingredientsAdapter.updateIngredientsData(ingredients)
+                ingredientsAdapter.getIngridientsFromState(ingredients)
 
-                val methodAdapter = MethodAdapter(method)
-                binding.rvMethod.adapter = methodAdapter
+                methodAdapter.getMethodFormState(method)
 
                 tvRecipe.text = state.recipe.title
 

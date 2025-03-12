@@ -1,11 +1,12 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemMethodBinding
 
-class MethodAdapter(private val dataSet: List<String>) :
+class MethodAdapter(private var dataSet: List<String>) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemMethodBinding) :
@@ -31,4 +32,10 @@ class MethodAdapter(private val dataSet: List<String>) :
     }
 
     override fun getItemCount() = dataSet.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun getMethodFormState(newDataSet: List<String>) {
+        dataSet = newDataSet
+        notifyDataSetChanged()
+    }
 }
