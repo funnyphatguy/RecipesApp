@@ -44,8 +44,8 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-    lateinit var ingredientsAdapter: IngredientsAdapter
-    lateinit var methodAdapter: MethodAdapter
+    private lateinit var ingredientsAdapter: IngredientsAdapter // инициализируем тут, чтобы не инициализировать в observer
+    private lateinit var methodAdapter: MethodAdapter // инициализируем тут, чтобы не инициализировать в observer
 
     private fun initUI() {
         ingredientsAdapter = IngredientsAdapter(emptyList())
@@ -55,7 +55,7 @@ class RecipeFragment : Fragment() {
         binding.rvMethod.adapter = methodAdapter
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-        recipeId?.also { recipeViewModel.loadRecipe(it) }
+        recipeId?.also { recipeViewModel.loadRecipe(it) } // загружаем рецепт из стейта VM
 
 
         with(binding) {
@@ -70,13 +70,10 @@ class RecipeFragment : Fragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val portionsText = getString(R.string.portion_template, progress)
                 binding.tvPortion.text = portionsText
-
-                recipeViewModel.portionCounter(progress)
+                recipeViewModel.portionCounter(progress) // передаем данные из seekbar в стейт VM
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
@@ -90,15 +87,14 @@ class RecipeFragment : Fragment() {
                     Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
                     return@observe
                 }
-
                 val method = state.recipe.method
-                val progress = state.portionsCount
+                val progressFromState = state.portionsCount
 
-                ingredientsAdapter.updateIngredients(progress)
+                ingredientsAdapter.updateIngredients(progressFromState) // получаем данные seekbar из стейта VM
 
-                ingredientsAdapter.getIngridientsFromState(ingredients)
+                ingredientsAdapter.getIngridientsFromState(ingredients) // получаем список ингридиентов из стейта VM
 
-                methodAdapter.getMethodFormState(method)
+                methodAdapter.getMethodFormState(method) // получаем рецеп-метод приготовления из стейта VM
 
                 tvRecipe.text = state.recipe.title
 
