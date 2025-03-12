@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
@@ -65,13 +64,8 @@ class RecipeFragment : Fragment() {
         recipeViewModel.recipeState.observe(viewLifecycleOwner) { state ->
             with(binding) {
                 tvRecipe.text = state.recipe?.title
-                val drawableTitle = state.recipe?.imageUrl.let {
-                    AssetsImageLoader.loadImage(
-                        it.toString(),
-                        context
-                    )
-                }
-                ivRecipe.setImageDrawable(drawableTitle)
+
+                ivRecipe.setImageDrawable(state.recipeImage)
 
                 ivPreferences.setImageResource(
                     if (state.isFavourites) R.drawable.ic_heart
