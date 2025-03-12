@@ -47,8 +47,9 @@ class RecipeFragment : Fragment() {
     lateinit var ingredientsAdapter: IngredientsAdapter
     lateinit var methodAdapter: MethodAdapter
 
-    private fun initUI() {
 
+
+    private fun initUI() {
         ingredientsAdapter = IngredientsAdapter(emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
 
@@ -72,6 +73,7 @@ class RecipeFragment : Fragment() {
                 val portionsText = getString(R.string.portion_template, progress)
                 binding.tvPortion.text = portionsText
                 ingredientsAdapter.updateIngredients(progress)
+                recipeViewModel.portionCounter(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -100,6 +102,7 @@ class RecipeFragment : Fragment() {
                 binding.rvMethod.adapter = methodAdapter
 
 
+
                 tvRecipe.text = state.recipe.title
 
                 ivRecipe.setImageDrawable(state.recipeImage)
@@ -112,35 +115,6 @@ class RecipeFragment : Fragment() {
             }
         }
     }
-
-//    private fun initRecycler(id: Int) {
-//        val recipe = STUB.getRecipeById(id)
-//        val ingredients = recipe?.ingredients ?: run {
-//            Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        val method = recipe.method
-//
-//        val ingredientsAdapter = IngredientsAdapter(ingredients)
-//        binding.rvIngredients.adapter = ingredientsAdapter
-//
-//        val methodAdapter = MethodAdapter(method)
-//        binding.rvMethod.adapter = methodAdapter
-//
-//        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-//            @SuppressLint("SetTextI18n")
-//            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-//                val portionsText = getString(R.string.portion_template, progress)
-//                binding.tvPortion.text = portionsText
-//                ingredientsAdapter.updateIngredients(progress)
-//            }
-//            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-//            }
-//            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-//            }
-//        })
-//    }
 
     private fun initDivider() {
         val ingredientsRecyclerView = binding.rvIngredients
