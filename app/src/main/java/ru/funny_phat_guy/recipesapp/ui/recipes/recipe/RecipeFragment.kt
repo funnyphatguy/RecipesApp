@@ -70,7 +70,7 @@ class RecipeFragment : Fragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val portionsText = getString(R.string.portion_template, progress)
                 binding.tvPortion.text = portionsText
-                ingredientsAdapter.updateIngredients(progress)
+
                 recipeViewModel.portionCounter(progress)
             }
 
@@ -92,6 +92,9 @@ class RecipeFragment : Fragment() {
                 }
 
                 val method = state.recipe.method
+                val progress = state.portionsCount
+
+                ingredientsAdapter.updateIngredients(progress)
 
                 ingredientsAdapter.getIngridientsFromState(ingredients)
 

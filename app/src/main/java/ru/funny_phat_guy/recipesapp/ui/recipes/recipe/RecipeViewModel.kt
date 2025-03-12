@@ -62,6 +62,7 @@ class RecipeViewModel(application: Application) :
 
     fun portionCounter(portionQuantity: Int) {
         _recipeState.value = _recipeState.value?.copy(portionsCount = portionQuantity)
+//        return _recipeState.value?.portionsCount
     }
 
     fun loadRecipe(recipeId: Int) {
