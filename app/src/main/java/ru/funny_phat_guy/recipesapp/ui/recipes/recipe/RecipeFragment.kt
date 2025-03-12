@@ -44,8 +44,16 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
+    lateinit var ingredientsAdapter: IngredientsAdapter
+    lateinit var methodAdapter: MethodAdapter
 
     private fun initUI() {
+
+        ingredientsAdapter = IngredientsAdapter(emptyList())
+        binding.rvIngredients.adapter = ingredientsAdapter
+
+        methodAdapter = MethodAdapter(emptyList())
+        binding.rvMethod.adapter = MethodAdapter(emptyList())
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
         recipeId?.also { recipeViewModel.loadRecipe(it) }
@@ -58,8 +66,20 @@ class RecipeFragment : Fragment() {
             tvPortion.text = getString(R.string.portion_start)
         }
 
+        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val portionsText = getString(R.string.portion_template, progress)
+                binding.tvPortion.text = portionsText
+                ingredientsAdapter.updateIngredients(progress)
+            }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
 
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
 
 
 
@@ -79,18 +99,6 @@ class RecipeFragment : Fragment() {
                 val methodAdapter = MethodAdapter(method)
                 binding.rvMethod.adapter = methodAdapter
 
-                binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    @SuppressLint("SetTextI18n")
-                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                        val portionsText = getString(R.string.portion_template, progress)
-                        binding.tvPortion.text = portionsText
-                        ingredientsAdapter.updateIngredients(progress)
-                    }
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                })
 
                 tvRecipe.text = state.recipe.title
 
