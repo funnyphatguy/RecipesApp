@@ -9,8 +9,15 @@ import ru.funny_phat_guy.recipesapp.model.Ingredient
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class IngredientsAdapter(private var dataSet: List<Ingredient>) :
+class IngredientsAdapter() :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
+    private var dataSet: List<Ingredient> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private var quantity: Int = 1
 
@@ -48,10 +55,6 @@ class IngredientsAdapter(private var dataSet: List<Ingredient>) :
         val data: Ingredient = dataSet[position]
         holder.bind(data, quantity)
 
-
-    }
-
-    fun updatePortions(progress: Int){
 
     }
 

@@ -9,12 +9,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.ui.Constants.LOAD_IMAGE_ERROR_LOG
 
@@ -60,9 +58,8 @@ class RecipeViewModel(application: Application) :
         _recipeState.value = currentState.copy(isFavourites = !currentState.isFavourites)
     }
 
-    fun portionCounter(portionQuantity: Int) {
+    fun updatePortionCounter(portionQuantity: Int) {
         _recipeState.value = _recipeState.value?.copy(portionsCount = portionQuantity)
-//        return _recipeState.value?.portionsCount
     }
 
     fun loadRecipe(recipeId: Int) {

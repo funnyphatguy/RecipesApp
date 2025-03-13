@@ -44,18 +44,16 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-    private lateinit var ingredientsAdapter: IngredientsAdapter // инициализируем тут, чтобы не инициализировать в observer
-    private lateinit var methodAdapter: MethodAdapter // инициализируем тут, чтобы не инициализировать в observer
+    private var ingredientsAdapter: IngredientsAdapter = IngredientsAdapter() // инициализируем тут, чтобы не инициализировать в observer
+    private var methodAdapter: MethodAdapter = MethodAdapter() // инициализируем тут, чтобы не инициализировать в observer
 
     private fun initUI() {
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
         recipeId?.also { recipeViewModel.loadRecipe(it) } // загружаем рецепт из стейта VM
 
-        ingredientsAdapter = IngredientsAdapter(emptyList())
         binding.rvIngredients.adapter = ingredientsAdapter
 
-        methodAdapter = MethodAdapter(emptyList())
         binding.rvMethod.adapter = methodAdapter
 
         with(binding) {
@@ -70,7 +68,7 @@ class RecipeFragment : Fragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val portionsText = getString(R.string.portion_template, progress)
                 binding.tvPortion.text = portionsText
-                recipeViewModel.portionCounter(progress) // передаем данные из seekbar в стейт VM
+                recipeViewModel.updatePortionCounter(progress) // передаем данные из seekbar в стейт VM
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
