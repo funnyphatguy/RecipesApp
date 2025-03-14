@@ -30,14 +30,14 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:scaleType="centerCrop"
-                android:padding="@dimen/margin_quarter"
-                tools:src="@drawable/ic_heart"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
+                android:contentDescription="@string/favorites_description"
                 android:focusable="true"
                 android:gravity="center"
-                android:contentDescription="@string/favorites_description"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:padding="@dimen/margin_quarter"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_heart" />
 
             <LinearLayout
                 android:layout_width="@dimen/recipe_header"
@@ -81,7 +81,6 @@
             android:layout_marginEnd="@dimen/zero_dp"
             android:layout_marginBottom="@dimen/six_dp"
             android:gravity="start|center"
-            android:text="@string/portion_template"
             android:textStyle="bold" />
 
         <SeekBar
@@ -94,8 +93,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/six_dp"
             android:max="5"
-            android:min="1"
-            android:progress="1" />
+            android:min="1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_ingredients"

@@ -16,7 +16,12 @@ import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.ui.Constants.LOAD_IMAGE_ERROR_LOG
 
-class RecipeViewModel(application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(application: Application) :
+    AndroidViewModel(application) {
+
+    private val _recipeState = MutableLiveData(RecipeState())
+
+    val recipeState: LiveData<RecipeState> get() = _recipeState
 
     val context: Context
         get() = getApplication<Application>().applicationContext
@@ -31,10 +36,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val portionsCount: Int = 1,
         val recipeImage: Drawable? = null,
     )
-
-    private val _recipeState = MutableLiveData(RecipeState())
-
-    val recipeState: LiveData<RecipeState> get() = _recipeState
 
     private fun getFavorites(): HashSet<String> {
         val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
@@ -55,6 +56,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
         saveFavorites(newFavorites)
         _recipeState.value = currentState.copy(isFavourites = !currentState.isFavourites)
+    }
+
+    fun updatePortionCounter(portionQuantity: Int) {
+        _recipeState.value = _recipeState.value?.copy(portionsCount = portionQuantity)
     }
 
     fun loadRecipe(recipeId: Int) {

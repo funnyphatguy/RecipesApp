@@ -1,22 +1,22 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemMethodBinding
 
-class MethodAdapter(private val dataSet: List<String>) :
-    RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
+class MethodAdapter() : RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: ItemMethodBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private val items = mutableListOf<String>()
+
+    class ViewHolder(
+        private val binding: ItemMethodBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(data: String) {
-            with(binding) {
-                txtMethod.text = data
-            }
-
+            binding.txtMethod.text = data
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,10 +25,17 @@ class MethodAdapter(private val dataSet: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data: String = dataSet[position]
+        val data: String = items[position]
         val numberedData = "${position + 1}. $data"
         holder.bind(numberedData)
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = items.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun getMethodFromState(newItems: List<String>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
 }
