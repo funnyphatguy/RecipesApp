@@ -6,24 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.funny_phat_guy.recipesapp.databinding.ItemMethodBinding
 
-class MethodAdapter() :
-    RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
-    private var dataSet: List<String> = emptyList()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class MethodAdapter() : RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: ItemMethodBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private val items = mutableListOf<String>()
+
+    class ViewHolder(
+        private val binding: ItemMethodBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(data: String) {
-            with(binding) {
-                txtMethod.text = data
-            }
-
+            binding.txtMethod.text = data
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,16 +25,17 @@ class MethodAdapter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data: String = dataSet[position]
+        val data: String = items[position]
         val numberedData = "${position + 1}. $data"
         holder.bind(numberedData)
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = items.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun getMethodFormState(newDataSet: List<String>) {
-        dataSet = newDataSet
+    fun getMethodFromState(newItems: List<String>) {
+        items.clear()
+        items.addAll(newItems)
         notifyDataSetChanged()
     }
 }

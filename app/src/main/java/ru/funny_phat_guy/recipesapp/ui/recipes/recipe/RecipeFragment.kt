@@ -16,6 +16,7 @@ import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 
 class RecipeFragment : Fragment() {
+
     private var _binding: FragmentRecipeBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipeBinding must not be null" }
 
@@ -30,13 +31,12 @@ class RecipeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View, savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
-
         initUI()
-
         initDivider()
-
     }
 
     override fun onDestroyView() {
@@ -44,13 +44,15 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
-    private var ingredientsAdapter: IngredientsAdapter = IngredientsAdapter() // инициализируем тут, чтобы не инициализировать в observer
-    private var methodAdapter: MethodAdapter = MethodAdapter() // инициализируем тут, чтобы не инициализировать в observer
+    private var ingredientsAdapter: IngredientsAdapter =
+        IngredientsAdapter()
+    private var methodAdapter: MethodAdapter =
+        MethodAdapter()
 
     private fun initUI() {
 
         val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-        recipeId?.also { recipeViewModel.loadRecipe(it) } // загружаем рецепт из стейта VM
+        recipeId?.also { recipeViewModel.loadRecipe(it) }
 
         binding.rvIngredients.adapter = ingredientsAdapter
 
@@ -66,12 +68,12 @@ class RecipeFragment : Fragment() {
         binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val portionsText = getString(R.string.portion_template, progress)
-                binding.tvPortion.text = portionsText
-                recipeViewModel.updatePortionCounter(progress) // передаем данные из seekbar в стейт VM
+                recipeViewModel.updatePortionCounter(progress)
             }
+
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
+
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
@@ -80,17 +82,20 @@ class RecipeFragment : Fragment() {
             with(binding) {
 
                 val ingredients = state.recipe?.ingredients ?: run {
-                    Toast.makeText(context, "Ingredient not found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Ingredient not found", Toast.LENGTH_SHORT)
+                        .show()
                     return@observe
                 }
                 val method = state.recipe.method
                 val progressFromState = state.portionsCount
 
-                ingredientsAdapter.updateIngredients(progressFromState) // получаем данные seekbar из стейта VM
+                ingredientsAdapter.updateIngredients(progressFromState)
 
-                ingredientsAdapter.getIngredientsFromState(ingredients) // получаем список ингридиентов из стейта VM
+                ingredientsAdapter.getIngredientsFromState(ingredients)
 
-                methodAdapter.getMethodFormState(method) // получаем рецеп-метод приготовления из стейта VM
+                methodAdapter.getMethodFromState(method)
+
+                binding.tvPortion.text = getString(R.string.portion_template, state.portionsCount)
 
                 tvRecipe.text = state.recipe.title
 
@@ -109,15 +114,13 @@ class RecipeFragment : Fragment() {
         val ingredientsRecyclerView = binding.rvIngredients
         val methodRecyclerView = binding.rvMethod
 
-        val dividerItemDecoration = context?.let {
+        val dividerItemDecoration = requireContext().let {
             MaterialDividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
                 isLastItemDecorated = false
             }
         }
 
-        if (dividerItemDecoration != null) {
-            ingredientsRecyclerView.addItemDecoration(dividerItemDecoration)
-            methodRecyclerView.addItemDecoration(dividerItemDecoration)
-        }
+        ingredientsRecyclerView.addItemDecoration(dividerItemDecoration)
+        methodRecyclerView.addItemDecoration(dividerItemDecoration)
     }
 }
