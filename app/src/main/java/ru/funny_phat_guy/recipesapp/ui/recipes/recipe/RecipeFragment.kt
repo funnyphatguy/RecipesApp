@@ -1,6 +1,5 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +20,20 @@ class RecipeFragment : Fragment() {
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipeBinding must not be null" }
 
     private val recipeViewModel: RecipeViewModel by viewModels()
+
+    class PortionSeekBarListener(
+        private val onChangeIngredients: (Int) -> Unit
+    ) : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            onChangeIngredients(progress)
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,17 +78,10 @@ class RecipeFragment : Fragment() {
             tvPortion.text = getString(R.string.portion_start)
         }
 
-        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                recipeViewModel.updatePortionCounter(progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
+        binding.seekbar.setOnSeekBarChangeListener(PortionSeekBarListener { progress ->
+            recipeViewModel.updatePortionCounter(
+                progress
+            )
         })
 
         recipeViewModel.recipeState.observe(viewLifecycleOwner) { state ->
@@ -105,7 +111,6 @@ class RecipeFragment : Fragment() {
                     if (state.isFavourites) R.drawable.ic_heart
                     else R.drawable.ic_heart_empty
                 )
-
             }
         }
     }

@@ -39,9 +39,7 @@ class RecipesListFragment : Fragment() {
             categoryName = args.getString(ARG_CATEGORY_NAME)
             categoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
         }
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,7 +49,6 @@ class RecipesListFragment : Fragment() {
         val drawableBurgers = AssetsImageLoader.loadImage(categoryImageUrl.toString(), context)
         binding.ivRecipe.setImageDrawable(drawableBurgers)
         binding.tvRecipe.text = categoryName
-
     }
 
     override fun onDestroyView() {
@@ -83,5 +80,4 @@ class RecipesListFragment : Fragment() {
             }
         })
     }
-
 }
