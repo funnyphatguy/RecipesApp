@@ -52,7 +52,6 @@ class IngredientsAdapter() :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data: Ingredient = dataSet[position]
         holder.bind(data, quantity)
-        dataSet.getOrNull(position)
     }
 
     @SuppressLint("NotifyDataSetChanged")

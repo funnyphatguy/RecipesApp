@@ -78,14 +78,14 @@ class FavoritesFragment : Fragment() {
 
     private fun initRecycler() {
         val recipes = STUB.getRecipesByIds(getFavoritesFragment())
-        val recipesAdapter = RecipeListAdapter(recipes)
-        binding.rvFavorites.adapter = recipesAdapter
-
-        recipesAdapter.setOnItemClickListener(object :
-            RecipeListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
-            }
-        })
+//        val recipesAdapter = RecipeListAdapter(recipes)
+//        binding.rvFavorites.adapter = recipesAdapter
+//
+//        recipesAdapter.setOnItemClickListener(object :
+//            RecipeListAdapter.OnItemClickListener {
+//            override fun onItemClick(recipeId: Int) {
+//                openRecipeByRecipeId(recipeId)
+//            }
+//        })
     }
 }

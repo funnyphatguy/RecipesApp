@@ -91,7 +91,7 @@ class RecipeFragment : Fragment() {
                 methodAdapter.getMethodFromState(method)
                 binding.tvPortion.text = getString(R.string.portion_template, state.portionsCount)
                 tvRecipe.text = state.recipe.title
-                ivRecipe.setImageDrawable(state.recipeImage)
+                ivRecipe.setImageDrawable(state.recipeDrawable)
                 ivPreferences.setImageResource(
                     if (state.isFavourites) R.drawable.ic_heart
                     else R.drawable.ic_heart_empty

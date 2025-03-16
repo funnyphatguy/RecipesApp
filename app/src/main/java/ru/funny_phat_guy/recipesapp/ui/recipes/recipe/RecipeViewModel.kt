@@ -23,7 +23,7 @@ class RecipeViewModel(application: Application) :
 
     val recipeState: LiveData<RecipeState> get() = _recipeState
 
-    val context: Context
+    private val context: Context
         get() = getApplication<Application>().applicationContext
 
     private val sharedPref: SharedPreferences by lazy {
@@ -34,7 +34,7 @@ class RecipeViewModel(application: Application) :
         val recipe: Recipe? = null,
         val isFavourites: Boolean = false,
         val portionsCount: Int = 1,
-        val recipeImage: Drawable? = null,
+        val recipeDrawable: Drawable? = null,
     )
 
     private fun getFavorites(): HashSet<String> {
@@ -53,7 +53,6 @@ class RecipeViewModel(application: Application) :
         val newFavorites = getFavorites().toMutableSet().apply {
             if (currentState.isFavourites) remove(recipeId) else add(recipeId)
         }
-
         saveFavorites(newFavorites)
         _recipeState.value = currentState.copy(isFavourites = !currentState.isFavourites)
     }
@@ -84,7 +83,7 @@ class RecipeViewModel(application: Application) :
             recipe = recipe,
             isFavourites = isFavorite,
             portionsCount = currentState.portionsCount,
-            recipeImage = recipeImage,
+            recipeDrawable = recipeImage,
         )
     }
 }
