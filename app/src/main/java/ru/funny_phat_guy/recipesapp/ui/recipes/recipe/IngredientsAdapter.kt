@@ -56,14 +56,14 @@ class IngredientsAdapter() :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun getIngredientsFromState(newDataSet: List<Ingredient>) {
+    fun updateIngredientsFromState(newDataSet: List<Ingredient>) {
         dataSet.clear()
         dataSet.addAll(newDataSet)
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateIngredients(progress: Int) {
+    fun updateIngredientsQuantity(progress: Int) {
         quantity = progress
         notifyDataSetChanged()
     }
