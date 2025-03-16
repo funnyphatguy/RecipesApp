@@ -12,10 +12,9 @@ import java.math.RoundingMode
 class IngredientsAdapter() :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<Ingredient>()
+    private val dataSet = mutableListOf<Ingredient>()
 
     private var quantity: Int = 1
-
 
     class ViewHolder(
         private val binding: ItemIngredientBinding
@@ -48,23 +47,23 @@ class IngredientsAdapter() :
         return ViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data: Ingredient = items[position]
+        val data: Ingredient = dataSet[position]
         holder.bind(data, quantity)
-        items.getOrNull(position)
+        dataSet.getOrNull(position)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun getIngredientsFromState(newDataSet: List<Ingredient>) {
-        items.clear()
-        items.addAll(newDataSet)
+    fun updateIngredientsFromState(newDataSet: List<Ingredient>) {
+        dataSet.clear()
+        dataSet.addAll(newDataSet)
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateIngredients(progress: Int) {
+    fun updateIngredientsQuantity(progress: Int) {
         quantity = progress
         notifyDataSetChanged()
     }

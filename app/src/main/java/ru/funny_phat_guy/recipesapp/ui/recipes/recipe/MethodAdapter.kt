@@ -8,7 +8,7 @@ import ru.funny_phat_guy.recipesapp.databinding.ItemMethodBinding
 
 class MethodAdapter() : RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<String>()
+    private val dataSet = mutableListOf<String>()
 
     class ViewHolder(
         private val binding: ItemMethodBinding
@@ -25,17 +25,17 @@ class MethodAdapter() : RecyclerView.Adapter<MethodAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data: String = items[position]
+        val data: String = dataSet[position]
         val numberedData = "${position + 1}. $data"
         holder.bind(numberedData)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = dataSet.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun getMethodFromState(newItems: List<String>) {
-        items.clear()
-        items.addAll(newItems)
+        dataSet.clear()
+        dataSet.addAll(newItems)
         notifyDataSetChanged()
     }
 }
