@@ -1,5 +1,6 @@
 package ru.funny_phat_guy.recipesapp.ui.categories
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,8 +8,10 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemCategoryBinding
 import ru.funny_phat_guy.recipesapp.model.Category
 
-class CategoriesListAdapter(private val dataSet: List<Category>) :
+class CategoriesListAdapter :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
+
+    private val dataSet = mutableListOf<Category>()
 
     interface OnItemClickListener {
         fun onItemClick(categoryId: Int)
@@ -45,13 +48,17 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
         viewHolder.bind(data)
 
         viewHolder.itemView.setOnClickListener {
-
             itemClickListener?.onItemClick(data.id)
-
         }
-
     }
 
     override fun getItemCount() = dataSet.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateCategoryFromState(newDataSet: List<Category>) {
+        dataSet.clear()
+        dataSet.addAll(newDataSet)
+        notifyDataSetChanged()
+    }
 
 }

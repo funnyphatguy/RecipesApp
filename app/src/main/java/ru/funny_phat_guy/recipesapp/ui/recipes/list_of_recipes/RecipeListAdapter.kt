@@ -8,7 +8,7 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
 import ru.funny_phat_guy.recipesapp.model.Recipe
 
-class RecipeListAdapter() :
+class RecipeListAdapter :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
     private val dataSet = mutableListOf<Recipe>()
