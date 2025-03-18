@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
@@ -74,7 +72,6 @@ class RecipesListFragment : Fragment() {
                     openRecipeByRecipeId(recipeId)
                 }
             })
-
         }
     }
 
@@ -88,7 +85,3 @@ class RecipesListFragment : Fragment() {
         }
     }
 }
-
-
-
-

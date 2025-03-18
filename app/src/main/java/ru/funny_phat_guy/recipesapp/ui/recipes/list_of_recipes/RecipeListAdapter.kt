@@ -8,7 +8,6 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
 import ru.funny_phat_guy.recipesapp.model.Recipe
 
-//private val dataSet: List<Recipe>
 class RecipeListAdapter() :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
@@ -23,7 +22,6 @@ class RecipeListAdapter() :
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
-
 
     class ViewHolder(private val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -51,13 +49,12 @@ class RecipeListAdapter() :
         holder.bind(data)
 
         holder.itemView.setOnClickListener {
-
             itemClickListener?.onItemClick(data.id)
-
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
-     fun updateRecipeFromState(newDataSet: List<Recipe>) {
+    fun updateRecipeFromState(newDataSet: List<Recipe>) {
         dataSet.clear()
         dataSet.addAll(newDataSet)
         notifyDataSetChanged()
