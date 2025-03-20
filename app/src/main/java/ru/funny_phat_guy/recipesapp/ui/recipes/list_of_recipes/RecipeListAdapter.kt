@@ -1,5 +1,6 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,9 +8,10 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
 import ru.funny_phat_guy.recipesapp.model.Recipe
 
-
-class RecipeListAdapter(private val dataSet: List<Recipe>) :
+class RecipeListAdapter :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
+
+    private val dataSet = mutableListOf<Recipe>()
 
     interface OnItemClickListener {
         fun onItemClick(recipeId: Int)
@@ -17,10 +19,9 @@ class RecipeListAdapter(private val dataSet: List<Recipe>) :
 
     private var itemClickListener: OnItemClickListener? = null
 
-    fun setOnItemClickListener(listener: OnItemClickListener){
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
-
 
     class ViewHolder(private val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -47,10 +48,15 @@ class RecipeListAdapter(private val dataSet: List<Recipe>) :
         val data: Recipe = dataSet[position]
         holder.bind(data)
 
-        holder.itemView.setOnClickListener{
-
+        holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(data.id)
-
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateRecipeFromState(newDataSet: List<Recipe>) {
+        dataSet.clear()
+        dataSet.addAll(newDataSet)
+        notifyDataSetChanged()
     }
 }

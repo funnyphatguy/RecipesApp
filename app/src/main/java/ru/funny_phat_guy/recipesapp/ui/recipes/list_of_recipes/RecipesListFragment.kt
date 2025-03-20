@@ -8,14 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
-import ru.funny_phat_guy.recipesapp.data.STUB
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
@@ -23,9 +21,7 @@ class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipesBinding must not be null" }
 
-    private var categoryId: Int? = null
-    private var categoryName: String? = null
-    private var categoryImageUrl: String? = null
+    private val recipesViewModel: RecipesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,21 +30,13 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = FragmentsListRecipesBinding.inflate(inflater, container, false)
 
-        arguments?.let { args ->
-            categoryId = args.getInt(ARG_CATEGORY_ID)
-            categoryName = args.getString(ARG_CATEGORY_NAME)
-            categoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        initUI()
 
-        val drawableBurgers = AssetsImageLoader.loadImage(categoryImageUrl.toString(), context)
-        binding.ivRecipe.setImageDrawable(drawableBurgers)
-        binding.tvRecipe.text = categoryName
     }
 
     override fun onDestroyView() {
@@ -56,28 +44,44 @@ class RecipesListFragment : Fragment() {
         _binding = null
     }
 
-     fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
+    private val recipeAdapter: RecipeListAdapter = RecipeListAdapter()
 
+    private fun initUI() {
+
+        arguments?.let { args ->
+            val categoryId = args.getInt(ARG_CATEGORY_ID)
+            val categoryName = args.getString(ARG_CATEGORY_NAME)
+            val categoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
+            recipesViewModel.loadRecipesData(categoryId, categoryImageUrl, categoryName)
+        }
+
+        binding.rvRecipes.adapter = recipeAdapter
+
+        recipesViewModel.allRecipeState.observe(viewLifecycleOwner) { state ->
+            val recipes = state.recipes
+            recipes?.let { recipeAdapter.updateRecipeFromState(it) }
+            val categoryImage = state.categoryImage
+            val description = state.categoryDescription
+
+            binding.ivRecipe.setImageDrawable(categoryImage)
+            binding.tvRecipe.text = description
+
+            recipeAdapter.setOnItemClickListener(object :
+                RecipeListAdapter.OnItemClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    openRecipeByRecipeId(recipeId)
+                }
+            })
+        }
+    }
+
+    fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe = recipesViewModel.takeRecipeId(recipeId)
         val bundle = bundleOf(ARG_RECIPE_ID to recipe?.id)
-
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
             addToBackStack(null)
         }
-    }
-
-    private fun initRecycler() {
-        val recipes = STUB.getRecipesByCategoryId(categoryId)
-        val recipesAdapter = RecipeListAdapter(recipes)
-        binding.rvRecipes.adapter = recipesAdapter
-
-        recipesAdapter.setOnItemClickListener(object :
-            RecipeListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
-            }
-        })
     }
 }
