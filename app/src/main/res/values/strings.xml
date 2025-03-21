@@ -16,4 +16,6 @@
     <string name="portion_start">Порции: 1</string>
     <string name="empty_favorites">Вы еще не добавили ни одного рецепта в избранное</string>
     <string name="favorites_description"> изображение сердца(избранное)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

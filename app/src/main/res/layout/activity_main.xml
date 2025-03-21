@@ -9,7 +9,10 @@
     tools:context=".ui.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mainContainer"
+        android:id="@+id/nav_graph"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
         android:layout_marginBottom="@dimen/margin_half"
