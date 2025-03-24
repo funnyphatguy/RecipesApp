@@ -60,7 +60,7 @@ class CategoriesListFragment : Fragment() {
         )
 
         findNavController().navigate(
-            R.id.recipesListFragment2,
+            R.id.recipesListFragment,
             args = bundle
         )
     }

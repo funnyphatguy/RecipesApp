@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.funny_phat_guy.recipesapp.R
@@ -15,7 +13,6 @@ import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class FavoritesFragment : Fragment() {
 
@@ -49,7 +46,7 @@ class FavoritesFragment : Fragment() {
 
     private fun openRecipeByRecipeId(recipeId: Int) {
         val bundle = bundleOf(ARG_RECIPE_ID to recipeId)
-        findNavController().navigate(R.id.recipeFragment2, args = bundle)
+        findNavController().navigate(R.id.recipeFragment, args = bundle)
     }
 
     private fun initUI() {

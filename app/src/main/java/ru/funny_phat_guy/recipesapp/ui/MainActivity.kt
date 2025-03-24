@@ -5,14 +5,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.navigation.findNavController
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
-import ru.funny_phat_guy.recipesapp.ui.categories.CategoriesListFragment
-import ru.funny_phat_guy.recipesapp.ui.recipes.favourites.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,12 +22,10 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         with(binding) {
             btScreenFavorites.setOnClickListener {
                 setFavorites()
             }
-
             btCategory.setOnClickListener {
                 setCategories()
             }
@@ -46,11 +39,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setFavorites() {
-        findNavController(R.id.nav_graph).navigate(R.id.favoritesFragment2)
+        findNavController(R.id.nav_graph).navigate(R.id.favoritesFragment)
     }
 
     private fun setCategories() {
-   findNavController(R.id.nav_graph).navigate(R.id.categoriesListFragment2)
+        findNavController(R.id.nav_graph).navigate(R.id.categoriesListFragment)
     }
 }
 
