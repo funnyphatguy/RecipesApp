@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
@@ -78,10 +76,6 @@ class RecipesListFragment : Fragment() {
     fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = recipesViewModel.takeRecipeId(recipeId)
         val bundle = bundleOf(ARG_RECIPE_ID to recipe?.id)
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-            addToBackStack(null)
-        }
+        findNavController().navigate(R.id.recipeFragment, args = bundle)
     }
 }
