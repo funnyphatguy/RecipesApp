@@ -15,6 +15,7 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 import ru.funny_phat_guy.recipesapp.ui.Constants.LOAD_IMAGE_ERROR_LOG
+import androidx.core.content.edit
 
 class RecipeViewModel(application: Application) :
     AndroidViewModel(application) {
@@ -43,7 +44,7 @@ class RecipeViewModel(application: Application) :
     }
 
     private fun saveFavorites(ides: Set<String>) {
-        sharedPref.edit().putStringSet(FAVORITES, ides).apply()
+        sharedPref.edit() { putStringSet(FAVORITES, ides) }
     }
 
     fun onFavoritesClicked() {

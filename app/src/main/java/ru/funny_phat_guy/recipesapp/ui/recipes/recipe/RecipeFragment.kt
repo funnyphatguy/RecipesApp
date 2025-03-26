@@ -8,11 +8,11 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_RECIPE_ID
 
 class RecipeFragment : Fragment() {
 
@@ -20,6 +20,8 @@ class RecipeFragment : Fragment() {
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipeBinding must not be null" }
 
     private val recipeViewModel: RecipeViewModel by viewModels()
+
+    private val args:RecipeFragmentArgs by navArgs()
 
     class PortionSeekBarListener(
         private val onChangeIngredients: (Int) -> Unit
@@ -48,7 +50,8 @@ class RecipeFragment : Fragment() {
         view: View, savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initUI()
+        val recipeId = args.recipeId
+        initUI(recipeId)
         initDivider()
     }
 
@@ -62,9 +65,8 @@ class RecipeFragment : Fragment() {
     private var methodAdapter: MethodAdapter =
         MethodAdapter()
 
-    private fun initUI() {
-        val recipeId = arguments?.getInt(ARG_RECIPE_ID)
-        recipeId?.also { recipeViewModel.loadRecipe(it) }
+    private fun initUI(recipeId:Int) {
+        recipeId.also { recipeViewModel.loadRecipe(it) }
         with(binding) {
             rvIngredients.adapter = ingredientsAdapter
             rvMethod.adapter = methodAdapter
