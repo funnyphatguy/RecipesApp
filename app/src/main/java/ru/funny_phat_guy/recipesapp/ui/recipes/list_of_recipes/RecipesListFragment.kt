@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
+import ru.funny_phat_guy.recipesapp.model.Category
 
 class RecipesListFragment : Fragment() {
     private var _binding: FragmentsListRecipesBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding for FragmentRecipesBinding must not be null" }
 
     private val recipesViewModel: RecipesViewModel by viewModels()
+     private val args:RecipesListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,8 +30,8 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUI()
-
+        val categoryFromCategories = args.category
+        initUI(categoryFromCategories)
     }
 
     override fun onDestroyView() {
@@ -41,17 +41,9 @@ class RecipesListFragment : Fragment() {
 
     private val recipeAdapter: RecipeListAdapter = RecipeListAdapter()
 
-    private fun initUI() {
-
-        arguments?.let { args ->
-            val categoryId = args.getInt(ARG_CATEGORY_ID)
-            val categoryName = args.getString(ARG_CATEGORY_NAME)
-            val categoryImageUrl = args.getString(ARG_CATEGORY_IMAGE_URL)
-            recipesViewModel.loadRecipesData(categoryId, categoryImageUrl, categoryName)
-        }
-
+    private fun initUI(category:Category) {
+        recipesViewModel.loadRecipesData(category.id, category.imageUrl, category.title)
         binding.rvRecipes.adapter = recipeAdapter
-
         recipesViewModel.allRecipeState.observe(viewLifecycleOwner) { state ->
             val recipes = state.recipes
             recipes?.let { recipeAdapter.updateRecipeFromState(it) }
