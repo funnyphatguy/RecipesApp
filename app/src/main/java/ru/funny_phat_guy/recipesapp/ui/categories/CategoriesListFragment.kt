@@ -4,17 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_ID
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_IMAGE_URL
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_CATEGORY_NAME
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -36,7 +30,6 @@ class CategoriesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-
     }
 
     override fun onDestroyView() {
@@ -45,24 +38,14 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val categories = categoriesViewModel.getCategoryById(categoryId) ?: run {
-            Toast.makeText(context, "Category not found", Toast.LENGTH_SHORT).show()
-            return
-        }
+        val category = categoriesViewModel.getCategoryById(categoryId) ?:
+        throw IllegalArgumentException("Category not found")
 
-        val categoryName: String = categories.title
-        val categoryImageUrl: String = categories.imageUrl
-
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoryName,
-            ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
+        val action = CategoriesListFragmentDirections.
+        actionCategoriesListFragmentToRecipesListFragment(
+            category
         )
-
-        findNavController().navigate(
-            R.id.recipesListFragment,
-            args = bundle
-        )
+        findNavController().navigate(action)
     }
 
         private fun initUI() {
