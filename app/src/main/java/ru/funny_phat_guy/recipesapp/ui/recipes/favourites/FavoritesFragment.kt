@@ -43,7 +43,10 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipeId=recipeId)
+        val action = FavoritesFragmentDirections.
+        actionFavoritesFragmentToRecipeFragment(
+            recipeId=recipeId
+        )
         findNavController().navigate(action)
     }
 
