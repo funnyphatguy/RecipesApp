@@ -30,7 +30,6 @@ class CategoriesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-
     }
 
     override fun onDestroyView() {
@@ -40,28 +39,13 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId(categoryId: Int) {
         val category = categoriesViewModel.getCategoryById(categoryId) ?:
-        throw IllegalStateException("Category not found")
+        throw IllegalArgumentException("Category not found")
 
         val action = CategoriesListFragmentDirections.
         actionCategoriesListFragmentToRecipesListFragment(
             category
         )
-
         findNavController().navigate(action)
-
-//        val categoryName: String = categories.title
-//        val categoryImageUrl: String = categories.imageUrl
-//
-//        val bundle = bundleOf(
-//            ARG_CATEGORY_ID to categoryId,
-//            ARG_CATEGORY_NAME to categoryName,
-//            ARG_CATEGORY_IMAGE_URL to categoryImageUrl,
-//        )
-//
-//        findNavController().navigate(
-//            R.id.recipesListFragment,
-//            args = bundle
-//        )
     }
 
         private fun initUI() {

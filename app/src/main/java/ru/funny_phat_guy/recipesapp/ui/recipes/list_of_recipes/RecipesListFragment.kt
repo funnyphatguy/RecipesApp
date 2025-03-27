@@ -24,7 +24,6 @@ class RecipesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentsListRecipesBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -63,7 +62,10 @@ class RecipesListFragment : Fragment() {
     }
 
     fun openRecipeByRecipeId(recipeId: Int) {
-        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId = recipeId)
+        val action = RecipesListFragmentDirections.
+        actionRecipesListFragmentToRecipeFragment(
+            recipeId = recipeId
+        )
         findNavController().navigate(action)
     }
 }
