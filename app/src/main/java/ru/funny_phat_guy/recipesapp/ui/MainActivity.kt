@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
-    private val gson = Gson()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
                 Log.i("!!!", "responseCode:${connection.responseCode}")
                 Log.i("!!!", "Выполняю запрос на потоке $threadName")
                 Log.i("!!!", "responseMessage: ${connection.responseMessage}")
-                Log.i("!!!", "Body: ${connection.inputStream.bufferedReader().readText()}")
 
+                val gson = Gson()
                 val jsonString = connection.inputStream.bufferedReader().readText()
                 val type = object : TypeToken<List<Category>>() {}.type
                 val categories: List<Category>? = gson.fromJson(jsonString, type)
