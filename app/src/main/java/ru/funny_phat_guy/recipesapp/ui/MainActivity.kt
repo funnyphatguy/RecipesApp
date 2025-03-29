@@ -12,10 +12,11 @@ import com.google.gson.reflect.TypeToken
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
 import ru.funny_phat_guy.recipesapp.model.Category
+import ru.funny_phat_guy.recipesapp.model.Recipe
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.concurrent.thread
-import kotlin.math.log
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
-
+    val threadPool: ExecutorService = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,21 @@ class MainActivity : AppCompatActivity() {
                 val jsonString = connection.inputStream.bufferedReader().readText()
                 val type = object : TypeToken<List<Category>>() {}.type
                 val categories: List<Category>? = gson.fromJson(jsonString, type)
+
+                val ids = categories?.map { it.id }
+                ids?.forEach { id ->
+                    threadPool.submit {
+                        val recipeUrl =
+                            URL("https://recipes.androidsprint.ru/api/category/$id/recipes")
+                        val recipesConnection = recipeUrl.openConnection() as HttpURLConnection
+                        recipesConnection.connect()
+                        val recipesJson = recipesConnection.inputStream.bufferedReader().readText()
+                        val recipesType = object : TypeToken<List<Recipe>>() {}.type
+                        val recipes:List<Recipe> = Gson().fromJson(recipesJson, recipesType)
+
+                        Log.i("recipes", "Результат вывода рецептов: $recipes")
+                    }
+                }
 
                 Log.i("!!!!", "$categories")
             }
