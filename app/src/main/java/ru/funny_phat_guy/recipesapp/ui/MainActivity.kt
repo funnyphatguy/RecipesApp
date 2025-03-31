@@ -9,12 +9,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -37,36 +38,41 @@ class MainActivity : AppCompatActivity() {
 
         val thread = Thread(object : Runnable {
             override fun run() {
-                val url = URL("https://recipes.androidsprint.ru/api/category")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.connect()
                 val threadName = Thread.currentThread().name
 
-                Log.i("!!!", "responseCode:${connection.responseCode}")
-                Log.i("!!!", "Выполняю запрос на потоке $threadName")
-                Log.i("!!!", "responseMessage: ${connection.responseMessage}")
-
-                val gson = Gson()
-                val jsonString = connection.inputStream.bufferedReader().readText()
-                val type = object : TypeToken<List<Category>>() {}.type
-                val categories: List<Category>? = gson.fromJson(jsonString, type)
-
-                val ids = categories?.map { it.id }
-                ids?.forEach { id ->
-                    threadPool.submit {
-                        val recipeUrl =
-                            URL("https://recipes.androidsprint.ru/api/category/$id/recipes")
-                        val recipesConnection = recipeUrl.openConnection() as HttpURLConnection
-                        recipesConnection.connect()
-                        val recipesJson = recipesConnection.inputStream.bufferedReader().readText()
-                        val recipesType = object : TypeToken<List<Recipe>>() {}.type
-                        val recipes:List<Recipe> = Gson().fromJson(recipesJson, recipesType)
-
-                        Log.i("recipes", "Результат вывода рецептов: $recipes")
-                    }
+                val interceptor = HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
                 }
 
-                Log.i("!!!!", "$categories")
+                val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+                val request =
+                    Request.Builder().url("https://recipes.androidsprint.ru/api/category").build()
+
+                client.newCall(request).execute().use { response ->
+                    val categoryBody = response.body?.string()
+                    val categoryType = object : TypeToken<List<Category>>() {}.type
+
+                    val categories = Gson().fromJson<List<Category>>(categoryBody, categoryType)
+
+                    Log.i("!!!", "Тело $categories")
+
+                    val ids = categories.map { it.id }
+                    ids.forEach { id ->
+                        threadPool.submit {
+                            val recipeRequest = Request.Builder()
+                                .url("https://recipes.androidsprint.ru/api/category/$id/recipes")
+                                .build()
+                            client.newCall(recipeRequest).execute().use { recipeResponse ->
+                                val recipeBody = recipeResponse.body?.string()
+                                val recipeType = object : TypeToken<List<Recipe>>() {}.type
+                                val recipes: List<Recipe> = Gson().fromJson(recipeBody, recipeType)
+
+                                Log.i("!!!", "Результат вывода рецептов: $recipes")
+                            }
+                        }
+                    }
+                }
             }
         })
         thread.name = "CheckingThread"
