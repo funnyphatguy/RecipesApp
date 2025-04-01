@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "2.0.21"
     id("androidx.navigation.safeargs.kotlin")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.gson)

@@ -9,15 +9,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import ru.funny_phat_guy.recipesapp.R
+import ru.funny_phat_guy.recipesapp.data.RecipeApiService
 import ru.funny_phat_guy.recipesapp.databinding.ActivityMainBinding
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
+import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +44,13 @@ class MainActivity : AppCompatActivity() {
         Log.i("!!!", "Метод onCreate() выполняется на потоке: ${Thread.currentThread().name}")
 
         val thread = Thread(object : Runnable {
+
+
+
+
             override fun run() {
+
+
                 val threadName = Thread.currentThread().name
 
                 val interceptor = HttpLoggingInterceptor().apply {
