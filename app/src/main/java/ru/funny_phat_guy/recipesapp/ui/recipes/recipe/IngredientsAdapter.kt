@@ -22,19 +22,24 @@ class IngredientsAdapter() :
 
         fun bind(data: Ingredient, quantity: Int) {
             with(binding) {
+
                 tvMeasure.text = data.unitOfMeasure
-                tvQuantity.text = data.quantity
                 tvDescription.text = data.description
 
-                val newQuantity = (BigDecimal(data.quantity) * BigDecimal(quantity))
-                    .setScale(1, RoundingMode.HALF_UP)
-                    .stripTrailingZeros()
+                val isNumeric = data.quantity.matches(Regex("-?\\d+(\\.\\d+)?"))
 
-                tvQuantity.text =
+                tvQuantity.text = if (isNumeric) {
+                    val newQuantity = (BigDecimal(data.quantity) * BigDecimal(quantity))
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .stripTrailingZeros()
+
                     newQuantity.toInt()
                         .takeIf { newQuantity.scale() <= 0 }
                         ?.toString()
                         ?: newQuantity.toPlainString()
+                } else {
+                    data.quantity
+                }
             }
         }
     }

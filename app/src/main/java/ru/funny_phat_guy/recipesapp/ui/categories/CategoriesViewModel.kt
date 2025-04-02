@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Category
 
@@ -17,7 +16,6 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
     private val context get() = getApplication<Application>().applicationContext
 
     val repository: RecipesRepository = RecipesRepository()
-
 
     data class CategoriesState(
         val categories: List<Category>? = null
