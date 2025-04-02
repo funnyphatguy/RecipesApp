@@ -25,6 +25,7 @@ class CategoriesListFragment : Fragment() {
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,6 +52,8 @@ class CategoriesListFragment : Fragment() {
         private fun initUI() {
             val drawableCategories = AssetsImageLoader.loadImage("bcg_categories.png", context)
             binding.imageView.setImageDrawable(drawableCategories)
+
+            categoriesViewModel.getCategories()
 
             categoriesViewModel.allCategoryState.observe(viewLifecycleOwner) { state ->
                 val categories = state.categories
