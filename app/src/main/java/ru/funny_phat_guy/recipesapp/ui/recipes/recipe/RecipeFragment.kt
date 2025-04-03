@@ -82,8 +82,6 @@ class RecipeFragment : Fragment() {
 
             recipeViewModel.recipeState.observe(viewLifecycleOwner) { state ->
                 val ingredients = state.recipe?.ingredients ?: run {
-                    Toast.makeText(requireContext(), "Ingredient not found", Toast.LENGTH_SHORT)
-                        .show()
                     return@observe
                 }
                 val method = state.recipe.method
