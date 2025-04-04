@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
+import ru.funny_phat_guy.recipesapp.ui.Constants
 
 class RecipeFragment : Fragment() {
 
@@ -21,7 +23,7 @@ class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
-    private val args:RecipeFragmentArgs by navArgs()
+    private val args: RecipeFragmentArgs by navArgs()
 
     class PortionSeekBarListener(
         private val onChangeIngredients: (Int) -> Unit
@@ -65,7 +67,7 @@ class RecipeFragment : Fragment() {
     private var methodAdapter: MethodAdapter =
         MethodAdapter()
 
-    private fun initUI(recipeId:Int) {
+    private fun initUI(recipeId: Int) {
         recipeId.also { recipeViewModel.loadRecipe(it) }
         with(binding) {
             rvIngredients.adapter = ingredientsAdapter
@@ -91,7 +93,11 @@ class RecipeFragment : Fragment() {
                 methodAdapter.getMethodFromState(method)
                 binding.tvPortion.text = getString(R.string.portion_template, state.portionsCount)
                 tvRecipe.text = state.recipe.title
-                ivRecipe.setImageDrawable(state.recipeDrawable)
+                Glide.with(this@RecipeFragment)
+                    .load("${Constants.BASE_IMAGES_URL}${state.recipeDrawable}")
+                    .placeholder(R.drawable.img_placeholder)
+                    .error(R.drawable.img_error)
+                    .into(ivRecipe)
                 ivPreferences.setImageResource(
                     if (state.isFavourites) R.drawable.ic_heart
                     else R.drawable.ic_heart_empty

@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
 import ru.funny_phat_guy.recipesapp.databinding.FragmentFavoritesBinding
+import ru.funny_phat_guy.recipesapp.ui.Constants
 import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipeListAdapter
 
 class FavoritesFragment : Fragment() {
@@ -43,17 +44,18 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = FavoritesFragmentDirections.
-        actionFavoritesFragmentToRecipeFragment(
-            recipeId=recipeId
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
+            recipeId = recipeId
         )
         findNavController().navigate(action)
     }
 
     private fun initUI() {
         val favorites = favoritesViewModel.getFavoritesFragment()
-        val favoritesPicture = AssetsImageLoader.loadImage("bcg_favorites.png", context)
-        binding.ivFavorites.setImageDrawable(favoritesPicture)
+        Glide.with(this)
+            .load(Constants.BCQ_FAVORITES_PATH)
+            .placeholder(R.drawable.img_placeholder)
+            .into(binding.ivFavorites)
         binding.tvFavorites.text = getString(R.string.recipe_favorites_category)
         if (favorites.isEmpty()) {
             binding.tvNothing.text = getString(R.string.empty_favorites)
