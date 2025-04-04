@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import com.bumptech.glide.Glide
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
+import ru.funny_phat_guy.recipesapp.ui.Constants
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -39,34 +41,37 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = categoriesViewModel.getCategoryById(categoryId) ?:
-        throw IllegalArgumentException("Category not found")
+        val category = categoriesViewModel.getCategoryById(categoryId)
+            ?: throw IllegalArgumentException("Category not found")
 
-        val action = CategoriesListFragmentDirections.
-        actionCategoriesListFragmentToRecipesListFragment(
-            category
-        )
+        val action =
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                category
+            )
         findNavController().navigate(action)
     }
 
-        private fun initUI() {
-            val drawableCategories = AssetsImageLoader.loadImage("bcg_categories.png", context)
-            binding.imageView.setImageDrawable(drawableCategories)
+    private fun initUI() {
+        Glide.with(this)
+            .load(Constants.BCQ_CATEGORIES_PATH)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_error)
+            .into(binding.ivCategories)
 
-            categoriesViewModel.getCategories()
+        categoriesViewModel.getCategories()
 
-            categoriesViewModel.allCategoryState.observe(viewLifecycleOwner) { state ->
-                val categories = state.categories
-                categories?.let { categoriesAdapter.updateCategoryFromState(categories) }
-                binding.rvCategories.adapter = categoriesAdapter
+        categoriesViewModel.allCategoryState.observe(viewLifecycleOwner) { state ->
+            val categories = state.categories
+            categories?.let { categoriesAdapter.updateCategoryFromState(categories) }
+            binding.rvCategories.adapter = categoriesAdapter
 
-                categoriesAdapter.setOnItemClickListener(object :
-                    CategoriesListAdapter.OnItemClickListener {
-                    override fun onItemClick(categoryId: Int) {
-                        openRecipesByCategoryId(categoryId)
-                    }
-                })
-            }
+            categoriesAdapter.setOnItemClickListener(object :
+                CategoriesListAdapter.OnItemClickListener {
+                override fun onItemClick(categoryId: Int) {
+                    openRecipesByCategoryId(categoryId)
+                }
+            })
         }
     }
+}
 

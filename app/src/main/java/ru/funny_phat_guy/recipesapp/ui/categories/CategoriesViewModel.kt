@@ -31,7 +31,7 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun getCategoryById(categoryId: Int): Category? {
-        val future = repository.threadPool.submit<Category?>{
+        val future = repository.threadPool.submit<Category?> {
             repository.getCategories()?.find { it.id == categoryId }
         }
         if (future == null) {

@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import com.bumptech.glide.Glide
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ItemRecipeBinding
 import ru.funny_phat_guy.recipesapp.model.Recipe
+import ru.funny_phat_guy.recipesapp.ui.Constants
 
 class RecipeListAdapter :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
@@ -26,10 +28,11 @@ class RecipeListAdapter :
     class ViewHolder(private val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: Recipe) {
-            val drawable =
-                AssetsImageLoader.loadImage(data.imageUrl, binding.cardImageBurgers.context)
-            binding.cardImageBurgers.setImageDrawable(drawable)
+        fun bind(data: Recipe, holder: ViewHolder) {
+            Glide.with(holder.itemView).load("${Constants.BASE_IMAGES_URL}${data.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.cardImageBurgers)
             binding.cardTitle.text = data.title
         }
 
@@ -46,7 +49,7 @@ class RecipeListAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data: Recipe = dataSet[position]
-        holder.bind(data)
+        holder.bind(data, holder)
 
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(data.id)

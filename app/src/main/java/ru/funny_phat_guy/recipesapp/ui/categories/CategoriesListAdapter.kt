@@ -1,14 +1,17 @@
 package ru.funny_phat_guy.recipesapp.ui.categories
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import com.bumptech.glide.Glide
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.ItemCategoryBinding
 import ru.funny_phat_guy.recipesapp.model.Category
+import ru.funny_phat_guy.recipesapp.ui.Constants
 
-class CategoriesListAdapter :
+class CategoriesListAdapter() :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
     private val dataSet = mutableListOf<Category>()
@@ -29,9 +32,11 @@ class CategoriesListAdapter :
     class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: Category) {
-            val drawable = AssetsImageLoader.loadImage(data.imageUrl, binding.cardImage.context)
-            binding.cardImage.setImageDrawable(drawable)
+        fun bind(data: Category, holder: ViewHolder) {
+            Glide.with(holder.itemView).load("${Constants.BASE_IMAGES_URL}${data.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.cardImage)
             binding.cardTitle.text = data.title
             binding.cardDescription.text = data.description
         }
@@ -45,7 +50,7 @@ class CategoriesListAdapter :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val data: Category = dataSet[position]
-        viewHolder.bind(data)
+        viewHolder.bind(data, viewHolder)
 
         viewHolder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(data.id)

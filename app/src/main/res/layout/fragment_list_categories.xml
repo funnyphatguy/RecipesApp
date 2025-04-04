@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/image_view"
+            android:id="@+id/iv_categories"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/main_pic_height"
             android:contentDescription="@string/categories_image_description"
@@ -35,7 +35,7 @@
             android:gravity="bottom|start"
             android:maxLines="2"
             android:text="@string/category"
-            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_categories"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_view"
+            app:layout_constraintTop_toBottomOf="@+id/iv_categories"
             app:spanCount="2"
             tools:itemCount="6"
             tools:listitem="@layout/item_category" />

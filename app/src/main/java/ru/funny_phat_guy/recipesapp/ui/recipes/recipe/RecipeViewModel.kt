@@ -4,20 +4,15 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.funny_phat_guy.recipesapp.data.AssetsImageLoader
+import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.ui.Constants.LOAD_IMAGE_ERROR_LOG
-import androidx.core.content.edit
-import kotlinx.serialization.descriptors.PrimitiveKind
-import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 
 class RecipeViewModel(application: Application) :
     AndroidViewModel(application) {
@@ -39,7 +34,7 @@ class RecipeViewModel(application: Application) :
         val recipe: Recipe? = null,
         val isFavourites: Boolean = false,
         val portionsCount: Int = 1,
-        val recipeDrawable: Drawable? = null,
+        val recipeDrawable: String? = null,
     )
 
     private fun getFavorites(): HashSet<String> {
@@ -71,26 +66,17 @@ class RecipeViewModel(application: Application) :
             val currentState = _recipeState.value
             val recipe = repository.getRecipeById(recipeId)
             val isFavorite = recipe?.id.toString() in getFavorites()
-            val recipeImage = recipe?.imageUrl?.let {
-                try {
-                    AssetsImageLoader.loadImage(it, context)
-                } catch (e: Exception) {
-                    Log.e(LOAD_IMAGE_ERROR_LOG, "Error in load image ${e.message}", e)
-                    null
-                }
-            }
-            if (recipeImage == null) {
-                Log.e(LOAD_IMAGE_ERROR_LOG, "LoadImage is null for ${recipe?.id}")
-            }
+
             _recipeState.postValue(
                 currentState?.copy(
                     recipe = recipe,
                     isFavourites = isFavorite,
                     portionsCount = currentState.portionsCount,
-                    recipeDrawable = recipeImage,
+                    recipeDrawable = recipe?.imageUrl,
                 )
             )
-        } ?: Toast.makeText(context, "Рецепт не найден", Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(context, "Рецепт не найден", Toast.LENGTH_SHORT)
+            .show() //тут не работает, threadPool возвращает future, а не нулл
 
     }
 }
