@@ -13,7 +13,6 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 import java.io.IOException
 
-
 class RecipesRepository {
 
     val contentType = "application/json".toMediaType()

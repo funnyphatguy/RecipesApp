@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
@@ -37,7 +38,15 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getFavoriteRecipes(idSet: Set<Int>) {
         viewModelScope.launch {
-            val recipe = repository.getRecipesByIds(idSet)
-            _favoritesRecipeState.postValue(_favoritesRecipeState.value?.copy(recipe = recipe)) }
+            val recipe = repository.getRecipesByIds(idSet) ?: run {
+                Toast.makeText(
+                    context,
+                    R.string.data_error,
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@launch
+            }
+            _favoritesRecipeState.postValue(_favoritesRecipeState.value?.copy(recipe = recipe))
+        }
     }
 }

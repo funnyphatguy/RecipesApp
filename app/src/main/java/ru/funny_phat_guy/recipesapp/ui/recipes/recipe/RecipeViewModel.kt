@@ -4,12 +4,14 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
@@ -44,7 +46,7 @@ class RecipeViewModel(application: Application) :
     }
 
     private fun saveFavorites(ides: Set<String>) {
-        sharedPref.edit() { putStringSet(FAVORITES, ides) }
+        sharedPref.edit { putStringSet(FAVORITES, ides) }
     }
 
     fun onFavoritesClicked() {
@@ -65,15 +67,18 @@ class RecipeViewModel(application: Application) :
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
             val currentState = _recipeState.value
-            val recipe = repository.getRecipeById(recipeId)
-            val isFavorite = recipe?.id.toString() in getFavorites()
+            val recipe = repository.getRecipeById(recipeId) ?: run {
+                Toast.makeText(context, R.string.data_error, Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+            val isFavorite = recipe.id.toString() in getFavorites()
 
             _recipeState.postValue(
                 currentState?.copy(
                     recipe = recipe,
                     isFavourites = isFavorite,
                     portionsCount = currentState.portionsCount,
-                    recipeDrawable = recipe?.imageUrl,
+                    recipeDrawable = recipe.imageUrl,
                 )
             )
         }
