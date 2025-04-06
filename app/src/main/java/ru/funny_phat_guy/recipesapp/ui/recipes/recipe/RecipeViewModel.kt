@@ -4,11 +4,12 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
@@ -62,7 +63,7 @@ class RecipeViewModel(application: Application) :
     }
 
     fun loadRecipe(recipeId: Int) {
-        repository.threadPool.submit {
+        viewModelScope.launch {
             val currentState = _recipeState.value
             val recipe = repository.getRecipeById(recipeId)
             val isFavorite = recipe?.id.toString() in getFavorites()
@@ -75,8 +76,6 @@ class RecipeViewModel(application: Application) :
                     recipeDrawable = recipe?.imageUrl,
                 )
             )
-        } ?: Toast.makeText(context, "Рецепт не найден", Toast.LENGTH_SHORT)
-            .show() //тут не работает, threadPool возвращает future, а не нулл
-
+        }
     }
 }

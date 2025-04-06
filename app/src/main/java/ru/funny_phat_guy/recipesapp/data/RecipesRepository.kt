@@ -2,6 +2,8 @@ package ru.funny_phat_guy.recipesapp.data
 
 import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
@@ -10,13 +12,11 @@ import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 import java.io.IOException
-import java.util.concurrent.Executors
+
 
 class RecipesRepository {
 
     val contentType = "application/json".toMediaType()
-
-    val threadPool = Executors.newFixedThreadPool(10)
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
@@ -24,64 +24,71 @@ class RecipesRepository {
 
     var service: RecipeApiService = retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
-    fun getRecipesByIds(set: Set<Int>): List<Recipe>? {
-        try {
-            val stringSet = set.joinToString(",")
-            val recipesCall = service.getRecipesByIds(stringSet)
-            val recipesResponse = recipesCall.execute()
-            val recipes = recipesResponse.body()
-            return recipes
-        } catch (e: IOException) {
-            Log.e("RecipeApiService", "Network error: ${e.message}")
-            return null
-        } catch (e: RuntimeException) {
-            Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-            return null
+    suspend fun getRecipesByIds(set: Set<Int>): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val stringSet = set.joinToString(",")
+                val recipesCall = service.getRecipesByIds(stringSet)
+                val recipesResponse = recipesCall.execute()
+                recipesResponse.body()
+            } catch (e: IOException) {
+                Log.e("RecipeApiService", "Network error: ${e.message}")
+                null
+            } catch (e: RuntimeException) {
+                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
+                null
+            }
+        }
+
+    }
+
+    suspend fun getCategories(): List<Category>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val categoriesCall = service.getCategories()
+                val categoriesResponse: Response<List<Category>?> = categoriesCall.execute()
+                categoriesResponse.body()
+            } catch (e: IOException) {
+                Log.e("RecipeApiService", "Network error: ${e.message}")
+                null
+            } catch (e: RuntimeException) {
+                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
+                null
+            }
         }
     }
 
-    fun getCategories(): List<Category>? {
-        try {
-            val categoriesCall = service.getCategories()
-            val categoriesResponse: Response<List<Category>?> = categoriesCall.execute()
-            val categories = categoriesResponse.body()
-            return categories
-        } catch (e: IOException) {
-            Log.e("RecipeApiService", "Network error: ${e.message}")
-            return null
-        } catch (e: RuntimeException) {
-            Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-            return null
+    suspend fun getRecipeById(burgerRecipeId: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipeCall = service.getRecipe(burgerRecipeId)
+                val recipeResponse = recipeCall.execute()
+                recipeResponse.body()
+            } catch (e: IOException) {
+                Log.e("RecipeApiService", "Network error: ${e.message}")
+                null
+            } catch (e: RuntimeException) {
+                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
+                null
+            }
         }
+
     }
 
-    fun getRecipeById(burgerRecipeId: Int): Recipe? {
-        try {
-            val recipeCall = service.getRecipe(burgerRecipeId)
-            val recipeResponse = recipeCall.execute()
-            val recipe = recipeResponse.body()
-            return recipe
-        } catch (e: IOException) {
-            Log.e("RecipeApiService", "Network error: ${e.message}")
-            return null
-        } catch (e: RuntimeException) {
-            Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-            return null
+    suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipesByCategory = service.getRecipesById(categoryId)
+                val recipesByCategoryResponse = recipesByCategory.execute()
+                recipesByCategoryResponse.body()
+            } catch (e: IOException) {
+                Log.e("RecipeApiService", "Network error: ${e.message}")
+                null
+            } catch (e: RuntimeException) {
+                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
+                null
+            }
         }
-    }
 
-    fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
-        try {
-            val recipesByCategory = service.getRecipesById(categoryId)
-            val recipesByCategoryResponse = recipesByCategory.execute()
-            val recipes = recipesByCategoryResponse.body()
-            return recipes
-        } catch (e: IOException) {
-            Log.e("RecipeApiService", "Network error: ${e.message}")
-            return null
-        } catch (e: RuntimeException) {
-            Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-            return null
-        }
     }
 }

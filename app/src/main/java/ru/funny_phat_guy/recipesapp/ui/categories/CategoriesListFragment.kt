@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,9 +42,12 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = categoriesViewModel.getCategoryById(categoryId)
-            ?: throw IllegalArgumentException("Category not found")
-
+        val category =
+            categoriesViewModel.allCategoryState.value?.categories?.find { it.id == categoryId }
+                ?: run {
+                    Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
+                    return@openRecipesByCategoryId
+                }
         val action =
             CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
                 category

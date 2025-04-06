@@ -5,6 +5,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
@@ -34,10 +36,8 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun getFavoriteRecipes(idSet: Set<Int>) {
-        repository.threadPool.submit {
-            val currentState = _favoritesRecipeState.value
+        viewModelScope.launch {
             val recipe = repository.getRecipesByIds(idSet)
-            _favoritesRecipeState.postValue(currentState?.copy(recipe = recipe))
-        } ?: Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
+            _favoritesRecipeState.postValue(_favoritesRecipeState.value?.copy(recipe = recipe)) }
     }
 }

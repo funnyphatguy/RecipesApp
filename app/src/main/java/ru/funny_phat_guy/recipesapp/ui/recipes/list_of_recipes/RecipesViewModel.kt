@@ -5,6 +5,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 
@@ -26,9 +28,12 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
     )
 
     fun loadRecipesData(categoryId: Int?, categoryImage: String?, categoryDescription: String?) {
-        repository.threadPool.submit {
+        viewModelScope.launch {
             val currentState = _allRecipesState.value
-            val recipes = repository.getRecipesByCategoryId(categoryId)
+            val recipes = repository.getRecipesByCategoryId(categoryId) ?: run {
+                Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
 
             _allRecipesState.postValue(
                 currentState?.copy(
@@ -37,9 +42,7 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
                     categoryPictureUrl = categoryImage
                 )
             )
-        } ?: Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT)
-            .show() //тут не работает, threadPool возвращает future, а не нулл
-
+        }
     }
 }
 
