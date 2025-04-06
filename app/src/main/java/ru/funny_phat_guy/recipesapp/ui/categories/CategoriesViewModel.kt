@@ -13,10 +13,14 @@ import ru.funny_phat_guy.recipesapp.model.Category
 
 class CategoriesViewModel(application: Application) : AndroidViewModel(application) {
 
+    val repository: RecipesRepository = RecipesRepository()
+
+    init {
+        getCategories()
+    }
+
     private val _allCategoryState = MutableLiveData(CategoriesState())
     val allCategoryState = _allCategoryState
-
-    val repository: RecipesRepository = RecipesRepository()
 
    private val context: Context
        get() = getApplication<Application>().applicationContext
