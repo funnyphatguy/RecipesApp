@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Response
 import retrofit2.Retrofit
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
@@ -23,71 +22,49 @@ class RecipesRepository {
 
     var service: RecipeApiService = retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
-    suspend fun getRecipesByIds(set: Set<Int>): List<Recipe>? {
+    suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
         return withContext(Dispatchers.IO) {
             try {
                 val stringSet = set.joinToString(",")
-                val recipesCall = service.getRecipesByIds(stringSet)
-                val recipesResponse = recipesCall.execute()
-                recipesResponse.body()
+                val recipes = service.getRecipesByIds(stringSet)
+                RepositoryResult.Success(recipes)
             } catch (e: IOException) {
                 Log.e("RecipeApiService", "Network error: ${e.message}")
-                null
-            } catch (e: RuntimeException) {
-                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-                null
-            }
-        }
-
-    }
-
-    suspend fun getCategories(): List<Category>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val categoriesCall = service.getCategories()
-                val categoriesResponse: Response<List<Category>?> = categoriesCall.execute()
-                categoriesResponse.body()
-            } catch (e: IOException) {
-                Log.e("RecipeApiService", "Network error: ${e.message}")
-                null
-            } catch (e: RuntimeException) {
-                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-                null
+                RepositoryResult.Error(e)
             }
         }
     }
 
-    suspend fun getRecipeById(burgerRecipeId: Int): Recipe? {
+    suspend fun getCategories(): RepositoryResult<List<Category>> {
         return withContext(Dispatchers.IO) {
             try {
-                val recipeCall = service.getRecipe(burgerRecipeId)
-                val recipeResponse = recipeCall.execute()
-                recipeResponse.body()
-            } catch (e: IOException) {
-                Log.e("RecipeApiService", "Network error: ${e.message}")
-                null
-            } catch (e: RuntimeException) {
-                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-                null
+                val categories = service.getCategories()
+                RepositoryResult.Success(categories)
+            } catch (e: Exception) {
+                RepositoryResult.Error(e)
             }
         }
-
     }
 
-    suspend fun getRecipesByCategoryId(categoryId: Int?): List<Recipe>? {
+    suspend fun getRecipeById(burgerRecipeId: Int): RepositoryResult<Recipe>? {
         return withContext(Dispatchers.IO) {
             try {
-                val recipesByCategory = service.getRecipesById(categoryId)
-                val recipesByCategoryResponse = recipesByCategory.execute()
-                recipesByCategoryResponse.body()
+                val recipe = service.getRecipe(burgerRecipeId)
+                RepositoryResult.Success(recipe)
             } catch (e: IOException) {
-                Log.e("RecipeApiService", "Network error: ${e.message}")
-                null
-            } catch (e: RuntimeException) {
-                Log.e("RecipeApiService", "RuntimeException error: ${e.message}")
-                null
+                RepositoryResult.Error(e)
             }
         }
+    }
 
+    suspend fun getRecipesByCategoryId(categoryId: Int?): RepositoryResult<List<Recipe>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipes = service.getRecipesById(categoryId)
+                RepositoryResult.Success(recipes)
+            } catch (e: IOException) {
+                RepositoryResult.Error(e)
+            }
+        }
     }
 }
