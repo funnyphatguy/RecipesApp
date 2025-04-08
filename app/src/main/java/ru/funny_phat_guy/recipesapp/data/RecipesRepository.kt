@@ -14,13 +14,14 @@ import java.io.IOException
 
 class RecipesRepository {
 
-    val contentType = "application/json".toMediaType()
+    private val contentType = "application/json".toMediaType()
 
-    var retrofit: Retrofit = Retrofit.Builder()
+    private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
         .build()
 
-    var service: RecipeApiService = retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
+    private var service: RecipeApiService =
+        retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
     suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
         return withContext(Dispatchers.IO) {

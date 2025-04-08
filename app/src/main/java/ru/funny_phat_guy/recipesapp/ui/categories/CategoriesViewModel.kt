@@ -1,8 +1,7 @@
 package ru.funny_phat_guy.recipesapp.ui.categories
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,13 +22,11 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
         getCategories()
     }
 
-
     sealed class CategoriesState {
         object Loading : CategoriesState()
         data class Success(val categories: List<Category>) : CategoriesState()
         data class Error(val message: String) : CategoriesState()
     }
-
 
     fun getCategories() {
         viewModelScope.launch {
@@ -40,6 +37,7 @@ class CategoriesViewModel(application: Application) : AndroidViewModel(applicati
                 }
 
                 is RepositoryResult.Error -> {
+                    Log.e("Categories", "Loading failed", result.exception)
                     val errorMessage = when (result.exception) {
                         is IOException -> getApplication<Application>().getString(R.string.network_error)
                         else -> getApplication<Application>().getString(R.string.data_error)

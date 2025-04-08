@@ -72,7 +72,7 @@ class CategoriesListFragment : Fragment() {
             CategoriesViewModel.CategoriesState.Loading -> {
                 Toast.makeText(
                     requireContext(),
-                    "Данные загружаются, попробуйте позже",
+                    "Данные загружаютс",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -80,7 +80,6 @@ class CategoriesListFragment : Fragment() {
             else -> Toast.makeText(requireContext(), "Данные не готовы", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun initUI() {
         Glide.with(this)
