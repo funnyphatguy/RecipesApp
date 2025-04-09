@@ -20,11 +20,13 @@ class RecipesRepository {
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
         .build()
 
+    private val ioDispatcher = Dispatchers.IO
+
     private var service: RecipeApiService =
         retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
     suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val stringSet = set.joinToString(",")
                 val recipes = service.getRecipesByIds(stringSet)
@@ -37,7 +39,7 @@ class RecipesRepository {
     }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val categories = service.getCategories()
                 RepositoryResult.Success(categories)
@@ -48,7 +50,7 @@ class RecipesRepository {
     }
 
     suspend fun getRecipeById(burgerRecipeId: Int): RepositoryResult<Recipe>? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val recipe = service.getRecipe(burgerRecipeId)
                 RepositoryResult.Success(recipe)
@@ -59,7 +61,7 @@ class RecipesRepository {
     }
 
     suspend fun getRecipesByCategoryId(categoryId: Int?): RepositoryResult<List<Recipe>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             try {
                 val recipes = service.getRecipesById(categoryId)
                 RepositoryResult.Success(recipes)

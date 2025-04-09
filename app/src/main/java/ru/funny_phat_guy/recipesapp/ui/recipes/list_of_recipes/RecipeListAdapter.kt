@@ -35,7 +35,6 @@ class RecipeListAdapter :
                 .into(binding.cardImageBurgers)
             binding.cardTitle.text = data.title
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

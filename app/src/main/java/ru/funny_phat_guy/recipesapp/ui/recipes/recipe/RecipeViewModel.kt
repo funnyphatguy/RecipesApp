@@ -38,13 +38,6 @@ class RecipeViewModel(application: Application) :
 
     private val repository: RecipesRepository = RecipesRepository()
 
-//    data class RecipeState(
-//        val recipe: Recipe? = null,
-//        val isFavourites: Boolean = false,
-//        val portionsCount: Int = 1,
-//        val recipeDrawable: String? = null,
-//    )
-
     sealed class RecipeState {
         object Loading : RecipeState()
         data class Content(
@@ -103,11 +96,11 @@ class RecipeViewModel(application: Application) :
 
                 is RepositoryResult.Error -> {
                     Log.e("Categories", "Loading failed", recipe.exception)
-                    val errormessage = when (recipe.exception) {
+                    val errorMessage = when (recipe.exception) {
                         is IOException -> getApplication<Application>().getString(R.string.network_error)
                         else -> getApplication<Application>().getString(R.string.data_error)
                     }
-                    _recipeState.value = RecipeState.Error(errormessage)
+                    _recipeState.value = RecipeState.Error(errorMessage)
                 }
 
                 null -> Log.i("ERROR", "ERROR")
