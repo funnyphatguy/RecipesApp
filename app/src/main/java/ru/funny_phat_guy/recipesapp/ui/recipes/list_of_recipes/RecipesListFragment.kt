@@ -2,9 +2,11 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 
 import ru.funny_phat_guy.recipesapp.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -45,23 +47,39 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI(category: Category) {
         recipesViewModel.loadRecipesData(category.id, category.imageUrl, category.title)
-        binding.rvRecipes.adapter = recipeAdapter
+
         recipesViewModel.allRecipeState.observe(viewLifecycleOwner) { state ->
-            val recipes = state.recipes
-            recipes?.let { recipeAdapter.updateRecipeFromState(it) }
-            Glide.with(this)
-                .load("${Constants.BASE_IMAGES_URL}${state.categoryPictureUrl}")
-                .placeholder(R.drawable.img_placeholder)
-                .error(R.drawable.img_error)
-                .into(binding.ivRecipe)
-            val description = state.categoryDescription
-            binding.tvRecipe.text = description
-            recipeAdapter.setOnItemClickListener(object :
-                RecipeListAdapter.OnItemClickListener {
-                override fun onItemClick(recipeId: Int) {
-                    openRecipeByRecipeId(recipeId)
+            when (state) {
+                is RecipesViewModel.ListOfRecipeState.Loading -> {
+                    Log.d("Recipes", "Data loading in progress")
                 }
-            })
+
+                is RecipesViewModel.ListOfRecipeState.Content -> {
+
+                    Glide.with(this)
+                        .load("${Constants.BASE_IMAGES_URL}${state.categoryPictureUrl}")
+                        .placeholder(R.drawable.img_placeholder)
+                        .error(R.drawable.img_error)
+                        .into(binding.ivRecipe)
+                    recipeAdapter.updateRecipeFromState(state.recipes)
+                    binding.rvRecipes.adapter = recipeAdapter
+                    binding.tvRecipe.text = state.categoryDescription
+                    recipeAdapter.setOnItemClickListener(object :
+                        RecipeListAdapter.OnItemClickListener {
+                        override fun onItemClick(recipeId: Int) {
+                            openRecipeByRecipeId(recipeId)
+                        }
+                    })
+                }
+
+                is RecipesViewModel.ListOfRecipeState.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        state.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 

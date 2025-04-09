@@ -2,42 +2,49 @@ package ru.funny_phat_guy.recipesapp.ui.categories
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import okio.IOException
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.RecipesRepository
+import ru.funny_phat_guy.recipesapp.data.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Category
 
 class CategoriesViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val _allCategoryState = MutableLiveData(CategoriesState())
-    val allCategoryState = _allCategoryState
-
-    private val context get() = getApplication<Application>().applicationContext
-
     val repository: RecipesRepository = RecipesRepository()
 
-    data class CategoriesState(
-        val categories: List<Category>? = null
-    )
+    private val _allCategoryState = MutableLiveData<CategoriesState>(CategoriesState.Loading)
+    val allCategoryState = _allCategoryState
 
-    fun getCategories() {
-        repository.threadPool.submit {
-            val currentState = _allCategoryState.value
-            val categories = repository.getCategories()
-            Log.i("HERE", "$categories")
-            _allCategoryState.postValue(currentState?.copy(categories = categories))
-        } ?: Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
+    init {
+        getCategories()
     }
 
-    fun getCategoryById(categoryId: Int): Category? {
-        val future = repository.threadPool.submit<Category?> {
-            repository.getCategories()?.find { it.id == categoryId }
-        }
-        if (future == null) {
-            Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
-        }
-        return future.get()
+    sealed class CategoriesState {
+        object Loading : CategoriesState()
+        data class Success(val categories: List<Category>) : CategoriesState()
+        data class Error(val message: String) : CategoriesState()
+    }
 
+    fun getCategories() {
+        viewModelScope.launch {
+            _allCategoryState.value = CategoriesState.Loading
+            when (val result = repository.getCategories()) {
+                is RepositoryResult.Success -> {
+                    _allCategoryState.value = CategoriesState.Success(result.data)
+                }
+
+                is RepositoryResult.Error -> {
+                    Log.e("Categories", "Loading failed", result.exception)
+                    val errorMessage = when (result.exception) {
+                        is IOException -> getApplication<Application>().getString(R.string.network_error)
+                        else -> getApplication<Application>().getString(R.string.data_error)
+                    }
+                    _allCategoryState.value = CategoriesState.Error(errorMessage)
+                }
+            }
+        }
     }
 }

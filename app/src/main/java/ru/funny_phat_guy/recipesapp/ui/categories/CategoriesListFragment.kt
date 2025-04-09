@@ -1,9 +1,11 @@
 package ru.funny_phat_guy.recipesapp.ui.categories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,14 +43,42 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        val category = categoriesViewModel.getCategoryById(categoryId)
-            ?: throw IllegalArgumentException("Category not found")
+        val currentState = categoriesViewModel.allCategoryState.value
 
-        val action =
-            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
-                category
-            )
-        findNavController().navigate(action)
+        when (currentState) {
+            is CategoriesViewModel.CategoriesState.Success -> {
+                val category = currentState.categories.find { it.id == categoryId } ?: run {
+                    Toast.makeText(
+                        requireContext(),
+                        "Категория не найдена",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@openRecipesByCategoryId
+                }
+
+                val action = CategoriesListFragmentDirections
+                    .actionCategoriesListFragmentToRecipesListFragment(category)
+                findNavController().navigate(action)
+            }
+
+            is CategoriesViewModel.CategoriesState.Error -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Ошибка загрузки данных: ${currentState.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            CategoriesViewModel.CategoriesState.Loading -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Данные загружаютс",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> Toast.makeText(requireContext(), "Данные не готовы", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initUI() {
@@ -58,19 +88,32 @@ class CategoriesListFragment : Fragment() {
             .error(R.drawable.img_error)
             .into(binding.ivCategories)
 
-        categoriesViewModel.getCategories()
-
         categoriesViewModel.allCategoryState.observe(viewLifecycleOwner) { state ->
-            val categories = state.categories
-            categories?.let { categoriesAdapter.updateCategoryFromState(categories) }
-            binding.rvCategories.adapter = categoriesAdapter
-
-            categoriesAdapter.setOnItemClickListener(object :
-                CategoriesListAdapter.OnItemClickListener {
-                override fun onItemClick(categoryId: Int) {
-                    openRecipesByCategoryId(categoryId)
+            when (state) {
+                is CategoriesViewModel.CategoriesState.Loading -> {
+                    Log.d("Categories", "Data loading in progress")
                 }
-            })
+
+                is CategoriesViewModel.CategoriesState.Success -> {
+                    categoriesAdapter.updateCategoryFromState(state.categories)
+                    binding.rvCategories.adapter = categoriesAdapter
+                    categoriesAdapter.setOnItemClickListener(object :
+                        CategoriesListAdapter.OnItemClickListener {
+                        override fun onItemClick(categoryId: Int) {
+                            openRecipesByCategoryId(categoryId)
+                        }
+                    })
+                }
+
+                is CategoriesViewModel.CategoriesState.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        state.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
         }
     }
 }

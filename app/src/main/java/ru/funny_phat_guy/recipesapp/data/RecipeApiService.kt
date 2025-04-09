@@ -10,18 +10,18 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 
 interface RecipeApiService {
     @GET("recipe/{id}")
-    fun getRecipe(@Path("id") id: Int): Call<Recipe>
+    suspend fun getRecipe(@Path("id") id: Int): Recipe
 
     @GET("recipes")
-    fun getRecipesByIds(@Query("ids") ids: String): Call<List<Recipe>>
+    suspend fun getRecipesByIds(@Query("ids") ids: String): List<Recipe>
 
     @GET("category/{id}")
-    fun getCategory(@Path("id") id: Int): Call<Category>
+    suspend fun getCategory(@Path("id") id: Int): List<Category>
 
     @GET("category/{id}/recipes")
-    fun getRecipesById(@Path("id") id: Int?): Call<List<Recipe>>
+    suspend fun getRecipesById(@Path("id") id: Int?): List<Recipe>
 
     @GET("category")
-    fun getCategories(): Call<List<Category>>
+    suspend fun getCategories(): List<Category>
 
 }

@@ -1,6 +1,7 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants
+import ru.funny_phat_guy.recipesapp.ui.categories.CategoriesViewModel
 
 class RecipeFragment : Fragment() {
 
@@ -83,30 +85,47 @@ class RecipeFragment : Fragment() {
             })
 
             recipeViewModel.recipeState.observe(viewLifecycleOwner) { state ->
-                val ingredients = state.recipe?.ingredients ?: run {
-                    return@observe
+                when (state) {
+                    is RecipeViewModel.RecipeState.Loading -> {
+                        Log.d("Categories", "Data loading in progress")
+                    }
+
+                    is RecipeViewModel.RecipeState.Content -> {
+                        val ingredients = state.recipe?.ingredients ?: run {
+                            return@observe
+                        }
+                        val method = state.recipe.method
+                        val progressFromState = state.portionsCount
+                        ingredientsAdapter.updateIngredientsFromState(ingredients)
+                        ingredientsAdapter.updateIngredientsQuantity(progressFromState)
+                        methodAdapter.getMethodFromState(method)
+                        binding.tvPortion.text =
+                            getString(R.string.portion_template, state.portionsCount)
+                        tvRecipe.text = state.recipe.title
+                        Glide.with(this@RecipeFragment)
+                            .load("${Constants.BASE_IMAGES_URL}${state.recipeDrawable}")
+                            .placeholder(R.drawable.img_placeholder)
+                            .error(R.drawable.img_error)
+                            .into(ivRecipe)
+                        ivPreferences.setImageResource(
+                            if (state.isFavourites) R.drawable.ic_heart
+                            else R.drawable.ic_heart_empty
+                        )
+                    }
+
+                    is RecipeViewModel.RecipeState.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            state.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-                val method = state.recipe.method
-                val progressFromState = state.portionsCount
-                ingredientsAdapter.updateIngredientsFromState(ingredients)
-                ingredientsAdapter.updateIngredientsQuantity(progressFromState)
-                methodAdapter.getMethodFromState(method)
-                binding.tvPortion.text = getString(R.string.portion_template, state.portionsCount)
-                tvRecipe.text = state.recipe.title
-                Glide.with(this@RecipeFragment)
-                    .load("${Constants.BASE_IMAGES_URL}${state.recipeDrawable}")
-                    .placeholder(R.drawable.img_placeholder)
-                    .error(R.drawable.img_error)
-                    .into(ivRecipe)
-                ivPreferences.setImageResource(
-                    if (state.isFavourites) R.drawable.ic_heart
-                    else R.drawable.ic_heart_empty
-                )
             }
         }
     }
 
-    private fun initDivider() {
+   private fun initDivider() {
         val ingredientsRecyclerView = binding.rvIngredients
         val methodRecyclerView = binding.rvMethod
         val dividerItemDecoration = requireContext().let {
