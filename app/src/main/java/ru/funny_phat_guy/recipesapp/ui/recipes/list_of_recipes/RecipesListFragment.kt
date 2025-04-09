@@ -47,9 +47,6 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI(category: Category) {
         recipesViewModel.loadRecipesData(category.id, category.imageUrl, category.title)
-//        binding.rvRecipes.adapter = recipeAdapter
-        val currentState = recipesViewModel.allRecipeState.value
-
 
         recipesViewModel.allRecipeState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -58,12 +55,14 @@ class RecipesListFragment : Fragment() {
                 }
 
                 is RecipesViewModel.ListOfRecipeState.Content -> {
-                    recipeAdapter.updateRecipeFromState(state.recipes)
+
                     Glide.with(this)
                         .load("${Constants.BASE_IMAGES_URL}${state.categoryPictureUrl}")
                         .placeholder(R.drawable.img_placeholder)
                         .error(R.drawable.img_error)
                         .into(binding.ivRecipe)
+                    recipeAdapter.updateRecipeFromState(state.recipes)
+                    binding.rvRecipes.adapter = recipeAdapter
                     binding.tvRecipe.text = state.categoryDescription
                     recipeAdapter.setOnItemClickListener(object :
                         RecipeListAdapter.OnItemClickListener {

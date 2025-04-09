@@ -47,11 +47,11 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
 
                 is RepositoryResult.Error -> {
                     Log.e("Categories", "Loading failed", result.exception)
-                    val errormessage = when (result.exception) {
+                    val errorMessage = when (result.exception) {
                         is IOException -> getApplication<Application>().getString(R.string.network_error)
                         else -> getApplication<Application>().getString(R.string.data_error)
                     }
-                    _allRecipesState.value = ListOfRecipeState.Error(errormessage)
+                    _allRecipesState.value = ListOfRecipeState.Error(errorMessage)
                 }
             }
         }
