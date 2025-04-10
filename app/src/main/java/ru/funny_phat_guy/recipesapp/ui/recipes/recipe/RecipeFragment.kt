@@ -124,7 +124,7 @@ class RecipeFragment : Fragment() {
         }
     }
 
-   private fun initDivider() {
+    private fun initDivider() {
         val ingredientsRecyclerView = binding.rvIngredients
         val methodRecyclerView = binding.rvMethod
         val dividerItemDecoration = requireContext().let {
