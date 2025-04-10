@@ -36,7 +36,7 @@ class RecipeViewModel(application: Application) :
         context.getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
     }
 
-    private val repository: RecipesRepository = RecipesRepository()
+    private val repository: RecipesRepository = RecipesRepository(application)
 
     sealed class RecipeState {
         object Loading : RecipeState()

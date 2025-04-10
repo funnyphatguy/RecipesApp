@@ -18,7 +18,7 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 class RecipesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _allRecipesState = MutableLiveData<ListOfRecipeState>(ListOfRecipeState.Loading)
-    private val repository: RecipesRepository = RecipesRepository()
+    private val repository: RecipesRepository = RecipesRepository(application)
 
     val allRecipeState get() = _allRecipesState
 

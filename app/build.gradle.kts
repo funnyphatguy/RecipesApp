@@ -43,9 +43,10 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
-    implementation (libs.glide)
+    implementation(libs.glide)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)

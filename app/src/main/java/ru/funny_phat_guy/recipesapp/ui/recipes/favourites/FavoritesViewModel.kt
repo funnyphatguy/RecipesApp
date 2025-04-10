@@ -19,7 +19,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     private val _favoritesRecipeState = MutableLiveData<FavoritesState>(FavoritesState.Loading)
     val favoritesRecipeState get() = _favoritesRecipeState
 
-    private val repository: RecipesRepository = RecipesRepository()
+    private val repository: RecipesRepository = RecipesRepository(application)
 
     private val context get() = getApplication<Application>().applicationContext
 
