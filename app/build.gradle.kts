@@ -45,7 +45,6 @@ android {
 dependencies {
     val room_version = "2.7.0"
     implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
     implementation (libs.glide)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)

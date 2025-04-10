@@ -9,7 +9,6 @@ plugins {
 buildscript {
     repositories {
         google()
-        gradlePluginPortal()
     }
     dependencies {
         val nav_version = "2.8.9"
