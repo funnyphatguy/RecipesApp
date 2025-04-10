@@ -16,7 +16,6 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants
-import ru.funny_phat_guy.recipesapp.ui.categories.CategoriesViewModel
 
 class RecipeFragment : Fragment() {
 
