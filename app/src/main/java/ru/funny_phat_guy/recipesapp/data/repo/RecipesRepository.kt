@@ -1,8 +1,7 @@
-package ru.funny_phat_guy.recipesapp.data
+package ru.funny_phat_guy.recipesapp.data.repo
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +9,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import ru.funny_phat_guy.recipesapp.data.room.CategoryDatabase
+import ru.funny_phat_guy.recipesapp.data.room.RecipeDatabase
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
@@ -22,12 +23,20 @@ class RecipesRepository(context: Context) {
     private val contentType = "application/json".toMediaType()
 
 
-   private val categoryDatabase: CategoryDatabase by lazy {
-       Room.databaseBuilder(
-           applicationContext,
-           CategoryDatabase::class.java, "database-category"
-       ).build()
-   }
+    private val categoryDatabase: CategoryDatabase by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            CategoryDatabase::class.java, "database-category"
+        ).fallbackToDestructiveMigration().build()
+    }
+
+    private val recipeDatabase by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            RecipeDatabase::class.java, "database-recipe"
+        )
+            .fallbackToDestructiveMigration().build()
+    }
 
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
@@ -51,13 +60,25 @@ class RecipesRepository(context: Context) {
         }
     }
 
+    suspend fun getRecipesFromCache(): List<Recipe> {
+        return withContext(ioDispatcher) {
+            recipeDatabase.recipeDao().getAll()
+        }
+    }
+
+    suspend fun saveRecipesToCache(recipes: List<Recipe>) {
+        withContext(ioDispatcher) {
+            recipeDatabase.recipeDao().insertAll(recipes)
+        }
+    }
+
     suspend fun getCategoriesFromCache(): List<Category> {
         return withContext(ioDispatcher) {
             categoryDatabase.categoriesDao().getAll()
         }
     }
 
-    suspend fun saveCategoriesToCache(categories: List<Category>){
+    suspend fun saveCategoriesToCache(categories: List<Category>) {
         return withContext(ioDispatcher) {
             categoryDatabase.categoriesDao().insertAll(categories)
         }

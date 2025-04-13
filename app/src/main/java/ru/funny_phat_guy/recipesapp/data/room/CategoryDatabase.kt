@@ -1,4 +1,4 @@
-package ru.funny_phat_guy.recipesapp.data
+package ru.funny_phat_guy.recipesapp.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okio.IOException
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.RecipesRepository
-import ru.funny_phat_guy.recipesapp.data.RepositoryResult
+import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
+import ru.funny_phat_guy.recipesapp.data.repo.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES

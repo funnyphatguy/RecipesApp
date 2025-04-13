@@ -6,18 +6,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
 import kotlinx.coroutines.launch
 import okio.IOException
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.CategoryDatabase
-import ru.funny_phat_guy.recipesapp.data.RecipesRepository
-import ru.funny_phat_guy.recipesapp.data.RepositoryResult
+import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
+import ru.funny_phat_guy.recipesapp.data.repo.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Category
 
-class CategoriesViewModel(application: Application) : AndroidViewModel(application) {
-    val repository: RecipesRepository = RecipesRepository(application)
+class CategoriesViewModel(
+    application: Application,
 
+    ) : AndroidViewModel(application) {
+
+    private val repository: RecipesRepository = RecipesRepository(application)
     private val _allCategoryState = MutableLiveData<CategoriesState>(CategoriesState.Loading)
     val allCategoryState: LiveData<CategoriesState> = _allCategoryState
 

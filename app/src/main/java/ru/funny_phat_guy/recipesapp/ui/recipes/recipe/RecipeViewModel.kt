@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -14,17 +13,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okio.IOException
 import ru.funny_phat_guy.recipesapp.R
-import ru.funny_phat_guy.recipesapp.data.RecipesRepository
-import ru.funny_phat_guy.recipesapp.data.RepositoryResult
+import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
+import ru.funny_phat_guy.recipesapp.data.repo.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
 import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes.RecipesViewModel.ListOfRecipeState
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.*
 
 class RecipeViewModel(application: Application) :
     AndroidViewModel(application) {
-
+    private val repository: RecipesRepository = RecipesRepository(application)
     private val _recipeState = MutableLiveData<RecipeState>(RecipeState.Loading)
 
     val recipeState: LiveData<RecipeState> get() = _recipeState
@@ -35,8 +33,6 @@ class RecipeViewModel(application: Application) :
     private val sharedPref: SharedPreferences by lazy {
         context.getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
     }
-
-    private val repository: RecipesRepository = RecipesRepository(application)
 
     sealed class RecipeState {
         object Loading : RecipeState()
@@ -82,6 +78,9 @@ class RecipeViewModel(application: Application) :
         viewModelScope.launch {
 
             _recipeState.value = RecipeState.Loading
+
+
+
             when (val recipe = repository.getRecipeById(recipeId)) {
                 is RepositoryResult.Success -> {
                     val isFavorite = recipe.data.id.toString() in getFavorites()
