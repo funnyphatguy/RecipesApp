@@ -1,6 +1,9 @@
 package ru.funny_phat_guy.recipesapp.data
 
+import android.content.Context
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,9 +15,19 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 import java.io.IOException
 
-class RecipesRepository {
+class RecipesRepository(context: Context) {
+
+    private val applicationContext = context.applicationContext
 
     private val contentType = "application/json".toMediaType()
+
+
+   private val categoryDatabase: CategoryDatabase by lazy {
+       Room.databaseBuilder(
+           applicationContext,
+           CategoryDatabase::class.java, "database-category"
+       ).build()
+   }
 
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
@@ -35,6 +48,18 @@ class RecipesRepository {
                 Log.e("RecipeApiService", "Network error: ${e.message}")
                 RepositoryResult.Error(e)
             }
+        }
+    }
+
+    suspend fun getCategoriesFromCache(): List<Category> {
+        return withContext(ioDispatcher) {
+            categoryDatabase.categoriesDao().getAll()
+        }
+    }
+
+    suspend fun saveCategoriesToCache(categories: List<Category>){
+        return withContext(ioDispatcher) {
+            categoryDatabase.categoriesDao().insertAll(categories)
         }
     }
 
