@@ -3,6 +3,7 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 import ru.funny_phat_guy.recipesapp.R
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,9 +85,37 @@ class RecipesListFragment : Fragment() {
     }
 
     fun openRecipeByRecipeId(recipeId: Int) {
-        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
-            recipeId = recipeId
-        )
-        findNavController().navigate(action)
+        recipesViewModel.allRecipeState.value?.let { currentState ->
+            when (currentState) {
+                is RecipesViewModel.ListOfRecipeState.Loading -> {
+                    Log.i("RecipesListFragment", "RecipesListFragment is loading")
+                }
+
+                is RecipesViewModel.ListOfRecipeState.Content -> {
+                    val recipe = currentState.recipes.find { it.id == recipeId } ?: run {
+                        Toast.makeText(
+                            requireContext(),
+                            "Рецепт не найден",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+                    val action =
+                        RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+                            recipe = recipe
+                        )
+                    findNavController().navigate(action)
+                }
+
+                is RecipesViewModel.ListOfRecipeState.Error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Ошибка загрузки данных: ${currentState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+        }
     }
+
+
 }

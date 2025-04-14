@@ -34,15 +34,8 @@ class CategoriesViewModel(
 
     fun getCategories() {
         viewModelScope.launch {
-            _allCategoryState.value = CategoriesState.Loading
-            val dataFromCache = repository.getCategoriesFromCache()
-            if (dataFromCache.isNotEmpty()) {
-                _allCategoryState.value = CategoriesState.Success(dataFromCache)
-            }
-
             when (val result = repository.getCategories()) {
                 is RepositoryResult.Success -> {
-                    repository.saveCategoriesToCache(categories = result.data)
                     _allCategoryState.value = CategoriesState.Success(result.data)
                 }
 

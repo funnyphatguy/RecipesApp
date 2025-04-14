@@ -47,6 +47,41 @@ class RecipesRepository(context: Context) {
     private var service: RecipeApiService =
         retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
+
+
+    suspend fun getCategories(): RepositoryResult<List<Category>> {
+        return withContext(ioDispatcher) {
+            try {
+                val dataFromCache = categoryDatabase.categoriesDao().getAll()
+                if (dataFromCache.isNotEmpty()) {
+                    return@withContext RepositoryResult.Success(dataFromCache)
+                }
+                val dataFromNet = service.getCategories()
+                categoryDatabase.categoriesDao().insertAll(dataFromNet)
+                RepositoryResult.Success(dataFromNet)
+            } catch (e: Exception) {
+                val fallBackData = categoryDatabase.categoriesDao().getAll()
+                if (fallBackData.isNotEmpty()) {
+                    RepositoryResult.Success(fallBackData)
+                } else {
+                    RepositoryResult.Error(e)
+                }
+            }
+        }
+    }
+
+//    suspend fun getRecipes(ids):RepositoryResult<List<Recipe>>{
+//        return withContext(ioDispatcher) {
+//            try {
+//                val dataFromCache = recipeDatabase.recipeDao().getAll()
+//                if (dataFromCache.isNotEmpty()){
+//                    return@withContext RepositoryResult.Success(dataFromCache)
+//                }
+//                val dataFromNet = service.getRecipesByIds()
+//            }
+//        }
+//    }
+
     suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
         return withContext(ioDispatcher) {
             try {
@@ -81,17 +116,6 @@ class RecipesRepository(context: Context) {
     suspend fun saveCategoriesToCache(categories: List<Category>) {
         return withContext(ioDispatcher) {
             categoryDatabase.categoriesDao().insertAll(categories)
-        }
-    }
-
-    suspend fun getCategories(): RepositoryResult<List<Category>> {
-        return withContext(ioDispatcher) {
-            try {
-                val categories = service.getCategories()
-                RepositoryResult.Success(categories)
-            } catch (e: Exception) {
-                RepositoryResult.Error(e)
-            }
         }
     }
 

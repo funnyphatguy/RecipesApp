@@ -74,36 +74,26 @@ class RecipeViewModel(application: Application) :
         _recipeState.value = currentState.copy(portionsCount = portionQuantity)
     }
 
-    fun loadRecipe(recipeId: Int) {
+    fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
+            val currentState = _recipeState.value
+            val isFavorite = recipe.id.toString() in getFavorites()
+            _recipeState.value = Content(
+                recipe = recipe,
+                isFavourites = isFavorite,
+                portionsCount = 1,
+                recipeDrawable = recipe.imageUrl
+            )
 
-            _recipeState.value = RecipeState.Loading
-
-
-
-            when (val recipe = repository.getRecipeById(recipeId)) {
-                is RepositoryResult.Success -> {
-                    val isFavorite = recipe.data.id.toString() in getFavorites()
-                    _recipeState.value = Content(
-                        recipe = recipe.data,
-                        isFavourites = isFavorite,
-                        portionsCount = (_recipeState.value as? RecipeState.Content)?.portionsCount
-                            ?: 1,
-                        recipeDrawable = recipe.data.imageUrl
-                    )
-                }
-
-                is RepositoryResult.Error -> {
-                    Log.e("Categories", "Loading failed", recipe.exception)
-                    val errorMessage = when (recipe.exception) {
-                        is IOException -> getApplication<Application>().getString(R.string.network_error)
-                        else -> getApplication<Application>().getString(R.string.data_error)
-                    }
-                    _recipeState.value = RecipeState.Error(errorMessage)
-                }
-
-                null -> Log.i("ERROR", "ERROR")
-            }
+//            //  TODO: Load from network
+//            val currentState = _allRecipesState.value
+//            val recipes = STUB.getRecipesByCategoryId(categoryId)
+//            val drawable = categoryImage?.let { AssetsImageLoader.loadImage(it, context) }
+//            _allRecipesState.value = currentState?.copy(
+//                categoryDescription = categoryDescription,
+//                recipes = recipes,
+//                categoryImage = drawable
+//            )
         }
     }
 }

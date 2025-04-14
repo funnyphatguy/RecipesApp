@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentRecipeBinding
+import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.Constants
 
 class RecipeFragment : Fragment() {
@@ -53,8 +54,8 @@ class RecipeFragment : Fragment() {
         view: View, savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        val recipeId = args.recipeId
-        initUI(recipeId)
+        val recipe = args.recipe
+        initUI(recipe)
         initDivider()
     }
 
@@ -68,8 +69,8 @@ class RecipeFragment : Fragment() {
     private var methodAdapter: MethodAdapter =
         MethodAdapter()
 
-    private fun initUI(recipeId: Int) {
-        recipeId.also { recipeViewModel.loadRecipe(it) }
+    private fun initUI(recipe: Recipe) {
+        recipe.also { recipeViewModel.loadRecipe(it) }
         with(binding) {
             rvIngredients.adapter = ingredientsAdapter
             rvMethod.adapter = methodAdapter

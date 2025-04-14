@@ -45,26 +45,25 @@ class RecipesViewModel(
                     recipes = dataFromCache
                 )
             }
-                when (val result = repository.getRecipesByCategoryId(categoryId)) {
-                    is RepositoryResult.Success -> {
-                        repository.saveRecipesToCache(recipes = result.data)
-                        _allRecipesState.value = ListOfRecipeState.Content(
-                            categoryDescription = categoryDescription,
-                            categoryPictureUrl = categoryImage,
-                            recipes = result.data
-                        )
-                    }
-
-                    is RepositoryResult.Error -> {
-                        Log.e("Categories", "Loading failed", result.exception)
-                        val errorMessage = when (result.exception) {
-                            is IOException -> getApplication<Application>().getString(R.string.network_error)
-                            else -> getApplication<Application>().getString(R.string.data_error)
-                        }
-                        _allRecipesState.value = ListOfRecipeState.Error(errorMessage)
-                    }
+            when (val result = repository.getRecipesByCategoryId(categoryId)) {
+                is RepositoryResult.Success -> {
+                    repository.saveRecipesToCache(recipes = result.data)
+                    _allRecipesState.value = ListOfRecipeState.Content(
+                        categoryDescription = categoryDescription,
+                        categoryPictureUrl = categoryImage,
+                        recipes = result.data
+                    )
                 }
 
+                is RepositoryResult.Error -> {
+                    Log.e("Categories", "Loading failed", result.exception)
+                    val errorMessage = when (result.exception) {
+                        is IOException -> getApplication<Application>().getString(R.string.network_error)
+                        else -> getApplication<Application>().getString(R.string.data_error)
+                    }
+                    _allRecipesState.value = ListOfRecipeState.Error(errorMessage)
+                }
+            }
         }
     }
 }
