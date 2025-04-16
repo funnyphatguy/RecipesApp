@@ -46,10 +46,36 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
-            recipeId = recipeId
-        )
-        findNavController().navigate(action)
+        favoritesViewModel.favoritesRecipeState.value?.let { currentState ->
+            when (currentState) {
+                is FavoritesViewModel.FavoritesState.Loading -> {
+                    Log.i("RecipesListFragment", "RecipesListFragment is loading")
+                }
+
+                is FavoritesViewModel.FavoritesState.Success -> {
+                    val recipe = currentState.recipes.find { it.id == recipeId } ?: run {
+                        Toast.makeText(
+                            requireContext(),
+                            "Рецепт не найден",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+                    val action =
+                        FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
+                            recipe = recipe
+                        )
+                    findNavController().navigate(action)
+                }
+
+                is FavoritesViewModel.FavoritesState.Error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Ошибка загрузки данных: ${currentState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+        }
     }
 
     private fun initUI() {
