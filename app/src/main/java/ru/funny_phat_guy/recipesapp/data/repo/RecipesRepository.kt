@@ -47,6 +47,12 @@ class RecipesRepository(context: Context) {
     private var service: RecipeApiService =
         retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
+    suspend fun isFavoriteSwitcher(id: Int) {
+        withContext(ioDispatcher){
+            val current = recipeDatabase.recipeDao().getRecipeById(id)
+            recipeDatabase.recipeDao().setFavorite(id, !current.isFavorite)
+        }
+    }
 
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
@@ -70,18 +76,6 @@ class RecipesRepository(context: Context) {
         }
     }
 
-//    suspend fun getRecipes(ids):RepositoryResult<List<Recipe>>{
-//        return withContext(ioDispatcher) {
-//            try {
-//                val dataFromCache = recipeDatabase.recipeDao().getAll()
-//                if (dataFromCache.isNotEmpty()){
-//                    return@withContext RepositoryResult.Success(dataFromCache)
-//                }
-//                val dataFromNet = service.getRecipesByIds()
-//            }
-//        }
-//    }
-
     suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
         return withContext(ioDispatcher) {
             try {
@@ -92,6 +86,12 @@ class RecipesRepository(context: Context) {
                 Log.e("RecipeApiService", "Network error: ${e.message}")
                 RepositoryResult.Error(e)
             }
+        }
+    }
+
+    suspend fun getFavorites(): List<Recipe> {
+        return withContext(ioDispatcher) {
+            recipeDatabase.recipeDao().getFavorites()
         }
     }
 
