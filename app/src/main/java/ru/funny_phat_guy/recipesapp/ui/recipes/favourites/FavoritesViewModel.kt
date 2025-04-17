@@ -1,18 +1,12 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.favourites
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import okio.IOException
-import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
-import ru.funny_phat_guy.recipesapp.data.repo.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Recipe
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,8 +22,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         data class Success(val recipes: List<Recipe>) : FavoritesState()
         data class Error(val message: String) : FavoritesState()
     }
-
-
 
     fun loadFavorites() {
         viewModelScope.launch {

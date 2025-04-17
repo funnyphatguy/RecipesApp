@@ -1,9 +1,7 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.list_of_recipes
 
-import ru.funny_phat_guy.recipesapp.R
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.databinding.FragmentsListRecipesBinding
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.ui.Constants

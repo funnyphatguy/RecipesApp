@@ -78,18 +78,6 @@ class RecipesRepository(context: Context) {
         }
     }
 
-    suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
-        return withContext(ioDispatcher) {
-            try {
-                val stringSet = set.joinToString(",")
-                val recipes = service.getRecipesByIds(stringSet)
-                RepositoryResult.Success(recipes)
-            } catch (e: IOException) {
-                Log.e("RecipeApiService", "Network error: ${e.message}")
-                RepositoryResult.Error(e)
-            }
-        }
-    }
 
     suspend fun getFavorites(): List<Recipe> {
         return withContext(ioDispatcher) {

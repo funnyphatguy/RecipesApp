@@ -19,9 +19,6 @@ class RecipeViewModel(application: Application) :
 
     val recipeState: LiveData<RecipeState> get() = _recipeState
 
-    private val context: Context
-        get() = getApplication<Application>().applicationContext
-
     sealed class RecipeState {
         object Loading : RecipeState()
         data class Content(

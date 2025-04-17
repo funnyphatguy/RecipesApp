@@ -99,7 +99,7 @@ class FavoritesFragment : Fragment() {
                         binding.tvNothing.text = getString(R.string.empty_favorites)
                         binding.tvNothing.visibility = View.VISIBLE
                         binding.rvFavorites.visibility = View.GONE
-                    } else{
+                    } else {
                         binding.tvNothing.visibility = View.GONE
                         binding.rvFavorites.visibility = View.VISIBLE
                         favoritesAdapter.updateRecipeFromState(state.recipes)
@@ -113,14 +113,14 @@ class FavoritesFragment : Fragment() {
                     }
                 }
 
-                    is FavoritesViewModel.FavoritesState.Error -> {
-                        Toast.makeText(
-                            requireContext(),
-                            state.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                is FavoritesViewModel.FavoritesState.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        state.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
+}
