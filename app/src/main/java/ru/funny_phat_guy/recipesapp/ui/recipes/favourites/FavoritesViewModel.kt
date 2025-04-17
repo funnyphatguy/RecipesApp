@@ -29,31 +29,16 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         data class Error(val message: String) : FavoritesState()
     }
 
-    fun getFavoritesFragment(): Set<Int> {
-        val sharedPreferences by lazy {
-            context.getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
-        }
-        val favoriteSet = sharedPreferences.getStringSet(FAVORITES, emptySet()).orEmpty()
 
-        val favoriteSetInt = favoriteSet.mapNotNull { it.toIntOrNull() }.toSet()
-        return favoriteSetInt
-    }
 
-    fun getFavoriteRecipes(idSet: Set<Int>) {
+    fun loadFavorites() {
         viewModelScope.launch {
             _favoritesRecipeState.value = FavoritesState.Loading
-            when (val result = repository.getRecipesByIds(idSet)) {
-                is RepositoryResult.Success -> {
-                    _favoritesRecipeState.value = FavoritesState.Success(result.data)
-                }
-
-                is RepositoryResult.Error -> {
-                    val errorMessage = when (result.exception) {
-                        is IOException -> getApplication<Application>().getString(R.string.network_error)
-                        else -> getApplication<Application>().getString(R.string.data_error)
-                    }
-                    _favoritesRecipeState.value = FavoritesState.Error(errorMessage)
-                }
+            try {
+                val favorites = repository.getFavorites()
+                _favoritesRecipeState.value = FavoritesState.Success(favorites)
+            } catch (e: Exception) {
+                _favoritesRecipeState.value = FavoritesState.Error("Ошибка: ${e.message}")
             }
         }
     }

@@ -38,6 +38,8 @@ class RecipesRepository(context: Context) {
             .fallbackToDestructiveMigration().build()
     }
 
+
+
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
         .build()
@@ -103,30 +105,22 @@ class RecipesRepository(context: Context) {
 
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         withContext(ioDispatcher) {
-            recipeDatabase.recipeDao().insertAll(recipes)
-        }
-    }
+            val existingRecipes = recipeDatabase.recipeDao().getAll()
+                .associateBy { it.id }
 
-    suspend fun getCategoriesFromCache(): List<Category> {
-        return withContext(ioDispatcher) {
-            categoryDatabase.categoriesDao().getAll()
-        }
-    }
-
-    suspend fun saveCategoriesToCache(categories: List<Category>) {
-        return withContext(ioDispatcher) {
-            categoryDatabase.categoriesDao().insertAll(categories)
-        }
-    }
-
-    suspend fun getRecipeById(burgerRecipeId: Int): RepositoryResult<Recipe>? {
-        return withContext(ioDispatcher) {
-            try {
-                val recipe = service.getRecipe(burgerRecipeId)
-                RepositoryResult.Success(recipe)
-            } catch (e: IOException) {
-                RepositoryResult.Error(e)
+            val recipesToSave = recipes.map { newRecipe ->
+                newRecipe.copy(
+                    isFavorite = existingRecipes[newRecipe.id]?.isFavorite ?: false
+                )
             }
+
+            recipeDatabase.recipeDao().insertAll(recipesToSave)
+        }
+    }
+
+    suspend fun getRecipeById(recipeId: Int): Recipe{
+        return withContext(ioDispatcher) {
+            recipeDatabase.recipeDao().getRecipeById(recipeId)
         }
     }
 

@@ -79,8 +79,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initUI() {
-        val favorites = favoritesViewModel.getFavoritesFragment()
-
         Glide.with(this)
             .load(Constants.BCQ_FAVORITES_PATH)
             .placeholder(R.drawable.img_placeholder)
@@ -88,18 +86,22 @@ class FavoritesFragment : Fragment() {
 
         binding.tvFavorites.text = getString(R.string.recipe_favorites_category)
 
-        if (favorites.isEmpty()) {
-            binding.tvNothing.text = getString(R.string.empty_favorites)
-            binding.rvFavorites.visibility = View.GONE
-        } else {
-            favoritesViewModel.getFavoriteRecipes(favorites) // тут загрузили все в стейт
-            favoritesViewModel.favoritesRecipeState.observe(viewLifecycleOwner) { state ->
-                when (state) {
-                    is FavoritesViewModel.FavoritesState.Loading -> {
-                        Log.d("Favorites", "Data loading in progress")
-                    }
+        favoritesViewModel.loadFavorites()
 
-                    is FavoritesViewModel.FavoritesState.Success -> {
+        favoritesViewModel.favoritesRecipeState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is FavoritesViewModel.FavoritesState.Loading -> {
+                    Log.d("Favorites", "Data loading in progress")
+                }
+
+                is FavoritesViewModel.FavoritesState.Success -> {
+                    if (state.recipes.isEmpty()) {
+                        binding.tvNothing.text = getString(R.string.empty_favorites)
+                        binding.tvNothing.visibility = View.VISIBLE
+                        binding.rvFavorites.visibility = View.GONE
+                    } else{
+                        binding.tvNothing.visibility = View.GONE
+                        binding.rvFavorites.visibility = View.VISIBLE
                         favoritesAdapter.updateRecipeFromState(state.recipes)
                         binding.rvFavorites.adapter = favoritesAdapter
                         favoritesAdapter.setOnItemClickListener(object :
@@ -109,6 +111,7 @@ class FavoritesFragment : Fragment() {
                             }
                         })
                     }
+                }
 
                     is FavoritesViewModel.FavoritesState.Error -> {
                         Toast.makeText(
@@ -121,4 +124,3 @@ class FavoritesFragment : Fragment() {
             }
         }
     }
-}
