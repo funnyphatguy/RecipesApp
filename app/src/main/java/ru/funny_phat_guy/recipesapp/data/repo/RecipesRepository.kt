@@ -38,8 +38,6 @@ class RecipesRepository(context: Context) {
             .fallbackToDestructiveMigration().build()
     }
 
-
-
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
         .build()
@@ -49,13 +47,13 @@ class RecipesRepository(context: Context) {
     private var service: RecipeApiService =
         retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
-    suspend fun isFavoriteSwitcher(id: Int) {
-        withContext(ioDispatcher){
-            val current = recipeDatabase.recipeDao().getRecipeById(id)
-            recipeDatabase.recipeDao().setFavorite(id, !current.isFavorite)
-        }
+    suspend fun isFavoriteSwitcher(recipe: Recipe) {
+            recipeDatabase.recipeDao().setFavorite(recipe.id, !recipe.isFavorite)
     }
 
+    suspend fun updateRecipe(recipe: Recipe){
+            recipeDatabase.recipeDao().updateRecipe(recipe)
+    }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
         return withContext(ioDispatcher) {
@@ -77,7 +75,6 @@ class RecipesRepository(context: Context) {
             }
         }
     }
-
 
     suspend fun getFavorites(): List<Recipe> {
         return withContext(ioDispatcher) {
@@ -101,12 +98,11 @@ class RecipesRepository(context: Context) {
                     isFavorite = existingRecipes[newRecipe.id]?.isFavorite ?: false
                 )
             }
-
             recipeDatabase.recipeDao().insertAll(recipesToSave)
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int): Recipe{
+    suspend fun getRecipeById(recipeId: Int): Recipe {
         return withContext(ioDispatcher) {
             recipeDatabase.recipeDao().getRecipeById(recipeId)
         }

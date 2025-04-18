@@ -15,8 +15,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val repository: RecipesRepository = RecipesRepository(application)
 
-    private val context get() = getApplication<Application>().applicationContext
-
     sealed class FavoritesState {
         object Loading : FavoritesState()
         data class Success(val recipes: List<Recipe>) : FavoritesState()

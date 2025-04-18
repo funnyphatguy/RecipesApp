@@ -2,7 +2,6 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.*
+import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.Content
 
 class RecipeViewModel(application: Application) :
     AndroidViewModel(application) {
@@ -34,13 +33,17 @@ class RecipeViewModel(application: Application) :
     fun onFavoritesClicked() {
         viewModelScope.launch {
             val currentState = _recipeState.value
-            val currentRecipe = (currentState as? RecipeState.Content)?.recipe ?: return@launch
-            repository.isFavoriteSwitcher(currentRecipe.id)
+            val currentContent = currentState as? Content ?: return@launch
+            val currentRecipe = currentContent.recipe ?: return@launch
 
-            val updatedRecipe = repository.getRecipeById(currentRecipe.id)
-            _recipeState.value = currentState.copy(
+            val updatedRecipe = currentRecipe.copy(isFavorite = !currentRecipe.isFavorite)
+
+            repository.updateRecipe(updatedRecipe)
+
+            _recipeState.value = currentContent.copy(
+                recipe = updatedRecipe,
                 isFavourites = updatedRecipe.isFavorite,
-                recipe = updatedRecipe
+                recipeDrawable = updatedRecipe.imageUrl
             )
         }
     }
@@ -53,14 +56,16 @@ class RecipeViewModel(application: Application) :
 
     fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
-
-            val recipeFromDBase = repository.getRecipeById(recipe.id)
-            _recipeState.value = Content(
-                recipe = recipeFromDBase,
-                isFavourites = recipeFromDBase.isFavorite,
-                portionsCount = 1,
-                recipeDrawable = recipeFromDBase.imageUrl
-            )
+            val recipeFromDB = repository.getRecipeById(recipe.id)
+            viewModelScope.launch {
+                _recipeState.value = Content(
+                    recipe = recipeFromDB,
+                    isFavourites = recipeFromDB.isFavorite,
+                    portionsCount = 1,
+                    recipeDrawable = recipeFromDB.imageUrl
+                )
+            }
         }
+
     }
 }
