@@ -2,23 +2,14 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
-import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import okio.IOException
-import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
-import ru.funny_phat_guy.recipesapp.data.repo.RepositoryResult
 import ru.funny_phat_guy.recipesapp.model.Recipe
-import ru.funny_phat_guy.recipesapp.ui.Constants.ARG_PREFERENCES
-import ru.funny_phat_guy.recipesapp.ui.Constants.FAVORITES
-import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.*
+import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.Content
 
 class RecipeViewModel(application: Application) :
     AndroidViewModel(application) {
@@ -26,13 +17,6 @@ class RecipeViewModel(application: Application) :
     private val _recipeState = MutableLiveData<RecipeState>(RecipeState.Loading)
 
     val recipeState: LiveData<RecipeState> get() = _recipeState
-
-    private val context: Context
-        get() = getApplication<Application>().applicationContext
-
-    private val sharedPref: SharedPreferences by lazy {
-        context.getSharedPreferences(ARG_PREFERENCES, Context.MODE_PRIVATE)
-    }
 
     sealed class RecipeState {
         object Loading : RecipeState()
@@ -46,26 +30,22 @@ class RecipeViewModel(application: Application) :
         data class Error(val message: String) : RecipeState()
     }
 
-    private fun getFavorites(): HashSet<String> {
-        val favoriteSet = sharedPref.getStringSet(FAVORITES, emptySet()).orEmpty()
-        return HashSet(favoriteSet)
-    }
-
-    private fun saveFavorites(ides: Set<String>) {
-        sharedPref.edit { putStringSet(FAVORITES, ides) }
-    }
-
     fun onFavoritesClicked() {
-        val currentState = _recipeState.value ?: return
-        if (currentState !is RecipeState.Content) return
+        viewModelScope.launch {
+            val currentState = _recipeState.value
+            val currentContent = currentState as? Content ?: return@launch
+            val currentRecipe = currentContent.recipe ?: return@launch
 
-        val recipeId = currentState.recipe?.id?.toString() ?: return
+            val updatedRecipe = currentRecipe.copy(isFavorite = !currentRecipe.isFavorite)
 
-        val newFavorites = getFavorites().toMutableSet().apply {
-            if (currentState.isFavourites) remove(recipeId) else add(recipeId)
+            repository.updateRecipe(updatedRecipe)
+
+            _recipeState.value = currentContent.copy(
+                recipe = updatedRecipe,
+                isFavourites = updatedRecipe.isFavorite,
+                recipeDrawable = updatedRecipe.imageUrl
+            )
         }
-        saveFavorites(newFavorites)
-        _recipeState.value = currentState.copy(isFavourites = !currentState.isFavourites)
     }
 
     fun updatePortionCounter(portionQuantity: Int) {
@@ -76,24 +56,16 @@ class RecipeViewModel(application: Application) :
 
     fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            val currentState = _recipeState.value
-            val isFavorite = recipe.id.toString() in getFavorites()
-            _recipeState.value = Content(
-                recipe = recipe,
-                isFavourites = isFavorite,
-                portionsCount = 1,
-                recipeDrawable = recipe.imageUrl
-            )
-
-//            //  TODO: Load from network
-//            val currentState = _allRecipesState.value
-//            val recipes = STUB.getRecipesByCategoryId(categoryId)
-//            val drawable = categoryImage?.let { AssetsImageLoader.loadImage(it, context) }
-//            _allRecipesState.value = currentState?.copy(
-//                categoryDescription = categoryDescription,
-//                recipes = recipes,
-//                categoryImage = drawable
-//            )
+            val recipeFromDB = repository.getRecipeById(recipe.id)
+            viewModelScope.launch {
+                _recipeState.value = Content(
+                    recipe = recipeFromDB,
+                    isFavourites = recipeFromDB.isFavorite,
+                    portionsCount = 1,
+                    recipeDrawable = recipeFromDB.imageUrl
+                )
+            }
         }
+
     }
 }

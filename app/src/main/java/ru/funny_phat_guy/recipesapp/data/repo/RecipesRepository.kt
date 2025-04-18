@@ -47,7 +47,13 @@ class RecipesRepository(context: Context) {
     private var service: RecipeApiService =
         retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
 
+    suspend fun isFavoriteSwitcher(recipe: Recipe) {
+            recipeDatabase.recipeDao().setFavorite(recipe.id, !recipe.isFavorite)
+    }
 
+    suspend fun updateRecipe(recipe: Recipe){
+            recipeDatabase.recipeDao().updateRecipe(recipe)
+    }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
         return withContext(ioDispatcher) {
@@ -70,28 +76,9 @@ class RecipesRepository(context: Context) {
         }
     }
 
-//    suspend fun getRecipes(ids):RepositoryResult<List<Recipe>>{
-//        return withContext(ioDispatcher) {
-//            try {
-//                val dataFromCache = recipeDatabase.recipeDao().getAll()
-//                if (dataFromCache.isNotEmpty()){
-//                    return@withContext RepositoryResult.Success(dataFromCache)
-//                }
-//                val dataFromNet = service.getRecipesByIds()
-//            }
-//        }
-//    }
-
-    suspend fun getRecipesByIds(set: Set<Int>): RepositoryResult<List<Recipe>> {
+    suspend fun getFavorites(): List<Recipe> {
         return withContext(ioDispatcher) {
-            try {
-                val stringSet = set.joinToString(",")
-                val recipes = service.getRecipesByIds(stringSet)
-                RepositoryResult.Success(recipes)
-            } catch (e: IOException) {
-                Log.e("RecipeApiService", "Network error: ${e.message}")
-                RepositoryResult.Error(e)
-            }
+            recipeDatabase.recipeDao().getFavorites()
         }
     }
 
@@ -103,30 +90,21 @@ class RecipesRepository(context: Context) {
 
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         withContext(ioDispatcher) {
-            recipeDatabase.recipeDao().insertAll(recipes)
-        }
-    }
+            val existingRecipes = recipeDatabase.recipeDao().getAll()
+                .associateBy { it.id }
 
-    suspend fun getCategoriesFromCache(): List<Category> {
-        return withContext(ioDispatcher) {
-            categoryDatabase.categoriesDao().getAll()
-        }
-    }
-
-    suspend fun saveCategoriesToCache(categories: List<Category>) {
-        return withContext(ioDispatcher) {
-            categoryDatabase.categoriesDao().insertAll(categories)
-        }
-    }
-
-    suspend fun getRecipeById(burgerRecipeId: Int): RepositoryResult<Recipe>? {
-        return withContext(ioDispatcher) {
-            try {
-                val recipe = service.getRecipe(burgerRecipeId)
-                RepositoryResult.Success(recipe)
-            } catch (e: IOException) {
-                RepositoryResult.Error(e)
+            val recipesToSave = recipes.map { newRecipe ->
+                newRecipe.copy(
+                    isFavorite = existingRecipes[newRecipe.id]?.isFavorite ?: false
+                )
             }
+            recipeDatabase.recipeDao().insertAll(recipesToSave)
+        }
+    }
+
+    suspend fun getRecipeById(recipeId: Int): Recipe {
+        return withContext(ioDispatcher) {
+            recipeDatabase.recipeDao().getRecipeById(recipeId)
         }
     }
 
