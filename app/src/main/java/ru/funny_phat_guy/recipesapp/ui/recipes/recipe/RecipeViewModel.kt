@@ -1,19 +1,19 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.Content
 
-class RecipeViewModel(application: Application) :
-    AndroidViewModel(application) {
-    private val repository: RecipesRepository = RecipesRepository(application)
+class RecipeViewModel(
+    private val repository: RecipesRepository
+) : ViewModel() {
+
     private val _recipeState = MutableLiveData<RecipeState>(RecipeState.Loading)
 
     val recipeState: LiveData<RecipeState> get() = _recipeState

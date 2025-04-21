@@ -1,72 +1,36 @@
 package ru.funny_phat_guy.recipesapp.data.repo
 
-import android.content.Context
-import android.util.Log
-import androidx.room.Room
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
-import ru.funny_phat_guy.recipesapp.data.room.CategoryDatabase
-import ru.funny_phat_guy.recipesapp.data.room.RecipeDatabase
+import ru.funny_phat_guy.recipesapp.data.room.CategoriesDao
+import ru.funny_phat_guy.recipesapp.data.room.RecipesDao
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
-import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 import java.io.IOException
 
-class RecipesRepository(context: Context) {
+class RecipesRepository(
+    private val categoriesDao: CategoriesDao,
+    private val recipesDao: RecipesDao,
+    private val ioDispatcher: CoroutineDispatcher,
+    private val service: RecipeApiService
+) {
 
-    private val applicationContext = context.applicationContext
-
-    private val contentType = "application/json".toMediaType()
-
-
-    private val categoryDatabase: CategoryDatabase by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            CategoryDatabase::class.java, "database-category"
-        ).fallbackToDestructiveMigration().build()
-    }
-
-    private val recipeDatabase by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            RecipeDatabase::class.java, "database-recipe"
-        )
-            .fallbackToDestructiveMigration().build()
-    }
-
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL).addConverterFactory(Json.asConverterFactory(contentType))
-        .build()
-
-    private val ioDispatcher = Dispatchers.IO
-
-    private var service: RecipeApiService =
-        retrofit.create<RecipeApiService?>(RecipeApiService::class.java)
-
-    suspend fun isFavoriteSwitcher(recipe: Recipe) {
-            recipeDatabase.recipeDao().setFavorite(recipe.id, !recipe.isFavorite)
-    }
-
-    suspend fun updateRecipe(recipe: Recipe){
-            recipeDatabase.recipeDao().updateRecipe(recipe)
+    suspend fun updateRecipe(recipe: Recipe) {
+        recipesDao.updateRecipe(recipe)
     }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
         return withContext(ioDispatcher) {
             try {
-                val dataFromCache = categoryDatabase.categoriesDao().getAll()
+                val dataFromCache = categoriesDao.getAll()
                 if (dataFromCache.isNotEmpty()) {
                     return@withContext RepositoryResult.Success(dataFromCache)
                 }
                 val dataFromNet = service.getCategories()
-                categoryDatabase.categoriesDao().insertAll(dataFromNet)
+                categoriesDao.insertAll(dataFromNet)
                 RepositoryResult.Success(dataFromNet)
             } catch (e: Exception) {
-                val fallBackData = categoryDatabase.categoriesDao().getAll()
+                val fallBackData = categoriesDao.getAll()
                 if (fallBackData.isNotEmpty()) {
                     RepositoryResult.Success(fallBackData)
                 } else {
@@ -78,19 +42,19 @@ class RecipesRepository(context: Context) {
 
     suspend fun getFavorites(): List<Recipe> {
         return withContext(ioDispatcher) {
-            recipeDatabase.recipeDao().getFavorites()
+            recipesDao.getFavorites()
         }
     }
 
     suspend fun getRecipesFromCache(): List<Recipe> {
         return withContext(ioDispatcher) {
-            recipeDatabase.recipeDao().getAll()
+            recipesDao.getAll()
         }
     }
 
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         withContext(ioDispatcher) {
-            val existingRecipes = recipeDatabase.recipeDao().getAll()
+            val existingRecipes = recipesDao.getAll()
                 .associateBy { it.id }
 
             val recipesToSave = recipes.map { newRecipe ->
@@ -98,13 +62,13 @@ class RecipesRepository(context: Context) {
                     isFavorite = existingRecipes[newRecipe.id]?.isFavorite ?: false
                 )
             }
-            recipeDatabase.recipeDao().insertAll(recipesToSave)
+            recipesDao.insertAll(recipesToSave)
         }
     }
 
     suspend fun getRecipeById(recipeId: Int): Recipe {
         return withContext(ioDispatcher) {
-            recipeDatabase.recipeDao().getRecipeById(recipeId)
+            recipesDao.getRecipeById(recipeId)
         }
     }
 

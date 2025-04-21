@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okio.IOException
@@ -14,11 +15,8 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 
 
 class RecipesViewModel(
-    application: Application,
-
-    ) : AndroidViewModel(application) {
-
-    private val repository: RecipesRepository = RecipesRepository(application)
+    private val repository: RecipesRepository
+) : ViewModel() {
 
     private val _allRecipesState = MutableLiveData<ListOfRecipeState>(ListOfRecipeState.Loading)
     val allRecipeState get() = _allRecipesState
@@ -57,11 +55,6 @@ class RecipesViewModel(
 
                 is RepositoryResult.Error -> {
                     Log.e("Categories", "Loading failed", result.exception)
-                    val errorMessage = when (result.exception) {
-                        is IOException -> getApplication<Application>().getString(R.string.network_error)
-                        else -> getApplication<Application>().getString(R.string.data_error)
-                    }
-                    _allRecipesState.value = ListOfRecipeState.Error(errorMessage)
                 }
             }
         }
