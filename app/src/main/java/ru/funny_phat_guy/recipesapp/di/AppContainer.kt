@@ -17,11 +17,11 @@ class AppContainer(context: Context) {
 
     val categoryDatabase =
         Room.databaseBuilder(context, CategoryDatabase::class.java, "database-category")
-            .fallbackToDestructiveMigration().build()
+            .allowMainThreadQueries().build()
 
     val recipeDatabase =
         Room.databaseBuilder(context, RecipeDatabase::class.java, "database-recipe")
-            .fallbackToDestructiveMigration().build()
+            .allowMainThreadQueries().build()
 
 
     val categoriesDao = categoryDatabase.categoriesDao()

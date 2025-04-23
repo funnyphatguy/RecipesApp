@@ -1,6 +1,7 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -55,16 +56,17 @@ class RecipeViewModel(
     }
 
     fun loadRecipe(recipe: Recipe) {
-        viewModelScope.launch {
-            val recipeFromDB = repository.getRecipeById(recipe.id)
-            viewModelScope.launch {
-                _recipeState.value = Content(
-                    recipe = recipeFromDB,
-                    isFavourites = recipeFromDB.isFavorite,
-                    portionsCount = 1,
-                    recipeDrawable = recipeFromDB.imageUrl
-                )
-            }
+        try {
+            _recipeState.value = Content(
+                recipe = recipe,
+                isFavourites = recipe.isFavorite,
+                portionsCount = 1,
+                recipeDrawable = recipe.imageUrl
+            )
+        } catch (e: Exception) {
+            _recipeState.value =
+                RecipeState.Error(message = "Не удалось загрузить рецепт ${e.message}")
+            Log.e("RecipesVM", "не удалось загрузить рецепт", e)
         }
 
     }

@@ -35,7 +35,12 @@ class RecipesViewModel(
     fun loadRecipesData(categoryId: Int?, categoryImage: String, categoryDescription: String) {
         viewModelScope.launch {
             _allRecipesState.value = ListOfRecipeState.Loading
-            val dataFromCache = repository.getRecipesFromCache()
+            val dataFromCache = try {
+                repository.getRecipesFromCache()
+            } catch (e: Exception) {
+                Log.e("RecipesVM", "Cache read error", e)
+                emptyList<Recipe>()
+            }
             if (dataFromCache.isNotEmpty()) {
                 _allRecipesState.value = ListOfRecipeState.Content(
                     categoryDescription = categoryDescription,
@@ -43,9 +48,15 @@ class RecipesViewModel(
                     recipes = dataFromCache
                 )
             }
-            when (val result = repository.getRecipesByCategoryId(categoryId)) {
+            when (
+                val result = repository.getRecipesByCategoryId(categoryId)) {
                 is RepositoryResult.Success -> {
-                    repository.saveRecipesToCache(recipes = result.data)
+                    try {
+                        repository.saveRecipesToCache(recipes = result.data)
+                    } catch (e: Exception) {
+                        Log.e("RecipesVM", "Cache save error", e)
+                        emptyList<Recipe>()
+                    }
                     _allRecipesState.value = ListOfRecipeState.Content(
                         categoryDescription = categoryDescription,
                         categoryPictureUrl = categoryImage,
@@ -54,7 +65,7 @@ class RecipesViewModel(
                 }
 
                 is RepositoryResult.Error -> {
-                    Log.e("Categories", "Loading failed", result.exception)
+                    Log.e("RecipesVM", "Loading failed", result.exception)
                 }
             }
         }
