@@ -21,9 +21,8 @@ class RecipesRepository(
             recipesDao.updateRecipe(recipe)
         } catch (e: Exception) {
             Log.e("!!!", "Error in updateRecipe", e)
-            emptyList<Recipe>()
+            RepositoryResult.Error(e)
         }
-
     }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
