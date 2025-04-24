@@ -1,5 +1,6 @@
 package ru.funny_phat_guy.recipesapp.data.repo
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.funny_phat_guy.recipesapp.data.room.CategoriesDao
@@ -16,7 +17,13 @@ class RecipesRepository(
 ) {
 
     suspend fun updateRecipe(recipe: Recipe) {
-        recipesDao.updateRecipe(recipe)
+        try {
+            recipesDao.updateRecipe(recipe)
+        } catch (e: Exception) {
+            Log.e("!!!", "Error in updateRecipe", e)
+            emptyList<Recipe>()
+        }
+
     }
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
@@ -42,13 +49,23 @@ class RecipesRepository(
 
     suspend fun getFavorites(): List<Recipe> {
         return withContext(ioDispatcher) {
-            recipesDao.getFavorites()
+            try {
+                recipesDao.getFavorites()
+            } catch (e: Exception) {
+                Log.e("!!!", "Error in getFavorites", e)
+                emptyList<Recipe>()
+            }
         }
     }
 
     suspend fun getRecipesFromCache(): List<Recipe> {
         return withContext(ioDispatcher) {
-            recipesDao.getAll()
+            try {
+                recipesDao.getAll()
+            } catch (e: Exception) {
+                Log.e("!!!", "Error in getRecipesFromCache", e)
+                emptyList<Recipe>()
+            }
         }
     }
 
@@ -56,19 +73,12 @@ class RecipesRepository(
         withContext(ioDispatcher) {
             val existingRecipes = recipesDao.getAll()
                 .associateBy { it.id }
-
             val recipesToSave = recipes.map { newRecipe ->
                 newRecipe.copy(
-                    isFavorite = existingRecipes[newRecipe.id]?.isFavorite ?: false
+                    isFavorite = existingRecipes[newRecipe.id]?.isFavorite == true
                 )
             }
             recipesDao.insertAll(recipesToSave)
-        }
-    }
-
-    suspend fun getRecipeById(recipeId: Int): Recipe {
-        return withContext(ioDispatcher) {
-            recipesDao.getRecipeById(recipeId)
         }
     }
 
