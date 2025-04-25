@@ -12,8 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val repository: RecipesRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _favoritesRecipeState = MutableLiveData<FavoritesState>(FavoritesState.Loading)
     val favoritesRecipeState get() = _favoritesRecipeState

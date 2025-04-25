@@ -1,6 +1,7 @@
 package ru.funny_phat_guy.recipesapp.data.repo
 
 import android.util.Log
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

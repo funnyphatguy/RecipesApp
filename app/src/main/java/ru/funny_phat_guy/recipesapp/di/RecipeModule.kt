@@ -24,7 +24,7 @@ import ru.funny_phat_guy.recipesapp.ui.Constants.BASE_URL
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RecipeModule(context: Context) {
+class RecipeModule() {
 
     @Provides
     fun provideCategoryDataBase(@ApplicationContext context: Context): CategoryDatabase =
