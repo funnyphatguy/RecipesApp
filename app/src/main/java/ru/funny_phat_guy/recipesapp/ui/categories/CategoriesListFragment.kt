@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import ru.funny_phat_guy.recipesapp.R
 import ru.funny_phat_guy.recipesapp.RecipesApplication
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants
 
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
@@ -24,9 +26,6 @@ class CategoriesListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        categoriesViewModel = appContainer.categoriesViewModelFactory.create()
     }
 
     override fun onCreateView(

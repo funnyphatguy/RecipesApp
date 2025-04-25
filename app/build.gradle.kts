@@ -43,7 +43,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.hilt.android)
+    ksp("com.google.dagger:hilt-android-compiler:2.56.1")
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.glide)

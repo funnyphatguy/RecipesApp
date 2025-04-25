@@ -3,11 +3,17 @@ package ru.funny_phat_guy.recipesapp.ui.recipes.favourites
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
+import javax.inject.Inject
 
-class FavoritesViewModel(private val repository: RecipesRepository): ViewModel() {
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
+    private val repository: RecipesRepository
+) :
+    ViewModel() {
 
     private val _favoritesRecipeState = MutableLiveData<FavoritesState>(FavoritesState.Loading)
     val favoritesRecipeState get() = _favoritesRecipeState
