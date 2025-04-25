@@ -6,12 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.Content
+import javax.inject.Inject
 
-class RecipeViewModel(
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
     private val repository: RecipesRepository
 ) : ViewModel() {
 

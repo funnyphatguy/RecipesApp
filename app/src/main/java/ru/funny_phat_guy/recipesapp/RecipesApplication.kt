@@ -1,14 +1,8 @@
 package ru.funny_phat_guy.recipesapp
 
 import android.app.Application
-import ru.funny_phat_guy.recipesapp.di.AppContainer
+import dagger.hilt.android.HiltAndroidApp
+import ru.funny_phat_guy.recipesapp.di.RecipeModule
 
-class RecipesApplication() : Application() {
-
-    lateinit var appContainer: AppContainer
-
-    override fun onCreate() {
-        super.onCreate()
-        appContainer = AppContainer(this)
-    }
-}
+@HiltAndroidApp
+class RecipesApplication() : Application()

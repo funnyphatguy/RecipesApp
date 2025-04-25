@@ -1,20 +1,24 @@
 package ru.funny_phat_guy.recipesapp.data.repo
 
 import android.util.Log
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.funny_phat_guy.recipesapp.data.room.CategoriesDao
 import ru.funny_phat_guy.recipesapp.data.room.RecipesDao
 import ru.funny_phat_guy.recipesapp.model.Category
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import java.io.IOException
+import javax.inject.Inject
 
-class RecipesRepository(
+class RecipesRepository @Inject constructor(
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
-    private val ioDispatcher: CoroutineDispatcher,
-    private val service: RecipeApiService
+    private val service: RecipeApiService,
 ) {
+
+    private val ioDispatcher = Dispatchers.IO
 
     suspend fun updateRecipe(recipe: Recipe) {
         try {
