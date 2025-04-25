@@ -1,19 +1,16 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.favourites
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 
-class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(private val repository: RecipesRepository): ViewModel() {
 
     private val _favoritesRecipeState = MutableLiveData<FavoritesState>(FavoritesState.Loading)
     val favoritesRecipeState get() = _favoritesRecipeState
-
-    private val repository: RecipesRepository = RecipesRepository(application)
 
     sealed class FavoritesState {
         object Loading : FavoritesState()

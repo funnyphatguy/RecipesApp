@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okio.IOException
@@ -14,11 +15,8 @@ import ru.funny_phat_guy.recipesapp.model.Recipe
 
 
 class RecipesViewModel(
-    application: Application,
-
-    ) : AndroidViewModel(application) {
-
-    private val repository: RecipesRepository = RecipesRepository(application)
+    private val repository: RecipesRepository
+) : ViewModel() {
 
     private val _allRecipesState = MutableLiveData<ListOfRecipeState>(ListOfRecipeState.Loading)
     val allRecipeState get() = _allRecipesState
@@ -37,7 +35,12 @@ class RecipesViewModel(
     fun loadRecipesData(categoryId: Int?, categoryImage: String, categoryDescription: String) {
         viewModelScope.launch {
             _allRecipesState.value = ListOfRecipeState.Loading
-            val dataFromCache = repository.getRecipesFromCache()
+            val dataFromCache = try {
+                repository.getRecipesFromCache()
+            } catch (e: Exception) {
+                Log.e("RecipesVM", "Cache read error", e)
+                emptyList<Recipe>()
+            }
             if (dataFromCache.isNotEmpty()) {
                 _allRecipesState.value = ListOfRecipeState.Content(
                     categoryDescription = categoryDescription,
@@ -45,9 +48,15 @@ class RecipesViewModel(
                     recipes = dataFromCache
                 )
             }
-            when (val result = repository.getRecipesByCategoryId(categoryId)) {
+            when (
+                val result = repository.getRecipesByCategoryId(categoryId)) {
                 is RepositoryResult.Success -> {
-                    repository.saveRecipesToCache(recipes = result.data)
+                    try {
+                        repository.saveRecipesToCache(recipes = result.data)
+                    } catch (e: Exception) {
+                        Log.e("RecipesVM", "Cache save error", e)
+                        emptyList<Recipe>()
+                    }
                     _allRecipesState.value = ListOfRecipeState.Content(
                         categoryDescription = categoryDescription,
                         categoryPictureUrl = categoryImage,
@@ -56,12 +65,7 @@ class RecipesViewModel(
                 }
 
                 is RepositoryResult.Error -> {
-                    Log.e("Categories", "Loading failed", result.exception)
-                    val errorMessage = when (result.exception) {
-                        is IOException -> getApplication<Application>().getString(R.string.network_error)
-                        else -> getApplication<Application>().getString(R.string.data_error)
-                    }
-                    _allRecipesState.value = ListOfRecipeState.Error(errorMessage)
+                    Log.e("RecipesVM", "Loading failed", result.exception)
                 }
             }
         }

@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import ru.funny_phat_guy.recipesapp.R
+import ru.funny_phat_guy.recipesapp.RecipesApplication
 import ru.funny_phat_guy.recipesapp.databinding.FragmentListCategoriesBinding
 import ru.funny_phat_guy.recipesapp.ui.Constants
 
@@ -19,8 +19,15 @@ class CategoriesListFragment : Fragment() {
     private val binding
         get() = requireNotNull(_binding) { "Binding for FragmentCategoriesBinding must not be null" }
 
-    private val categoriesViewModel: CategoriesViewModel by viewModels()
+    private lateinit var categoriesViewModel: CategoriesViewModel
     private val categoriesAdapter = CategoriesListAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val appContainer = (requireActivity().application as RecipesApplication).appContainer
+        categoriesViewModel = appContainer.categoriesViewModelFactory.create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

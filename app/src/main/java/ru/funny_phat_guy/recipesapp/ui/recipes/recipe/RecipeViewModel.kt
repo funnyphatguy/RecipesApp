@@ -1,19 +1,20 @@
 package ru.funny_phat_guy.recipesapp.ui.recipes.recipe
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.funny_phat_guy.recipesapp.data.repo.RecipesRepository
 import ru.funny_phat_guy.recipesapp.model.Recipe
 import ru.funny_phat_guy.recipesapp.ui.recipes.recipe.RecipeViewModel.RecipeState.Content
 
-class RecipeViewModel(application: Application) :
-    AndroidViewModel(application) {
-    private val repository: RecipesRepository = RecipesRepository(application)
+class RecipeViewModel(
+    private val repository: RecipesRepository
+) : ViewModel() {
+
     private val _recipeState = MutableLiveData<RecipeState>(RecipeState.Loading)
 
     val recipeState: LiveData<RecipeState> get() = _recipeState
@@ -55,16 +56,17 @@ class RecipeViewModel(application: Application) :
     }
 
     fun loadRecipe(recipe: Recipe) {
-        viewModelScope.launch {
-            val recipeFromDB = repository.getRecipeById(recipe.id)
-            viewModelScope.launch {
-                _recipeState.value = Content(
-                    recipe = recipeFromDB,
-                    isFavourites = recipeFromDB.isFavorite,
-                    portionsCount = 1,
-                    recipeDrawable = recipeFromDB.imageUrl
-                )
-            }
+        try {
+            _recipeState.value = Content(
+                recipe = recipe,
+                isFavourites = recipe.isFavorite,
+                portionsCount = 1,
+                recipeDrawable = recipe.imageUrl
+            )
+        } catch (e: Exception) {
+            _recipeState.value =
+                RecipeState.Error(message = "Не удалось загрузить рецепт ${e.message}")
+            Log.e("RecipesVM", "не удалось загрузить рецепт", e)
         }
 
     }
